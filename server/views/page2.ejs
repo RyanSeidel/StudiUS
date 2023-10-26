@@ -40,6 +40,11 @@
     word-wrap: break-word; /* Allow long words to be broken and wrap onto the next line */
 }
 
+#localVideo.inactive {
+  display: none;
+}
+
+
 
   #message-input {
       width: 100%;
@@ -57,45 +62,157 @@
         background-color: #EDEDED;
         align-self: flex-start; /* Align to the left */
     }
+
+      #localVideo, #remoteVideo {
+          width: 320px;
+          height: 240px;
+      }
+
 </style>
 
 
 <h1>Welcome to Page 2, <%= name %>!</h1>
 
+    <video id="localVideo" autoplay playsinline></video>
+    <video id="remoteVideo" autoplay playsinline></video>
 
 <div class="chat-container">
-  <div id="chat-box"></div>
-  <input type="text" id="message-input">
-  <button onclick="sendMessage()">Send</button>
-  <input type="file" id="image-input" name="file">
-  <button onclick="sendImage()">Send Image</button>
+    <div id="chat-box"></div>
+    <input type="text" id="message-input">
+    <button onclick="sendMessage()">Send</button>
+    <input type="file" id="image-input" name="file">
+    <button onclick="sendImage()">Send Image</button>
+    <button id="toggleCamera">Toggle Camera</button>
+    <button id="toggleMicrophone">Toggle Microphone</button>
+
+
 </div>
-
-
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
     const socket = io.connect('http://localhost:3000');
+    const localVideo = document.getElementById('localVideo');
+    const remoteVideo = document.getElementById('remoteVideo');
+    const configuration = { 'iceServers': [{ 'urls': 'stun:stun.l.google.com:19302' }] };
+    const peerConnection = new RTCPeerConnection(configuration);
+    let isCameraOn = true;  // Assuming the camera is on by default
+    let localStream;
 
-    socket.on('receiveMessage', (message) => {
-      const chatBox = document.getElementById('chat-box');
-      const messageDiv = document.createElement('div');
-      
-      if (message.senderName === '<%= name %>') {
-          messageDiv.classList.add('current-user-message');
-      } else {
-          messageDiv.classList.add('other-user-message');
+    document.getElementById('toggleCamera').addEventListener('click', function() {
+        if (isCameraOn) {
+            if (localStream) {
+                let tracks = localStream.getTracks();
+                tracks.forEach(track => track.stop());
+                localStream = null;
+            }
+            localVideo.classList.add('inactive'); // Hide the video element
+            isCameraOn = false;
+        } else {
+            navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                .then(stream => {
+                    localStream = stream;
+                    localVideo.srcObject = stream;
+                    localVideo.classList.remove('inactive'); // Show the video element
+                    isCameraOn = true;
+                })
+                .catch(error => {
+                    console.error('Error accessing the camera and microphone', error);
+                });
+        }
+    });
+
+    document.getElementById('toggleMicrophone').addEventListener('click', function() {
+      if (isMicrophoneOn && localStream) {
+          localStream.getAudioTracks()[0].enabled = false;
+          isMicrophoneOn = false;
+      } else if (localStream) {
+          localStream.getAudioTracks()[0].enabled = true;
+          isMicrophoneOn = true;
       }
-  
-      if (message.body.startsWith('<img')) {
-          messageDiv.innerHTML = `${message.senderName}: ${message.body}`;
-      } else {
-          messageDiv.textContent = `${message.senderName}: ${message.body}`;
-      }
-      
-      chatBox.appendChild(messageDiv);
   });
-  
+
+  // Capture the local video and audio stream
+  navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      .then(stream => {
+          localStream = stream;
+          localVideo.srcObject = stream;
+          stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
+      })
+      .catch(error => {
+          console.error('Error accessing the camera and microphone', error);
+      });
+
+
+
+    // Capture the local video and audio stream
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        .then(stream => {
+            localVideo.srcObject = stream;
+            stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
+        })
+        .catch(error => {
+            console.error('Error accessing the camera and microphone', error);
+        });
+
+    // Handle the creation of the offer
+    peerConnection.onnegotiationneeded = async () => {
+        const offer = await peerConnection.createOffer();
+        await peerConnection.setLocalDescription(offer);
+        socket.emit('offer', offer);
+    };
+
+    // Update the remote stream when a new remote stream is added
+    peerConnection.ontrack = event => {
+        if (remoteVideo.srcObject !== event.streams[0]) {
+            remoteVideo.srcObject = event.streams[0];
+        }
+    };
+
+    // Handle the receipt of an offer
+    socket.on('offer', async (offer) => {
+        await peerConnection.setRemoteDescription(offer);
+        const answer = await peerConnection.createAnswer();
+        await peerConnection.setLocalDescription(answer);
+        socket.emit('answer', answer);
+    });
+
+    // Handle the receipt of an answer
+    socket.on('answer', answer => {
+        peerConnection.setRemoteDescription(answer);
+    });
+
+    // Handle ICE Candidate events
+    peerConnection.onicecandidate = event => {
+        if (event.candidate) {
+            socket.emit('ice-candidate', event.candidate);
+        }
+    };
+
+    socket.on('ice-candidate', iceCandidate => {
+        const candidate = new RTCIceCandidate(iceCandidate);
+        peerConnection.addIceCandidate(candidate);
+    });
+
+    // Existing messaging logic
+    socket.on('receiveMessage', (message) => {
+        const chatBox = document.getElementById('chat-box');
+        const messageDiv = document.createElement('div');
+      
+        if (message.senderName === '<%= name %>') {
+            messageDiv.classList.add('current-user-message');
+        } else {
+            messageDiv.classList.add('other-user-message');
+        }
+
+        if (message.body.startsWith('<img')) {
+            messageDiv.innerHTML = `${message.senderName}: ${message.body}`;
+        } else {
+            messageDiv.textContent = `${message.senderName}: ${message.body}`;
+        }
+
+        chatBox.appendChild(messageDiv);
+    });
+
     function sendMessage() {
         const input = document.getElementById('message-input');
         socket.emit('sendMessage', {
@@ -106,23 +223,22 @@
     }
 
     function sendImage() {
-      const imageInput = document.getElementById('image-input');
-      const formData = new FormData();
-      formData.append('file', imageInput.files[0]);
-      
-      fetch('/upload', {
-          method: 'POST',
-          body: formData
-      })
-      .then(response => response.json())
-      .then(data => {
-          const imageUrl = data.imageUrl;
-          socket.emit('sendMessage', {
-              senderName: '<%= name %>',
-              body: `<img src="${imageUrl}" alt="Image" width="200">`
-          });
-      });
-  }
-  
-  
+        const imageInput = document.getElementById('image-input');
+        const formData = new FormData();
+        formData.append('file', imageInput.files[0]);
+
+        fetch('/upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            const imageUrl = data.imageUrl;
+            socket.emit('sendMessage', {
+                senderName: '<%= name %>',
+                body: `<img src="${imageUrl}" alt="Image" width="200">`
+            });
+        });
+    }
 </script>
+

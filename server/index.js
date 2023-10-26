@@ -92,14 +92,25 @@ io.on('connection', (socket) => {
             senderName,  // Store the sender's name directly in the message
         });
         await message.save();
-    
+
         // Broadcast the message to all connected clients
         io.emit('receiveMessage', {
             body,
             senderName
         });
     });
-    
+
+    socket.on('offer', (offer) => {
+        socket.broadcast.emit('offer', offer);
+    });
+
+    socket.on('answer', (answer) => {
+        socket.broadcast.emit('answer', answer);
+    });
+
+    socket.on('ice-candidate', (iceCandidate) => {
+        socket.broadcast.emit('ice-candidate', iceCandidate);
+    });
 
     socket.on('disconnect', () => {
         console.log('user disconnected');
