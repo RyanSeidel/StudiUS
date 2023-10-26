@@ -1,0 +1,60 @@
+<h1>Welcome to Page 2, <%= name %>!</h1>
+
+<div id="chat-box"></div>
+<input type="text" id="message-input">
+<button onclick="sendMessage()">Send</button>
+
+<input type="file" id="image-input" name="file">
+<button onclick="sendImage()">Send Image</button>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io.connect('http://localhost:3000');
+
+    socket.on('receiveMessage', (message) => {
+      const chatBox = document.getElementById('chat-box');
+      const messageDiv = document.createElement('div');
+      
+      if (message.body.startsWith('<img')) {
+          // If the message contains an image tag, set it as innerHTML
+          messageDiv.innerHTML = `${message.senderName}: ${message.body}`;
+      } else {
+          // Otherwise, just set the text content
+          messageDiv.textContent = `${message.senderName}: ${message.body}`;
+      }
+      
+      chatBox.appendChild(messageDiv);
+  });
+  
+
+    function sendMessage() {
+        const input = document.getElementById('message-input');
+        socket.emit('sendMessage', {
+            senderName: '<%= name %>',
+            body: input.value
+        });
+        input.value = '';
+    }
+
+    function sendImage() {
+      const imageInput = document.getElementById('image-input');
+      const formData = new FormData();
+      formData.append('file', imageInput.files[0]);
+      
+      fetch('/upload', {
+          method: 'POST',
+          body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+          const imageUrl = data.imageUrl;
+          socket.emit('sendMessage', {
+              senderName: '<%= name %>',
+              body: `<img src="${imageUrl}" alt="Image" width="200">`
+          });
+      });
+  }
+  
+  
+</script>

@@ -1,0 +1,21 @@
+<h1>Hello, <%= name %>!</h1>
+<a href="/page2">Go to Page 2</a>
+
+<div id="users-list"></div>
+
+<script>
+    fetch('/users')
+    .then(response => response.json())
+    .then(users => {
+        const usersDiv = document.getElementById('users-list');
+        users.forEach(user => {
+            const userDiv = document.createElement('div');
+            userDiv.textContent = user.name;
+            userDiv.addEventListener('click', () => {
+                window.location.href = `/page2?userId=${user._id}`; // Redirect to chat page with the selected user
+            });
+            usersDiv.appendChild(userDiv);
+        });
+    });
+</script>
+
