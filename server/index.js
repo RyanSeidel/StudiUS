@@ -200,6 +200,10 @@ app.get('/page2', (req, res) => {
     res.render('page2', { name: req.user.name });
 });
 
-server.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+// server.listen(PORT, () => {
+//     console.log(`Server is running on port ${PORT}`);
+// });
+
+server.listen(PORT, '3.12.163.231', () => {
+    console.log(`Server is running on https://${'3.12.163.231'}:${PORT}`);
 });
