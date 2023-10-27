@@ -93,22 +93,99 @@
         <!-- Right column for main content -->
         <div class="right-column">
             <h3>Create a Group Chat</h3>
-            <button id="create-group-button">Start</button>
+            <input type="text" id="roomName" placeholder="Room Name">
+            <div id="users-for-room">
+
+            </div>
+            <button id="create-room-button">Create Room</button>
+            <h3>Your Rooms:</h3>
+            <div id="rooms-list">
+                <h3>Existing Rooms:</h3>
+                <!-- The rooms will be appended here -->
+            </div>
         </div>
     </div>
 
     <script>
+        // Fetch users and populate them with checkboxes
         fetch('/users')
-            .then(response => response.json())
-            .then(users => {
-                const usersDiv = document.getElementById('users-list');
-                users.forEach(user => {
-                    const userDiv = document.createElement('div');
-                    userDiv.textContent = user.name;
-                    usersDiv.appendChild(userDiv);
-                });
+        .then(response => response.json())
+        .then(users => {
+            const usersDiv = document.getElementById('users-for-room');
+            users.forEach(user => {
+                const userDiv = document.createElement('div');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = user._id;
+                checkbox.id = `user-${user._id}`;
+                const label = document.createElement('label');
+                label.htmlFor = `user-${user._id}`;
+                label.textContent = user.name;
+                userDiv.appendChild(checkbox);
+                userDiv.appendChild(label);
+                usersDiv.appendChild(userDiv);
             });
+        });
+    
+        function fetchRooms() {
+            fetch('/get-rooms')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(rooms => {
+                const roomsListDiv = document.getElementById('rooms-list');
+                roomsListDiv.innerHTML = '<h3>Existing Rooms:</h3>';
+                
+                rooms.forEach(room => {
+                    const roomDiv = document.createElement('div');
+                    roomDiv.textContent = room.name;
+                    roomDiv.style.cursor = 'pointer';
+                    roomDiv.addEventListener('click', () => {
+                        // Navigate to the chat page for the clicked room
+                        window.location.href = `/chatroom?roomId=${room._id}`;
+                    });
+                    roomsListDiv.appendChild(roomDiv);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching rooms:", error);
+            });
+        }
+    
+        // Call the function to fetch and display the rooms when the page loads
+        fetchRooms();
+    
+        document.getElementById('create-room-button').addEventListener('click', () => {
+            console.log('Create Room button clicked');
+    
+            const roomName = document.getElementById('roomName').value;
+            const checkboxes = document.querySelectorAll('#users-for-room input[type="checkbox"]:checked');
+            const selectedUsers = Array.from(checkboxes).map(cb => cb.value);
+    
+            fetch('/create-room', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ roomName, allowedUsers: selectedUsers })
+            })
+            .then(res => {
+                if (!res.ok) {
+                    return res.json().then(err => { throw err; });
+                }
+                return res.json();
+            })
+            .then(room => {
+                fetchRooms();
+                // Handle what you want to do after creating the room.
+            })
+            .catch(error => {
+                console.error("Error creating room:", error);
+            });            
+        });
     </script>
+     
 </body>
 
 </html>

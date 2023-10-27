@@ -9,6 +9,8 @@ const socketIo = require('socket.io');
 const User = require('./models/user');
 const Message = require('./models/message');
 const Conversation = require('./models/conversation');
+const ChatRoom = require('./models/chatRoom');
+
 
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
@@ -59,10 +61,15 @@ cloudinary.config({
   api_secret: '-gzQXojy4nvTu0XLnus1b7ajTBY'
 });
 
-
 // Socket.io Logic
 io.on('connection', (socket) => {
     console.log('a user connected');
+
+    socket.on('join-room', (roomId, userName) => {
+        socket.join(roomId);
+        // You might also want to notify others in the room about the new user
+        // socket.to(roomId).broadcast.emit('event-name', data);
+    });
 
     socket.on('sendMessage', async ({ senderName, body }) => {
         const message = new Message({
@@ -131,6 +138,58 @@ app.get('/conversation', async (req, res) => {
 
     res.json(conversation);
 });
+
+app.get('/get-rooms', async (req, res) => {
+    try {
+        const currentUser = req.user;
+        const rooms = await ChatRoom.find({ userIds: currentUser._id }).lean();  // Use .lean() for performance and to get plain JS objects
+
+        // Fetch user names for each room
+        for (let room of rooms) {
+            const users = await User.find({ _id: { $in: room.userIds } });
+            room.userNames = users.map(user => user.name);
+        }
+
+        res.json(rooms);
+    } catch (error) {
+        res.status(500).send("Error fetching rooms");
+    }
+});
+
+app.get('/chatroom', (req, res) => {
+    if (!req.user) return res.status(401).send('Not authenticated.');
+    res.render('page2', { name: req.user.name });
+});
+
+
+app.post('/create-room', async (req, res) => {
+    const roomName = req.body.roomName;
+    const allowedUsers = req.body.allowedUsers || [];
+
+    const currentUser = req.user;
+    console.log("Current User ID:", currentUser._id);
+    
+    allowedUsers.push(currentUser._id.toString());
+    console.log("Allowed Users:", allowedUsers);
+
+    const existingRoom = await ChatRoom.findOne({ userIds: { $all: allowedUsers, $size: allowedUsers.length } });
+    if (existingRoom) {
+        return res.status(400).json({ error: 'Room with the same set of users already exists' });
+    }
+
+    const newRoom = new ChatRoom({ 
+        name: roomName, 
+        userIds: allowedUsers,
+        isGroup: allowedUsers.length > 1 
+    });
+    await newRoom.save();
+    console.log("New Room Data:", newRoom);
+
+    res.json(newRoom);
+});
+
+
+
 
 app.delete('/conversation/:id', async (req, res) => {
     if (!req.user) return res.status(401).send('Not authenticated.');

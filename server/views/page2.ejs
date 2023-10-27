@@ -142,6 +142,13 @@
 <script>
     const socket = io.connect("http://localhost:3000");
 
+     // Extract roomId from the URL
+     const urlParams = new URLSearchParams(window.location.search);
+     const roomId = urlParams.get('roomId');
+ 
+     // Use the roomId to join the specific room
+     socket.emit('join-room', roomId, '<%= name %>');
+
     // const socket = io.connect('http://3.12.163.231:3000');
     const localVideo = document.getElementById("localVideo");
     const remoteVideo = document.getElementById("remoteVideo");
