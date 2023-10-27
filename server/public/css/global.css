@@ -1,0 +1,40 @@
+/* GLOBAL CSS FOR REPEATING STYLES OVER AND OVER */
+
+
+/* If you are centering knowing it is a flex child */
+
+
+/* Button styles */
+.button {
+  display: inline-block;
+  width: 150px; /* Set the width to your desired fixed size */
+  height: 40px; /* Set the height to your desired fixed size */
+  padding: 0; /* Remove padding to maintain fixed size */
+  background-color: #6eb5ff; /* Light blue background color */
+  color: #fff; /* White text color */
+  border: none; /* Remove button border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Add cursor pointer on hover */
+  transition: background-color 0.3s; /* Smooth background color transition on hover */
+}
+
+/* Hover effect */
+.button:hover {
+  background-color: #4a90e2; /* Darker blue background color on hover */
+}
+
+/* Style for the close button */
+/* Style the close button */
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: red; /* Change color on hover if desired */
+}

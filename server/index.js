@@ -19,6 +19,9 @@ const server = http.createServer(app);
 const io = socketIo(server);
 const PORT = 3000;
 
+// Setting up the 'public' directory to serve static assets (HTML, CSS, JS) using Express DO NOT
+app.use(express.static('public'));
+
 app.set('view engine', 'ejs');
 
 // Middlewares
@@ -119,6 +122,10 @@ io.on('connection', (socket) => {
 
 app.get('/register', (req, res) => {
     res.render('register');
+});
+
+app.get('/loginpage', (req, res) => {
+    res.render('loginpage');
 });
 
 app.get('/login', (req, res) => {
