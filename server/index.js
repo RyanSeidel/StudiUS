@@ -59,31 +59,6 @@ cloudinary.config({
   api_secret: '-gzQXojy4nvTu0XLnus1b7ajTBY'
 });
 
-const storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
-        folder: 'chat_app',
-        format: async (req, file) => 'png', // supports promises as well
-        public_id: (req, file) => file.originalname, // Preserving the original file name
-    },
-});
-
-const parser = multer({ storage: storage });
-
-
-app.post('/upload', parser.single('file'), (req, res) => {
-    console.log('Upload endpoint hit');
-    console.log('req.body:', req.body);
-    console.log('req.file:', req.file);
-    if (!req.file) {
-        return res.status(400).send('No file uploaded.');
-    }
-    const imageUrl = req.file.path;
-    res.json({ imageUrl });
-});
-
-
-
 
 // Socket.io Logic
 io.on('connection', (socket) => {
