@@ -1,21 +1,104 @@
-<h1>Hello, <%= name %>!</h1>
-<a href="/page2">Go to Page 2</a>
+<!DOCTYPE html>
+<html lang="en">
 
-<div id="users-list"></div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome the Islander</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f7f7f7;
+        }
 
-<script>
-    fetch('/users')
-    .then(response => response.json())
-    .then(users => {
-        const usersDiv = document.getElementById('users-list');
-        users.forEach(user => {
-            const userDiv = document.createElement('div');
-            userDiv.textContent = user.name;
-            userDiv.addEventListener('click', () => {
-                window.location.href = `/page2?userId=${user._id}`; // Redirect to chat page with the selected user
+        .center-box {
+            width: 80%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .inner-box {
+            width: 100%;
+            display: flex;
+        }
+
+        .left-column {
+            width: 50%;
+            padding: 20px;
+            border-right: 1px solid #eee;
+        }
+
+        .right-column {
+            width: 50%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #users-list div {
+            padding: 5px 0;
+            cursor: pointer;
+        }
+
+        #users-list div:hover {
+            text-decoration: underline;
+        }
+
+        #create-group-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="center-box">
+        <h1>Welcome the Islander, <%= name %>!</h1>
+        <div class="inner-box">
+            <!-- Left column for users -->
+            <div class="left-column">
+                <h2>Users:</h2>
+                <div id="users-list"></div>
+            </div>
+
+            <!-- Right column for main content -->
+            <div class="right-column">
+                <button id="create-group-button">Create a Group Chat</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        fetch('/users')
+            .then(response => response.json())
+            .then(users => {
+                const usersDiv = document.getElementById('users-list');
+                users.forEach(user => {
+                    const userDiv = document.createElement('div');
+                    userDiv.textContent = user.name;
+                    userDiv.addEventListener('click', () => {
+                        window.location.href = `/page2?userId=${user._id}`; // Redirect to chat page with the selected user
+                    });
+                    usersDiv.appendChild(userDiv);
+                });
             });
-            usersDiv.appendChild(userDiv);
-        });
-    });
-</script>
+    </script>
+</body>
 
+</html>
