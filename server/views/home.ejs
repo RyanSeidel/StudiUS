@@ -105,9 +105,6 @@
                 users.forEach(user => {
                     const userDiv = document.createElement('div');
                     userDiv.textContent = user.name;
-                    userDiv.addEventListener('click', () => {
-                        window.location.href = `/page2?userId=${user._id}`; // Redirect to chat page with the selected user
-                    });
                     usersDiv.appendChild(userDiv);
                 });
             });
