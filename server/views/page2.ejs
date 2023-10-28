@@ -1,20 +1,21 @@
 <style>
     :root {
-        --button-color-light: #6eb5ff;
-        --button-color-dark: #2691d9;
-        --background-color: hsl(0, 0%, 94%);
+        --blue-color-light: #6eb5ff;
+        --blue-color-dark: #4b7eff;
+        --background-color: #f9f9f9;
+        --background-message-color: #f6f8fc;
         --text-color: #fff;
     }
     body {
         font-family: Arial, sans-serif;
         height: 100vh;
-        margin: 0;
+        margin: 0 10px;
         justify-content: center;
         align-items: center;
-        background-color: var(--background-color);
+        background-color: #fff;
     }
     button {
-        background-color: var(--button-color-light);
+        background-color: var(--blue-color-light);
         display: inline-block;
         width: 150px;
         height: 40px;
@@ -27,22 +28,22 @@
     }
 
     .chat-container {
-        background-color: white;
-        padding: 20px;
+        padding: 30px;
+    }
+    .chat-container-content {
+        margin: 30px;
         box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
-        width: 100%;
+        border-radius: 10px;
     }
 
     #chat-box {
-        width: 97%;
+        width: 100%;
         height: 70%;
-        border: 1px solid #ccc;
-        padding: 10px;
-        margin: 0 auto;
         overflow-y: auto;
         display: flex;
         flex-direction: column; /* Remove the 'reverse' */
         justify-content: flex-end; /* New messages at the bottom */
+        background-color: var(--background-message-color);
     }
 
     .current-user-message,
@@ -58,16 +59,54 @@
         display: none;
     }
 
+    .msg-bottom {
+        padding: 10px 20px;
+        background-color: #fff;
+        border-radius: 0px 0px 10px 10px; /* Bottom border radius */
+    }
+    .msg-top {
+        height: 30px;
+        padding: 20px;
+
+        background-color: #fff;
+        border-radius: 10px 10px 0px 0px;
+    }
+
     #message-input {
         width: 100%;
-        padding: 10px;
-        margin-bottom: 10px;
+        padding: 12px 20px;
+        margin: 5px 0;
+        border-radius: 30px;
+
+        border: 1px solid #ccc;
+    }
+
+    .icon-group {
+        margin: 5px 15px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .icon-left span {
+        margin-right: 10px;
+    }
+    .icon-left span i,
+    .send-icon {
+        font-size: 20px;
+    }
+
+    .icon-left span i:hover,
+    .send-icon:hover {
+        color: var(--blue-color-light);
+        cursor: pointer;
+        transition: 0.2s;
     }
 
     .current-user-message {
+        margin: 0 15px 15px 0;
         text-align: right;
-        background-color: var(--background-color);
+        background-color: var(--blue-color-dark);
         align-self: flex-end; /* Align to the right */
+        color: #fff;
     }
 
     .other-user-message {
@@ -76,78 +115,130 @@
         align-self: flex-start; /* Align to the left */
     }
 
-    #localVideo, #remoteVideo {
+    #localVideo,
+    #remoteVideo {
         /* width: 213px; */
         height: 120px;
-        
     }
 
     #localVideo {
-        border: solid white;
+        border-radius: 10px;
     }
 
     .video-container {
-        width: 100%;
-        height: 160px;
-        background-color: gray;
+        margin: 10px 100px;
+        height: 15vh;
+        background-color: var(--blue-color-light);
         display: flex;
         justify-content: center;
         align-items: center;
+        border-radius: 10px;
     }
 
     .screen-parent {
+        background-color: #fff;
         width: 90%;
-        background-color: blue;
         display: flex;
         flex-direction: row;
     }
 
-    .screen-center{
+    .screen-center {
         display: flex;
         justify-content: center;
         height: 80vh;
     }
-    
-    .left-screen, .chat-container {
+
+    .left-screen,
+    .chat-container {
         flex: 1; /* Each takes half the space of the parent */
     }
 
-    .left-screen{
-        border-right: solid 2px black;
+    .left-screen {
+        padding: 30px;
+        border-right: 1px solid #ccc;
     }
 </style>
+<body>
+    <div class="video-container">
+        <video id="localVideo" autoplay playsinline></video>
+        <video id="remoteVideo" autoplay playsinline></video>
+    </div>
+    <div class="screen-center">
+        <div class="screen-parent">
+            <div class="left-screen">
+                <h1 class="welcome-heading">
+                    Welcome the Islander, <%= name %>!
+                </h1>
+            </div>
+            <div class="chat-container">
+                <div class="chat-container-content">
+                    <div class="msg-top"></div>
 
-<div class="video-container">
-    <video id="localVideo" autoplay playsinline></video>
-    <video id="remoteVideo" autoplay playsinline></video>
-</div>
+                    <div id="chat-box"></div>
 
-<div class="screen-center">
-<div class="screen-parent">
-<div class="left-screen">
-    <h1>Welcome the Islander, <%= name %>!</h1>
-</div>
-<div class="chat-container">
-    <div id="chat-box"></div>
-    <input type="text" id="message-input" />
-    <button onclick="sendMessage()">Send</button>
-    <input type="file" id="image-input" name="file" />
-    <button onclick="sendImage()">Send Image</button>
-    <button id="toggleCamera">Toggle Camera</button>
-    <button id="toggleMicrophone">Toggle Microphone</button>
-</div>
-</div>
-</div>
+                    <div class="msg-bottom">
+                        <input
+                            type="text"
+                            id="message-input"
+                            placeholder="Write Something..."
+                        />
+
+                        <div class="icon-group">
+                            <div class="icon-left">
+                                <span class="image-input-container">
+                                    <input
+                                        type="file"
+                                        id="image-input"
+                                        name="file"
+                                        style="display: none; visibility: none"
+                                        onclick="displayInput()"
+                                    />
+                                    <label for="image-input"
+                                        ><i class="fa-solid fa-paperclip"></i
+                                    ></label>
+                                </span>
+                                <span id="toggleCamera"
+                                    ><i class="fa-solid fa-camera"></i
+                                ></span>
+                                <span onclick="sendImage()"
+                                    ><i class="fa-regular fa-image"></i
+                                ></span>
+                                <span id="toggleMicrophone"
+                                    ><i class="fa-solid fa-microphone"></i
+                                ></span>
+                            </div>
+                            <span onclick="sendMessage()"
+                                ><i
+                                    class="send-icon fa-regular fa-paper-plane"
+                                ></i
+                            ></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<!-- Embed code for icon -->
+<script
+    src="https://kit.fontawesome.com/fb5c3cd0c8.js"
+    crossorigin="anonymous"
+></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
+    const displayInput = () => {
+        document.getElementById("image-input").style.display = "block";
+        document.getElementById("image-input").style.visibility = "visible";
+    };
+
     const socket = io.connect("http://localhost:3000");
 
-     // Extract roomId from the URL
-     const urlParams = new URLSearchParams(window.location.search);
-     const roomId = urlParams.get('roomId');
- 
-     // Use the roomId to join the specific room
-     socket.emit('join-room', roomId, '<%= name %>');
+    // Extract roomId from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const roomId = urlParams.get("roomId");
+
+    // Use the roomId to join the specific room
+    socket.emit("join-room", roomId, "<%= name %>");
 
     // const socket = io.connect('http://3.12.163.231:3000');
     const localVideo = document.getElementById("localVideo");
