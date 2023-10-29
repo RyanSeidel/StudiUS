@@ -102,17 +102,6 @@ io.on('connection', (socket) => {
     });
 });
 
-app.get('/register', (req, res) => {
-    res.render('register');
-});
-
-app.get('/loginpage', (req, res) => {
-    res.render('loginpage');
-});
-
-app.get('/login', (req, res) => {
-    res.render('login');
-});
 
 app.get('/users', async (req, res) => {
     if (!req.user) return res.status(401).send('Not authenticated.');
@@ -216,7 +205,7 @@ app.post('/register', async (req, res) => {
 
     await user.save();
 
-    res.send('User registered successfully');
+    res.redirect('/');
 });
 
 app.post('/login', async (req, res) => {
@@ -228,10 +217,14 @@ app.post('/login', async (req, res) => {
     if (!validPassword) return res.status(400).send('Invalid email or password.');
 
     const token = jwt.sign({ _id: user._id }, 'your_secret_key');
-    res.cookie('jwt', token).redirect('/');
+    res.cookie('jwt', token).redirect('/home');
 });
 
 app.get('/', (req, res) => {
+    res.render('loginpage');
+});
+
+app.get('/home', (req, res) => {
     if (!req.user) return res.status(401).send('Not authenticated.');
     res.render('home', { name: req.user.name });
 });
