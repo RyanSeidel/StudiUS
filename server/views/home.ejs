@@ -17,6 +17,10 @@
             padding: 0;
         }
 
+        h2 {
+            color: #004b9b;
+        }
+
         .center-box {
             width: 80%;
             background-color: #fff;
@@ -34,31 +38,47 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #f5f5f5;
+            background-color: #d4e4f5;
         }
 
         .left-column h2 {
-            color: #333;
+            color: #004b9b;
             margin-bottom: 10px;
         }
 
         #users-list {
             width: 100%;
             border: 1px solid #ccc;
+            background-color: #0056b3;
             border-radius: 10px;
             overflow-y: auto;
+            overflow-x: hidden;
         }
 
-        #users-list > div {
-            padding: 10px;
-            margin: 5px 0;
-            cursor: pointer;
+        #users-for-room {
+            width: 100%;
+            margin-bottom: 10px;
+            background-color: #f5f5f5;
+            border: 1px solid #ccc;
             border-radius: 5px;
-            transition: background-color 0.3s;
+            padding: 10px;
         }
 
-        #users-list > div:hover {
-            background-color: #e0e0e0;
+        #users-for-room button {
+            display: block;
+    margin-bottom: 5px;
+    padding: 10px 16px; /* Adjusted padding for better fit */
+    width: calc(100% - 32px); /* Adjusted width to consider padding */
+    text-align: left;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s
+        }
+
+        #users-for-room button:hover {
+            background-color: #f2f2f2;
         }
 
         .right-column {
@@ -68,6 +88,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            background-color: #d4e4f5;
         }
 
         #create-group-button {
@@ -89,18 +110,14 @@
             box-sizing: border-box;
         }
 
-        #users-for-room {
-            width: 100%;
-            margin-bottom: 10px;
-        }
-
         #create-room-button {
-            background-color: #007bff;
+            background-color: #004b9b;
             color: white;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            margin-top: 20px;
         }
 
         #create-room-button:hover {
@@ -116,31 +133,29 @@
         }
 
         #rooms-list h3 {
-            color: #333;
+            color: #004b9b;
             background-color: #ddd;
             padding: 5px 10px;
             border-radius: 5px;
         }
 
         #rooms-list div.room {
-            padding: 10px 15px;
-            margin: 5px 0;
-            background-color: #f5f5f5;
-            border: 1px solid #ccc;
+            background-color: #004b9b;
+            color: white;
+            padding: 10px 20px;
+            border: none;
             border-radius: 5px;
-            transition: background-color 0.3s, transform 0.3s;
+            cursor: pointer;
+            margin-top: 20px;
         }
 
         #rooms-list div.room:hover {
-            background-color: #e0e0e0;
-            transform: scale(1.02);
-            cursor: pointer;
+            background-color: #0056b3;
         }
     </style>
 </head>
-
 <body>
-    <h1 style="color: #007bff;">Welcome to the Island, <%= name %>!</h1>
+    <h1 style="color: #004b9b;">Welcome to the Island, <%= name %>!</h1>
 
     <div class="center-box">
         <div class="left-column">
@@ -153,7 +168,7 @@
         </div>
 
         <div class="right-column">
-            <h3>Create a Group Chat</h3>
+            <h2>Create a Group Chat</h2>
             <input type="text" id="roomName" placeholder="Room Name">
             <button id="create-room-button">Create Room</button>
 
@@ -164,23 +179,18 @@
     </div>
 
     <script>
-        // Fetch users and populate them with checkboxes
+        // Fetch users and populate them with buttons
         fetch('/users')
         .then(response => response.json())
         .then(users => {
             const usersDiv = document.getElementById('users-for-room');
             users.forEach(user => {
-                const userDiv = document.createElement('div');
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.value = user._id;
-                checkbox.id = `user-${user._id}`;
-                const label = document.createElement('label');
-                label.htmlFor = `user-${user._id}`;
-                label.textContent = user.name;
-                userDiv.appendChild(checkbox);
-                userDiv.appendChild(label);
-                usersDiv.appendChild(userDiv);
+                const button = document.createElement('button');
+                button.textContent = user.name;
+                button.addEventListener('click', () => {
+                    // Handle button click event
+                });
+                usersDiv.appendChild(button);
             });
         });
 
@@ -198,7 +208,7 @@
                 
                 rooms.forEach(room => {
                     const roomDiv = document.createElement('div');
-                    roomDiv.className = 'room';  // Add this line
+                    roomDiv.className = 'room';
                     roomDiv.textContent = room.name;
                     roomDiv.style.cursor = 'pointer';
                     roomDiv.addEventListener('click', () => {
@@ -218,8 +228,7 @@
             console.log('Create Room button clicked');
     
             const roomName = document.getElementById('roomName').value;
-            const checkboxes = document.querySelectorAll('#users-for-room input[type="checkbox"]:checked');
-            const selectedUsers = Array.from(checkboxes).map(cb => cb.value);
+            // Handle selected users and create room logic here
     
             fetch('/create-room', {
                 method: 'POST',
