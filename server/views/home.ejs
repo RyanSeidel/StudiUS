@@ -121,6 +121,21 @@
             padding: 5px 10px;
             border-radius: 5px;
         }
+
+        #rooms-list div.room {
+            padding: 10px 15px;
+            margin: 5px 0;
+            background-color: #f5f5f5;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #rooms-list div.room:hover {
+            background-color: #e0e0e0;
+            transform: scale(1.02);
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -130,28 +145,23 @@
     <div class="center-box">
         <div class="left-column">
             <h2>Users:</h2>
-            <div id="users-list"></div>
+            <div id="users-list">
+                <div id="users-for-room">
+
+                </div>
+            </div>
         </div>
 
         <div class="right-column">
             <h3>Create a Group Chat</h3>
             <input type="text" id="roomName" placeholder="Room Name">
-            <div id="users-for-room">
-
-            </div>
             <button id="create-room-button">Create Room</button>
 
             <div id="rooms-list">
                 <h3>Rooms:</h3>
-                <!-- The rooms will be appended here -->
             </div>
         </div>
     </div>
-</body>
-
-</html>
-
-</html>
 
     <script>
         // Fetch users and populate them with checkboxes
@@ -173,7 +183,7 @@
                 usersDiv.appendChild(userDiv);
             });
         });
-    
+
         function fetchRooms() {
             fetch('/get-rooms')
             .then(response => {
@@ -188,10 +198,10 @@
                 
                 rooms.forEach(room => {
                     const roomDiv = document.createElement('div');
+                    roomDiv.className = 'room';  // Add this line
                     roomDiv.textContent = room.name;
                     roomDiv.style.cursor = 'pointer';
                     roomDiv.addEventListener('click', () => {
-                        // Navigate to the chat page for the clicked room
                         window.location.href = `/chatroom?roomId=${room._id}`;
                     });
                     roomsListDiv.appendChild(roomDiv);
@@ -201,10 +211,9 @@
                 console.error("Error fetching rooms:", error);
             });
         }
-    
-        // Call the function to fetch and display the rooms when the page loads
+
         fetchRooms();
-    
+
         document.getElementById('create-room-button').addEventListener('click', () => {
             console.log('Create Room button clicked');
     
@@ -225,14 +234,12 @@
             })
             .then(room => {
                 fetchRooms();
-                // Handle what you want to do after creating the room.
             })
             .catch(error => {
                 console.error("Error creating room:", error);
             });            
         });
     </script>
-     
 </body>
 
 </html>
