@@ -18,7 +18,7 @@ const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
+const io = require('socket.io')(server);
 const PORT = 3000;
 
 // Setting up the 'public' directory to serve static assets (HTML, CSS, JS) using Express DO NOT
