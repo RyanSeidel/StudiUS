@@ -108,12 +108,12 @@
         }
 
         #roomName {
-            width: 100%;
-            margin: 10px 0;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
             box-sizing: border-box;
+            width: 70%; /* Adjust to make the input wider, use a percentage so it's responsive */
+            margin-right: 10px; /* Add some space between the input and the button */
         }
 
         #create-room-button {
@@ -123,12 +123,15 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 20px;
         }
 
         #create-room-button:hover {
             background-color: #0056b3;
         }
+
+        #users-for-room button.selected {
+            background-color: lightgreen;
+        }        
 
         #rooms-list {
             width: 100%;
@@ -206,6 +209,12 @@
     border-radius: 50%;
 }
 
+.room-name-flex{
+    display: flex;
+    align-items: center;
+    width: 100%; /* Use the full width available */
+}
+
     </style>
 </head>
 <body>
@@ -224,8 +233,9 @@
 
         <div class="right-column">
             <h2>Create a Group Chat</h2>
+            <div class="room-name-flex">
             <input type="text" id="roomName" placeholder="Room Name">
-            <button id="create-room-button">Create Room</button>
+            <button id="create-room-button">Create Room</button></div>
 
             <div id="rooms-list">
                 <h3>Rooms:</h3>
@@ -254,38 +264,48 @@
 
 
     <script>
-        // Fetch users and populate them with buttons
-        fetch('/users')
+        // Array to keep track of selected users
+let selectedUsers = [];
+
+// Fetch users and populate them with buttons
+fetch('/users')
     .then(response => response.json())
     .then(users => {
         const usersDiv = document.getElementById('users-for-room');
         users.forEach(user => {
             const button = document.createElement('button');
-            
+
             // Create an img element for the user's image
             const img = document.createElement('img');
-            img.src = user.image;  // Assuming the user object has an 'image' attribute with the URL
+            img.src = user.image;
             img.alt = `${user.name}'s Profile Image`;
-            img.style.width = '30px';  // Set any desired width
-            img.style.height = '30px';  // Set any desired height
-            img.style.borderRadius = '15px';  // Making it circular, optional
-            img.style.marginRight = '10px';  // Adding some margin to separate image from name
+            img.style.width = '30px';
+            img.style.height = '30px';
+            img.style.borderRadius = '15px';
+            img.style.marginRight = '10px';
 
             // Append the image to the button before the text
             button.appendChild(img);
-            
+
             // Add user name after the image
             const userNameTextNode = document.createTextNode(user.name);
             button.appendChild(userNameTextNode);
 
             button.addEventListener('click', () => {
-                // Handle button click event
+                // Toggle the 'selected' class on the button
+                button.classList.toggle('selected');
+
+                // Toggle user selection in the selectedUsers array
+                if (selectedUsers.includes(user._id)) {
+                    selectedUsers = selectedUsers.filter(userId => userId !== user._id);
+                } else {
+                    selectedUsers.push(user._id);
+                }
             });
 
             usersDiv.appendChild(button);
         });
     });
-
 
         function fetchRooms() {
             fetch('/get-rooms')
@@ -322,6 +342,16 @@
     
             const roomName = document.getElementById('roomName').value;
             // Handle selected users and create room logic here
+
+            // Check if no user is selected or room name is empty
+            if (!roomName.trim()) {
+                alert("Please provide a room name.");
+                return;
+            }
+            if (selectedUsers.length === 0) {
+                alert("No users are selected.");
+                return;
+            }
     
             fetch('/create-room', {
                 method: 'POST',
