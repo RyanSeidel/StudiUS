@@ -60,9 +60,7 @@
         }
 
         #users-list {
-            width: 100%;
-            border: 1px solid #ccc;
-            background-color: #0056b3;
+            width: 100%;          
             border-radius: 10px;
             overflow-y: auto;
             overflow-x: hidden;
@@ -71,7 +69,6 @@
         #users-for-room {
             width: 100%;
             margin-bottom: 10px;
-            border: 1px solid #ccc;
             border-radius: 5px;
             padding: 10px;
         }
@@ -128,7 +125,7 @@
         }
 
         .create-button {
-            background-color: #ddd;
+            background-color: white;
             color: black;
             padding: 10px 20px;
             border: none;
@@ -137,7 +134,7 @@
         }
 
         .create-button:hover {
-            background-color: #0056b3;
+            background-color: #ddd;
         }
 
         #users-for-room button.selected {
@@ -147,22 +144,21 @@
         #rooms-list {
             width: 100%;
             margin-top: 20px;
-            background-color: #f5f5f5;
             border-radius: 10px;
             padding: 10px;
         }
 
         #rooms-list h3 {
             color: #004b9b;
-            background-color: #ddd;
+            background-color: #f2f2f2;
             padding: 5px 10px;
             border-radius: 5px;
         }
 
         #rooms-list div.room {
-            background-color: #ddd;
+            background-color: #f2f2f2;
             color: black;
-            padding: 10px 20px;
+            padding: 15px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
@@ -171,7 +167,7 @@
         }
 
         #rooms-list div.room:hover {
-            background-color: #0056b3;
+            background-color: #ddd;
         }
 
         .modal {
@@ -227,27 +223,58 @@
     width: 100%; /* Use the full width available */
 }
 
+.greeting-button, .create-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    font-size: 16px; /* adjust as needed */
+    padding: 10px 20px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.greeting-button {
+    background-color: #0071d7;
+    color: white;
+    cursor: pointer;
+}
+
+.greeting-button:hover {
+    background-color: #0056b3;
+    color: white;
+}
+
+
+
     </style>
 </head>
 <body>
-    <h1 style="color: black;">Welcome to the Island, <%= name %>!</h1>
+    <h1 style="color: #0071d7; font-size: 36px;">Welcome to the Island!</h1>
 
     <div class="center-box">
         <div class="column-wrapper">
         <div class="left-column">
             <div style="display:flex; gap: 20px; align-items:center;">
-                <div style="background-color: #0071d7; color: white; padding: 10px 20px; border: none; border-radius: 5px;">Hello <%= name %>!</div>
+                <button class="greeting-button">Hello <%= name %>!</button>
                 <form action="/logout" method="post">
                     <button type="submit" class="create-button">Log out</button>
                 </form>                
             </div>
+                                
             <h2>Users:</h2>
-            <div id="users-list">
-                <div id="users-for-room">
-
-                </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="text" id="userSearch" placeholder="Search users...">
+             <button id="unselectAllButton">Unselect All</button>
             </div>
-            <button>Edit Profile</button>
+            <div id="users-list">
+            <div id="users-for-room">
+             </div>
+            </div>
+
+
         </div>
 
         <div class="middle-column">
@@ -298,17 +325,32 @@
 </div>
 
 <script>
-    // Array to keep track of selected users
+// Array to keep track of selected users
 let selectedUsers = [];
+let allUsers = [];  // Store all users for filtering
 
 // Fetch users and populate them with buttons
 fetch('/users')
     .then(response => response.json())
     .then(users => {
+        allUsers = users;
+        renderUsers(allUsers);
+
+        const userSearchInput = document.getElementById('userSearch');
+        userSearchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const filteredUsers = allUsers.filter(user => user.name.toLowerCase().includes(searchTerm));
+            renderUsers(filteredUsers);
+        });
+    });
+
+    function renderUsers(users) {
         const usersDiv = document.getElementById('users-for-room');
+        usersDiv.innerHTML = '';  // Clear current users
+        
         users.forEach(user => {
             const button = document.createElement('button');
-
+    
             // Create an img element for the user's image
             const img = document.createElement('img');
             img.src = user.image;
@@ -317,18 +359,23 @@ fetch('/users')
             img.style.height = '30px';
             img.style.borderRadius = '15px';
             img.style.marginRight = '10px';
-
+    
             // Append the image to the button before the text
             button.appendChild(img);
-
+    
             // Add user name after the image
             const userNameTextNode = document.createTextNode(user.name);
             button.appendChild(userNameTextNode);
-
+    
+            // Check if the user is already selected
+            if (selectedUsers.includes(user._id)) {
+                button.classList.add('selected');
+            }
+    
             button.addEventListener('click', () => {
                 // Toggle the 'selected' class on the button
                 button.classList.toggle('selected');
-
+    
                 // Toggle user selection in the selectedUsers array
                 if (selectedUsers.includes(user._id)) {
                     selectedUsers = selectedUsers.filter(userId => userId !== user._id);
@@ -336,39 +383,61 @@ fetch('/users')
                     selectedUsers.push(user._id);
                 }
             });
-
+    
             usersDiv.appendChild(button);
         });
-    });
-
-function fetchRooms() {
-    fetch('/get-rooms')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(rooms => {
-            const roomsListDiv = document.getElementById('rooms-list');   
-            rooms.forEach(room => {
-                const roomDiv = document.createElement('div');
-                roomDiv.className = 'room';
-                roomDiv.textContent = room.name;
-                roomDiv.style.cursor = 'pointer';
-                roomDiv.addEventListener('click', () => {
-                    window.location.href = `/chatroom?roomId=${room._id}`;
+    }
+    
+    function fetchRooms() {
+        fetch('/get-rooms')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(rooms => {
+                const roomsListDiv = document.getElementById('rooms-list');
+                rooms.forEach(room => {
+                    const roomDiv = document.createElement('div');
+                    roomDiv.className = 'room';
+                    roomDiv.style.cursor = 'pointer';
+                    roomDiv.style.margin = '10px 0';  // Margin for spacing between each room
+    
+                    const roomName = document.createElement('div');
+                    roomName.textContent = `Group Name: ${room.name}`;
+                    roomName.style.marginBottom = '5px';  // Margin for spacing between room name and member count
+    
+                    const roomMembers = document.createElement('div');
+                    roomMembers.textContent = `${room.userIds.length} members`;
+                    roomMembers.style.fontSize = '12px';
+    
+                    roomDiv.appendChild(roomName);
+                    roomDiv.appendChild(roomMembers);
+    
+                    roomDiv.addEventListener('click', () => {
+                        window.location.href = `/chatroom?roomId=${room._id}`;
+                    });
+    
+                    roomsListDiv.appendChild(roomDiv);
                 });
-                roomsListDiv.appendChild(roomDiv);
+            })
+            .catch(error => {
+                console.error("Error fetching rooms:", error);
             });
-        })
-        .catch(error => {
-            console.error("Error fetching rooms:", error);
+    }
+    
+    fetchRooms();
+
+    document.getElementById('unselectAllButton').addEventListener('click', () => {
+        selectedUsers = [];
+        const selectedButtons = document.querySelectorAll('#users-for-room button.selected');
+        selectedButtons.forEach(button => {
+            button.classList.remove('selected');
         });
-}
-
-fetchRooms();
-
+    });
+    
+    
 // Initiate Create Room Modal handlers
 const initCreateRoomBtn = document.getElementById('init-create-room');
 const createRoomModal = document.getElementById('createRoomModal');
@@ -431,7 +500,7 @@ confirmCreateRoomBtn.addEventListener('click', () => {
 
 // Edit Profile Modal handlers
 const editProfileModal = document.getElementById("editProfileModal");
-const editProfileBtn = document.querySelector(".left-column button");
+const editProfileBtn = document.querySelector(".greeting-button");
 const closeBtn = document.getElementsByClassName("close")[0];
 
 // Open the modal
