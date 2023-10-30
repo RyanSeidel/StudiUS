@@ -187,16 +187,15 @@ app.post('/create-room', async (req, res) => {
     res.json(newRoom);
 });
 
-
-app.post('/update-profile', async (req, res) => {
+app.post('/update-profile', upload.none(), async (req, res) => {
     try {
+        console.log("Received name:", req.body.name); // Log the name to check
+
         const user = await User.findById(req.user.id);
         if (req.body.name) {
             user.name = req.body.name;
         }
-        if (req.body.image) {
-            user.image = req.body.image; 
-        }
+        
         await user.save();
 
         res.json({ success: true, message: 'Profile updated successfully' });
@@ -205,6 +204,8 @@ app.post('/update-profile', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+
 
 app.post('/upload-profile-pic', upload.single('image'), async (req, res) => {
     try {
