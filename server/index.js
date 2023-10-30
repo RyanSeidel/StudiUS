@@ -69,7 +69,6 @@ const storage = new CloudinaryStorage({
     },
 });
 
-const upload = multer({ storage: storage });
 
 // Socket.io Logic
 io.on('connection', (socket) => {
@@ -187,6 +186,21 @@ app.post('/create-room', async (req, res) => {
     res.json(newRoom);
 });
 
+const upload = multer({ 
+    storage: storage,
+    limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
+});
+
+app.post('/upload', upload.single('image'), async (req, res) => {
+    try {
+        const imageUrl = req.file.path; // This is the Cloudinary URL
+        res.json({ success: true, imageUrl: imageUrl });
+    } catch (error) {
+        console.error("Error uploading image:", error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 app.post('/update-profile', upload.none(), async (req, res) => {
     try {
         console.log("Received name:", req.body.name); // Log the name to check
@@ -264,6 +278,10 @@ app.post('/login', async (req, res) => {
 
     const token = jwt.sign({ _id: user._id }, 'your_secret_key');
     res.cookie('jwt', token).redirect('/home');
+});
+
+app.post('/logout', (req, res) => {
+    res.clearCookie('jwt').redirect('/'); // Clear the JWT cookie and redirect to the home or login page
 });
 
 app.get('/', (req, res) => {

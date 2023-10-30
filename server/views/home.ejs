@@ -18,32 +18,45 @@
         }
 
         h2 {
-            color: #004b9b;
+            color: black;
+            font-weight: 600;
+            
         }
 
         .center-box {
             width: 80%;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
+            background: linear-gradient(45deg, #0071d7, #339965); /* Added this line for the gradient */
+            padding: 25px;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1);
-            display: flex;
             overflow: hidden;
         }
 
-        .left-column {
-            width: 33.33%;
+        .column-wrapper{
+            display:flex;
+            height: 80vh;
+        }
+
+        .left-column, .right-column {
+            flex: 1; /* Takes up 1 fraction of the space */
             padding: 20px;
             border-right: 1px solid #ccc;
             display: flex;
             flex-direction: column;
             align-items: center;
-            background-color: #d4e4f5;
         }
 
-        .left-column h2 {
-            color: #004b9b;
-            margin-bottom: 10px;
+        .left-column {
+            border-top-left-radius: 25px;
+            border-bottom-left-radius: 25px;
+            background-color: #f2f2f2;
+        }
+
+
+        .right-column {
+            border-right: none; /* Removing the right border as it's not needed here */
+            border-top-right-radius: 25px;
+            border-bottom-right-radius: 25px;
+            background-color: rgba(242, 242, 242, 0.4);
         }
 
         #users-list {
@@ -58,7 +71,6 @@
         #users-for-room {
             width: 100%;
             margin-bottom: 10px;
-            background-color: #f5f5f5;
             border: 1px solid #ccc;
             border-radius: 5px;
             padding: 10px;
@@ -87,14 +99,13 @@
             background-color: #f2f2f2;
         }
 
-        .right-column {
-            width: 66.67%;
+        .middle-column {
+            flex: 2; /* Takes up 2 fractions of the space, making it larger */
             padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            background-color: #d4e4f5;
+            background-color: rgba(242, 242, 242, 0.7);
         }
 
         #create-group-button {
@@ -116,16 +127,16 @@
             margin-right: 10px; /* Add some space between the input and the button */
         }
 
-        #create-room-button {
-            background-color: #004b9b;
-            color: white;
+        .create-button {
+            background-color: #ddd;
+            color: black;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
         }
 
-        #create-room-button:hover {
+        .create-button:hover {
             background-color: #0056b3;
         }
 
@@ -149,13 +160,14 @@
         }
 
         #rooms-list div.room {
-            background-color: #004b9b;
-            color: white;
+            background-color: #ddd;
+            color: black;
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             margin-top: 20px;
+            font-size: 12px;
         }
 
         #rooms-list div.room:hover {
@@ -218,10 +230,17 @@
     </style>
 </head>
 <body>
-    <h1 style="color: #004b9b;">Welcome to the Island, <%= name %>!</h1>
+    <h1 style="color: black;">Welcome to the Island, <%= name %>!</h1>
 
     <div class="center-box">
+        <div class="column-wrapper">
         <div class="left-column">
+            <div style="display:flex; gap: 20px; align-items:center;">
+                <div style="background-color: #0071d7; color: white; padding: 10px 20px; border: none; border-radius: 5px;">Hello <%= name %>!</div>
+                <form action="/logout" method="post">
+                    <button type="submit" class="create-button">Log out</button>
+                </form>                
+            </div>
             <h2>Users:</h2>
             <div id="users-list">
                 <div id="users-for-room">
@@ -231,16 +250,22 @@
             <button>Edit Profile</button>
         </div>
 
-        <div class="right-column">
-            <h2>Create a Group Chat</h2>
-            <div class="room-name-flex">
-            <input type="text" id="roomName" placeholder="Room Name">
-            <button id="create-room-button">Create Room</button></div>
+        <div class="middle-column">
+            <h2>ALL ROOMS</h2>
+            <!-- <div class="room-name-flex">
+                <input type="text" id="roomName" placeholder="Room Name">
+                <button id="init-create-room">Create Room</button>
+            </div> -->
+            <button class="create-button" id="init-create-room">Create Room</button>
+
 
             <div id="rooms-list">
-                <h3>Rooms:</h3>
             </div>
         </div>
+        <div class="right-column">
+            <h2>Statistics</h2>
+        </div>
+    </div>
     </div>
 
 <!-- Edit Profile Modal -->
@@ -260,11 +285,20 @@
     </div>
 </div>
 
+<div id="createRoomModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeCreateRoomModal">&times;</span>
+        <h2>Create Room</h2>
+        <label for="newRoomName">Room Name:</label>
+        <input type="text" id="newRoomName" placeholder="Enter Room Name">
+        <h3>Selected Users:</h3>
+        <div id="selectedUsersDisplay"></div>
+        <button id="confirmCreateRoom">Confirm</button>
+    </div>
+</div>
 
-
-
-    <script>
-        // Array to keep track of selected users
+<script>
+    // Array to keep track of selected users
 let selectedUsers = [];
 
 // Fetch users and populate them with buttons
@@ -307,72 +341,93 @@ fetch('/users')
         });
     });
 
-        function fetchRooms() {
-            fetch('/get-rooms')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(rooms => {
-                const roomsListDiv = document.getElementById('rooms-list');
-                roomsListDiv.innerHTML = '<h3>Existing Rooms:</h3>';
-                
-                rooms.forEach(room => {
-                    const roomDiv = document.createElement('div');
-                    roomDiv.className = 'room';
-                    roomDiv.textContent = room.name;
-                    roomDiv.style.cursor = 'pointer';
-                    roomDiv.addEventListener('click', () => {
-                        window.location.href = `/chatroom?roomId=${room._id}`;
-                    });
-                    roomsListDiv.appendChild(roomDiv);
+function fetchRooms() {
+    fetch('/get-rooms')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(rooms => {
+            const roomsListDiv = document.getElementById('rooms-list');   
+            rooms.forEach(room => {
+                const roomDiv = document.createElement('div');
+                roomDiv.className = 'room';
+                roomDiv.textContent = room.name;
+                roomDiv.style.cursor = 'pointer';
+                roomDiv.addEventListener('click', () => {
+                    window.location.href = `/chatroom?roomId=${room._id}`;
                 });
-            })
-            .catch(error => {
-                console.error("Error fetching rooms:", error);
+                roomsListDiv.appendChild(roomDiv);
             });
-        }
-
-        fetchRooms();
-
-        document.getElementById('create-room-button').addEventListener('click', () => {
-            console.log('Create Room button clicked');
-    
-            const roomName = document.getElementById('roomName').value;
-            // Handle selected users and create room logic here
-
-            // Check if no user is selected or room name is empty
-            if (!roomName.trim()) {
-                alert("Please provide a room name.");
-                return;
-            }
-            if (selectedUsers.length === 0) {
-                alert("No users are selected.");
-                return;
-            }
-    
-            fetch('/create-room', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ roomName, allowedUsers: selectedUsers })
-            })
-            .then(res => {
-                if (!res.ok) {
-                    return res.json().then(err => { throw err; });
-                }
-                return res.json();
-            })
-            .then(room => {
-                fetchRooms();
-            })
-            .catch(error => {
-                console.error("Error creating room:", error);
-            });            
+        })
+        .catch(error => {
+            console.error("Error fetching rooms:", error);
         });
+}
 
-        // this is for edit profile 
+fetchRooms();
+
+// Initiate Create Room Modal handlers
+const initCreateRoomBtn = document.getElementById('init-create-room');
+const createRoomModal = document.getElementById('createRoomModal');
+const closeCreateRoomModalBtn = document.getElementById('closeCreateRoomModal');
+const confirmCreateRoomBtn = document.getElementById('confirmCreateRoom');
+const selectedUsersDisplay = document.getElementById('selectedUsersDisplay');
+const newRoomNameInput = document.getElementById('newRoomName');
+
+initCreateRoomBtn.addEventListener('click', () => {
+    if (selectedUsers.length === 0) {
+        alert("No users are selected.");
+        return;
+    }
+
+    // Show the names of the selected users in the modal
+    selectedUsersDisplay.innerHTML = ""; // Clear previous users
+    selectedUsers.forEach(userId => {
+        const userDiv = document.createElement('div');
+        userDiv.textContent = userId; // For now, using userId as display. Modify this as needed.
+        selectedUsersDisplay.appendChild(userDiv);
+    });
+
+    createRoomModal.style.display = "block"; // Show the modal
+});
+
+closeCreateRoomModalBtn.onclick = () => createRoomModal.style.display = "none";
+
+window.onclick = event => {
+    if (event.target === createRoomModal) {
+        createRoomModal.style.display = "none";
+    }
+};
+
+confirmCreateRoomBtn.addEventListener('click', () => {
+    const roomName = newRoomNameInput.value;
+    if (!roomName.trim()) {
+        alert("Please provide a room name.");
+        return;
+    }
+
+    fetch('/create-room', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ roomName, allowedUsers: selectedUsers })
+    })
+    .then(res => {
+        if (!res.ok) {
+            return res.json().then(err => { throw err; });
+        }
+        return res.json();
+    })
+    .then(room => {
+        fetchRooms();
+        createRoomModal.style.display = "none"; // Hide the modal
+    })
+    .catch(error => {
+        console.error("Error creating room:", error);
+    });
+});
 
 // Edit Profile Modal handlers
 const editProfileModal = document.getElementById("editProfileModal");
@@ -385,7 +440,6 @@ editProfileBtn.onclick = () => editProfileModal.style.display = "block";
 // Close the modal
 closeBtn.onclick = () => editProfileModal.style.display = "none";
 
-// Close the modal if clicked outside content
 window.onclick = event => {
     if (event.target === editProfileModal) {
         editProfileModal.style.display = "none";
@@ -410,7 +464,6 @@ const updateProfile = async (formData) => {
         console.error("Error updating profile:", error);
     }
 };
-
 
 document.getElementById('saveProfileBtn').addEventListener('click', async () => {
     const newName = document.getElementById('nameInput').value;
@@ -438,7 +491,6 @@ document.getElementById('saveProfileBtn').addEventListener('click', async () => 
             return;
         }
     } else {
-        // If there's no new image, append the current image URL
         formDataForProfile.append('image', document.getElementById('profilePic').src);
     }
 
@@ -452,8 +504,8 @@ document.getElementById('updateUsernameBtn').addEventListener('click', () => {
     updateProfile(formDataForName);
 });
 
+</script>
 
-    </script>
 </body>
 
 </html>
