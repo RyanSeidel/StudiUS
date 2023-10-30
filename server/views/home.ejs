@@ -152,6 +152,54 @@
         #rooms-list div.room:hover {
             background-color: #0056b3;
         }
+
+        .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    position: relative;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 0;
+    right: 15px;
+    cursor: pointer;
+}
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.profile-pic-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0;
+}
+#profilePic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
     </style>
 </head>
 <body>
@@ -165,6 +213,7 @@
 
                 </div>
             </div>
+            <button>Edit Profile</button>
         </div>
 
         <div class="right-column">
@@ -177,6 +226,25 @@
             </div>
         </div>
     </div>
+
+<!-- Edit Profile Modal -->
+<div id="editProfileModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Edit Profile</h2>
+        <div class="profile-pic-container">
+            <img id="profilePic" src="<%= image %>" alt="Profile Picture" />
+            <input type="file" id="imageUpload" style="display:none;">
+            <button onclick="document.getElementById('imageUpload').click();">Change Picture</button>
+        </div>
+        <label for="name">Name:</label>
+        <input type="text" id="nameInput" value="<%= name %>">
+        <button id="saveProfileBtn">Save</button>
+    </div>
+</div>
+
+
+
 
     <script>
         // Fetch users and populate them with buttons
@@ -248,6 +316,97 @@
                 console.error("Error creating room:", error);
             });            
         });
+
+        // this is for edit profile 
+
+// Edit Profile Modal handlers
+let editProfileModal = document.getElementById("editProfileModal");
+let editProfileBtn = document.querySelector(".left-column button");
+let closeBtn = document.getElementsByClassName("close")[0];
+
+// Open the modal
+editProfileBtn.onclick = function() {
+    editProfileModal.style.display = "block";
+}
+
+// Close the modal
+closeBtn.onclick = function() {
+    editProfileModal.style.display = "none";
+}
+
+// Close the modal if clicked outside content
+window.onclick = function(event) {
+    if (event.target == editProfileModal) {
+        editProfileModal.style.display = "none";
+    }
+}
+
+document.getElementById('saveProfileBtn').addEventListener('click', async () => {
+    const newName = document.getElementById('nameInput').value;
+
+    // Ensure the imageUpload element exists and has files before proceeding
+    const imageInput = document.getElementById('imageUpload');
+    let imageFile;
+    if (imageInput && imageInput.files.length > 0) {
+        imageFile = imageInput.files[0];
+    }
+
+    let newImageUrl;
+
+    // Only upload the image if it exists
+    if (imageFile) {
+        const formDataForImage = new FormData();
+        formDataForImage.append('image', imageFile);
+
+        try {
+            const imageResponse = await fetch('/upload-profile-pic', {
+                method: 'POST',
+                body: formDataForImage
+            });
+
+            const imageData = await imageResponse.json();
+
+            if(imageData.success) {
+                newImageUrl = imageData.newImageUrl;
+            } else {
+                throw new Error(imageData.error);
+            }
+        } catch(error) {
+            console.error("Error uploading image:", error);
+            return;
+        }
+    }
+
+    const formDataForProfile = new FormData();
+    formDataForProfile.append('name', newName);
+    if(newImageUrl) {
+        formDataForProfile.append('image', newImageUrl);
+    }
+
+    try {
+        const profileResponse = await fetch('/update-profile', {
+            method: 'POST',
+            body: formDataForProfile
+        });
+        
+        const profileData = await profileResponse.json();
+
+        if(profileData.success) {
+            // Update the name and image on the page
+            document.querySelector('h1').textContent = `Welcome to the Island, ${newName}!`;
+            if(newImageUrl) {
+                document.getElementById('profilePic').src = newImageUrl;
+            }
+            editProfileModal.style.display = "none";
+        } else {
+            throw new Error(profileData.error);
+        }
+    } catch(error) {
+        console.error("Error updating profile:", error);
+    }
+});
+
+
     </script>
 </body>
 

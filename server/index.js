@@ -61,6 +61,16 @@ cloudinary.config({
   api_secret: '-gzQXojy4nvTu0XLnus1b7ajTBY'
 });
 
+// Set up multer-storage-cloudinary
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        allowedFormats: ['jpg', 'png', 'jpeg'],
+    },
+});
+
+const upload = multer({ storage: storage });
+
 // Socket.io Logic
 io.on('connection', (socket) => {
     console.log('a user connected');
@@ -178,6 +188,40 @@ app.post('/create-room', async (req, res) => {
 });
 
 
+app.post('/update-profile', async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        if (req.body.name) {
+            user.name = req.body.name;
+        }
+        if (req.body.image) {
+            user.image = req.body.image; 
+        }
+        await user.save();
+
+        res.json({ success: true, message: 'Profile updated successfully' });
+    } catch (error) {
+        console.error("Error updating profile:", error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+app.post('/upload-profile-pic', upload.single('image'), async (req, res) => {
+    try {
+        // Image is uploaded and req.file holds its details
+        const imageUrl = req.file.path; // This is the Cloudinary URL
+
+        // Now, you can save this URL to your user's record in the database
+        const user = await User.findById(req.user.id);
+        user.image = imageUrl;
+        await user.save();
+
+        res.json({ success: true, message: 'Image uploaded successfully', newImageUrl: imageUrl });
+    } catch (error) {
+        console.error("Error uploading image:", error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 
 app.delete('/conversation/:id', async (req, res) => {
@@ -200,7 +244,8 @@ app.post('/register', async (req, res) => {
     user = new User({
         name,
         email,
-        hashedPassword
+        hashedPassword,
+        image: '/images/default.jpg' // set the default image path here
     });
 
     await user.save();
@@ -226,7 +271,7 @@ app.get('/', (req, res) => {
 
 app.get('/home', (req, res) => {
     if (!req.user) return res.status(401).send('Not authenticated.');
-    res.render('home', { name: req.user.name });
+    res.render('home', { name: req.user.name, image: req.user.image });
 });
 
 app.get('/page2', (req, res) => {
