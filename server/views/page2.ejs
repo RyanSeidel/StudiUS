@@ -141,17 +141,59 @@
         padding: 30px;
         border-right: 1px solid #ccc;
     }
-    #audioMeter {
+    #audioMeterModal {
         margin-top: 10px;
         height: 10px;
         background-color: #ddd;
+        width: 100%; /* Ensures it takes the full width of its container */
     }
-    #audioMeter div {
+    
+    #audioMeterModal div {
         height: 10px;
         width: 0;
         background-color: green;
         transition: width 0.1s;
     }
+    
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+    }
+    
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 30%;
+        position: relative;
+    }
+    
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        position: absolute;
+        top: 0;
+        right: 15px;
+        cursor: pointer;
+    }
+    
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }    
 </style>
 
 <body>
@@ -184,12 +226,28 @@
                                 <span id="toggleMicrophone"><i class="fa-solid fa-microphone microphone-active"></i></span>
                             </div>
                             <span onclick="sendMessage()"><i class="send-icon fa-regular fa-paper-plane"></i></span>
+                            <button id="settingsBtn">Settings</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Settings</h2>
+            <label for="microphoneList">Choose a microphone:</label>
+            <select id="microphoneList"></select>
+            <h3>Audio Metering</h3>
+            <div id="audioMeterModal" class="audio-meter"><div></div></div>
+
+        </div>
+    </div>
+    
 </body>
 
 <!-- Embed code for icon -->
@@ -215,9 +273,33 @@
     let isMicrophoneOn = true;
     let localStream;
 
-    function startAudioMetering(stream) {
-        // ... [your audio metering code here] ...
+    function startAudioMetering(stream, meterElementId) {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const analyser = audioContext.createAnalyser();
+        const source = audioContext.createMediaStreamSource(stream);
+        source.connect(analyser);
+    
+        analyser.fftSize = 256;
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+    
+        function updateAudioMeter() {
+            analyser.getByteFrequencyData(dataArray);
+    
+            let values = 0;
+            let length = dataArray.length;
+            for (let i = 0; i < length; i++) {
+                values += dataArray[i];
+            }
+    
+            const volume = Math.floor(values / length);
+            document.getElementById(meterElementId).querySelector('div').style.width = `${volume}%`
+            requestAnimationFrame(updateAudioMeter);
+        }
+    
+        updateAudioMeter();
     }
+    
 
     document.getElementById("toggleCamera").addEventListener("click", function () {
         const cameraIcon = this.querySelector('i');
@@ -347,4 +429,78 @@
                 });
             });
     }
+
+    // this is for PPOPUP SETTINGS
+    // Get modal and elements
+let modal = document.getElementById("settingsModal");
+let btn = document.getElementById("settingsBtn");
+let span = document.getElementsByClassName("close")[0];
+let microphoneSelect = document.getElementById("microphoneList");
+
+// Open the modal
+btn.onclick = function() {
+    populateMicrophones();
+    if (localStream && localStream.getAudioTracks().length > 0) {
+        startAudioMetering(localStream, 'audioMeterModal');
+    } else {
+        console.error("No audio tracks available in localStream.");
+    }
+    modal.style.display = "block";
+}
+
+microphoneSelect.addEventListener('change', function() {
+    const selectedDeviceId = this.value;
+    navigator.mediaDevices.getUserMedia({ audio: { deviceId: selectedDeviceId } })
+        .then(stream => {
+            localStream = stream;
+            startAudioMetering(localStream, 'audioMeterModal');
+            console.log("Change has been confirmed"); // Added this line
+        })
+        .catch(error => {
+            console.error("Error accessing the selected microphone", error);
+        });
+});
+
+
+
+// Close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// Close the modal if clicked outside content
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+// Function to populate microphone list
+function populateMicrophones() {
+    navigator.mediaDevices.enumerateDevices()
+    .then(devices => {
+        let microphoneList = document.getElementById("microphoneList");
+        microphoneList.innerHTML = ''; // Clear existing options
+
+        const currentAudioTrack = localStream && localStream.getAudioTracks()[0];
+        const currentDeviceId = currentAudioTrack && currentAudioTrack.getSettings().deviceId;
+
+        devices.forEach(device => {
+            if (device.kind === "audioinput") {
+                let option = document.createElement("option");
+                option.value = device.deviceId;
+                option.text = device.label || 'Microphone ' + (microphoneList.length + 1);
+                if (device.deviceId === currentDeviceId) {
+                    option.selected = true;
+                }
+                microphoneList.appendChild(option);
+            }
+        });
+    })
+    .catch(err => {
+        console.error("Error populating microphones:", err);
+    });
+}
+
+
 </script>
