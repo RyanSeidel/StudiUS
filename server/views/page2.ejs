@@ -26,7 +26,6 @@
         cursor: pointer;
         transition: background-color 0.3s;
     }
-
     .chat-container {
         padding: 30px;
     }
@@ -35,52 +34,45 @@
         box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
         border-radius: 10px;
     }
-
     #chat-box {
         width: 100%;
         height: 70%;
         overflow-y: auto;
         display: flex;
-        flex-direction: column; /* Remove the 'reverse' */
-        justify-content: flex-end; /* New messages at the bottom */
+        flex-direction: column;
+        justify-content: flex-end;
         background-color: var(--background-message-color);
     }
-
     .current-user-message,
     .other-user-message {
         margin: 5px 0;
         padding: 10px;
         border-radius: 15px;
-        max-width: 250px; /* Limit the width */
-        word-wrap: break-word; /* Allow long words to be broken and wrap onto the next line */
+        max-width: 250px;
+        word-wrap: break-word;
     }
-
     #localVideo.inactive {
-        display: none;
+        opacity: 0;
     }
-
+    
     .msg-bottom {
         padding: 10px 20px;
         background-color: #fff;
-        border-radius: 0px 0px 10px 10px; /* Bottom border radius */
+        border-radius: 0px 0px 10px 10px;
     }
     .msg-top {
         height: 30px;
         padding: 20px;
-
         background-color: #fff;
         border-radius: 10px 10px 0px 0px;
     }
-
     #message-input {
         width: 100%;
         padding: 12px 20px;
         margin: 5px 0;
         border-radius: 30px;
-
         border: 1px solid #ccc;
     }
-
     .icon-group {
         margin: 5px 15px;
         display: flex;
@@ -93,38 +85,34 @@
     .send-icon {
         font-size: 20px;
     }
-
     .icon-left span i:hover,
     .send-icon:hover {
         color: var(--blue-color-light);
         cursor: pointer;
         transition: 0.2s;
     }
-
     .current-user-message {
         margin: 0 15px 15px 0;
         text-align: right;
         background-color: var(--blue-color-dark);
-        align-self: flex-end; /* Align to the right */
+        align-self: flex-end;
         color: #fff;
     }
-
     .other-user-message {
         text-align: left;
         background-color: #ededed;
-        align-self: flex-start; /* Align to the left */
+        align-self: flex-start;
     }
-
+    .camera-active, .microphone-active {
+        color: red;
+    }
     #localVideo,
     #remoteVideo {
-        /* width: 213px; */
         height: 120px;
     }
-
     #localVideo {
         border-radius: 10px;
     }
-
     .video-container {
         margin: 10px 100px;
         height: 15vh;
@@ -134,35 +122,44 @@
         align-items: center;
         border-radius: 10px;
     }
-
     .screen-parent {
         background-color: #fff;
         width: 90%;
         display: flex;
         flex-direction: row;
     }
-
     .screen-center {
         display: flex;
         justify-content: center;
         height: 80vh;
     }
-
     .left-screen,
     .chat-container {
-        flex: 1; /* Each takes half the space of the parent */
+        flex: 1;
     }
-
     .left-screen {
         padding: 30px;
         border-right: 1px solid #ccc;
     }
+    #audioMeter {
+        margin-top: 10px;
+        height: 10px;
+        background-color: #ddd;
+    }
+    #audioMeter div {
+        height: 10px;
+        width: 0;
+        background-color: green;
+        transition: width 0.1s;
+    }
 </style>
+
 <body>
     <div class="video-container">
         <video id="localVideo" autoplay playsinline></video>
         <video id="remoteVideo" autoplay playsinline></video>
     </div>
+    <div id="audioMeter"><div></div></div>
     <div class="screen-center">
         <div class="screen-parent">
             <div class="left-screen">
@@ -173,45 +170,20 @@
             <div class="chat-container">
                 <div class="chat-container-content">
                     <div class="msg-top"></div>
-
                     <div id="chat-box"></div>
-
                     <div class="msg-bottom">
-                        <input
-                            type="text"
-                            id="message-input"
-                            placeholder="Write Something..."
-                        />
-
+                        <input type="text" id="message-input" placeholder="Write Something..." />
                         <div class="icon-group">
                             <div class="icon-left">
                                 <span class="image-input-container">
-                                    <input
-                                        type="file"
-                                        id="image-input"
-                                        name="file"
-                                        style="display: none; visibility: none"
-                                        onclick="displayInput()"
-                                    />
-                                    <label for="image-input"
-                                        ><i class="fa-solid fa-paperclip"></i
-                                    ></label>
+                                    <input type="file" id="image-input" name="file" style="display: none; visibility: none" onclick="displayInput()" />
+                                    <label for="image-input"><i class="fa-solid fa-paperclip"></i></label>
                                 </span>
-                                <span id="toggleCamera"
-                                    ><i class="fa-solid fa-camera"></i
-                                ></span>
-                                <span onclick="sendImage()"
-                                    ><i class="fa-regular fa-image"></i
-                                ></span>
-                                <span id="toggleMicrophone"
-                                    ><i class="fa-solid fa-microphone"></i
-                                ></span>
+                                <span id="toggleCamera"><i class="fa-solid fa-camera camera-active"></i></span>
+                                <span onclick="sendImage()"><i class="fa-regular fa-image"></i></span>
+                                <span id="toggleMicrophone"><i class="fa-solid fa-microphone microphone-active"></i></span>
                             </div>
-                            <span onclick="sendMessage()"
-                                ><i
-                                    class="send-icon fa-regular fa-paper-plane"
-                                ></i
-                            ></span>
+                            <span onclick="sendMessage()"><i class="send-icon fa-regular fa-paper-plane"></i></span>
                         </div>
                     </div>
                 </div>
@@ -219,79 +191,68 @@
         </div>
     </div>
 </body>
+
 <!-- Embed code for icon -->
-<script
-    src="https://kit.fontawesome.com/fb5c3cd0c8.js"
-    crossorigin="anonymous"
-></script>
+<script src="https://kit.fontawesome.com/fb5c3cd0c8.js" crossorigin="anonymous"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
     const displayInput = () => {
         document.getElementById("image-input").style.display = "block";
         document.getElementById("image-input").style.visibility = "visible";
     };
-
+    
     const socket = io.connect("http://localhost:3000");
-
-    // Extract roomId from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const roomId = urlParams.get("roomId");
-
-    // Use the roomId to join the specific room
     socket.emit("join-room", roomId, "<%= name %>");
 
-    // const socket = io.connect('http://3.12.163.231:3000');
     const localVideo = document.getElementById("localVideo");
-    const remoteVideo = document.getElementById("remoteVideo");
     const configuration = {
         iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
     };
     const peerConnection = new RTCPeerConnection(configuration);
-    let isCameraOn = true; // Assuming the camera is on by default
+    let isCameraOn = true;
+    let isMicrophoneOn = true;
     let localStream;
 
-    document
-        .getElementById("toggleCamera")
-        .addEventListener("click", function () {
-            if (isCameraOn) {
-                if (localStream) {
-                    let tracks = localStream.getTracks();
-                    tracks.forEach((track) => track.stop());
-                    localStream = null;
-                }
-                localVideo.classList.add("inactive"); // Hide the video element
-                isCameraOn = false;
+    function startAudioMetering(stream) {
+        // ... [your audio metering code here] ...
+    }
+
+    document.getElementById("toggleCamera").addEventListener("click", function () {
+        const cameraIcon = this.querySelector('i');
+        if (localStream && localStream.getVideoTracks().length > 0) {
+            let videoTrack = localStream.getVideoTracks()[0];
+            videoTrack.enabled = !videoTrack.enabled;
+            if (videoTrack.enabled) {
+                console.log("Camera turned on");
+                cameraIcon.classList.add('camera-active');
+                localVideo.classList.remove('inactive'); // Show video
             } else {
-                navigator.mediaDevices
-                    .getUserMedia({ video: true, audio: true })
-                    .then((stream) => {
-                        localStream = stream;
-                        localVideo.srcObject = stream;
-                        localVideo.classList.remove("inactive"); // Show the video element
-                        isCameraOn = true;
-                    })
-                    .catch((error) => {
-                        console.error(
-                            "Error accessing the camera and microphone",
-                            error
-                        );
-                    });
+                console.log("Camera turned off");
+                cameraIcon.classList.remove('camera-active');
+                localVideo.classList.add('inactive'); // Hide video (opacity 0)
             }
-        });
+        }
+    });
+    
 
-    document
-        .getElementById("toggleMicrophone")
-        .addEventListener("click", function () {
-            if (isMicrophoneOn && localStream) {
-                localStream.getAudioTracks()[0].enabled = false;
-                isMicrophoneOn = false;
-            } else if (localStream) {
-                localStream.getAudioTracks()[0].enabled = true;
-                isMicrophoneOn = true;
+    document.getElementById("toggleMicrophone").addEventListener("click", function () {
+        const microphoneIcon = this.querySelector('i');
+        if (localStream && localStream.getAudioTracks().length > 0) {
+            let audioTrack = localStream.getAudioTracks()[0];
+            audioTrack.enabled = !audioTrack.enabled;
+            if (audioTrack.enabled) {
+                startAudioMetering(localStream);
+                console.log("Microphone activated");
+                microphoneIcon.classList.add('microphone-active');
+            } else {
+                console.log("Microphone muted");
+                microphoneIcon.classList.remove('microphone-active');
             }
-        });
+        }
+    });
 
-    // Capture the local video and audio stream
     navigator.mediaDevices
         .getUserMedia({ video: true, audio: true })
         .then((stream) => {
@@ -305,34 +266,19 @@
             console.error("Error accessing the camera and microphone", error);
         });
 
-    // Capture the local video and audio stream
-    navigator.mediaDevices
-        .getUserMedia({ video: true, audio: true })
-        .then((stream) => {
-            localVideo.srcObject = stream;
-            stream
-                .getTracks()
-                .forEach((track) => peerConnection.addTrack(track, stream));
-        })
-        .catch((error) => {
-            console.error("Error accessing the camera and microphone", error);
-        });
-
-    // Handle the creation of the offer
     peerConnection.onnegotiationneeded = async () => {
         const offer = await peerConnection.createOffer();
         await peerConnection.setLocalDescription(offer);
         socket.emit("offer", offer);
     };
 
-    // Update the remote stream when a new remote stream is added
     peerConnection.ontrack = (event) => {
+        const remoteVideo = document.getElementById("remoteVideo");
         if (remoteVideo.srcObject !== event.streams[0]) {
             remoteVideo.srcObject = event.streams[0];
         }
     };
 
-    // Handle the receipt of an offer
     socket.on("offer", async (offer) => {
         await peerConnection.setRemoteDescription(offer);
         const answer = await peerConnection.createAnswer();
@@ -340,12 +286,10 @@
         socket.emit("answer", answer);
     });
 
-    // Handle the receipt of an answer
     socket.on("answer", (answer) => {
         peerConnection.setRemoteDescription(answer);
     });
 
-    // Handle ICE Candidate events
     peerConnection.onicecandidate = (event) => {
         if (event.candidate) {
             socket.emit("ice-candidate", event.candidate);
@@ -357,7 +301,6 @@
         peerConnection.addIceCandidate(candidate);
     });
 
-    // Existing messaging logic
     socket.on("receiveMessage", (message) => {
         const chatBox = document.getElementById("chat-box");
         const messageDiv = document.createElement("div");
