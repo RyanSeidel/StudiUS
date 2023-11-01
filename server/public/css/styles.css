@@ -8,38 +8,35 @@ body {
   background-color: #f0f0f0;  /* Just a light gray background for contrast */
 }
 
-.wrapper {
-  width: 1000px;
-  height: 500px;
-  display: flex;
-  overflow: hidden;
-  border: 2px solid black;
-  justify-content: center;
-  align-items: center;
-}
+
 
 .logo {
-  width: 400px; /* Adjust the width to your desired size */
+  width: 600px; /* Adjust the width to your desired size */
   height: auto; /* Maintain the aspect ratio */
+  margin-right: 350px; /* Create space between the logo and buttons */
+  margin-left: -150px; /* Adjust this to move the logo and buttons */
+  align-items: left;
 }
 
 .items {
   display: flex;
-  flex-direction: row;
-  justify-content: center;
   align-items: center;
+  justify-content: space-between; /* Distribute items to the edges of the container */
 }
-
-
-
 
 .button-wrapper {
   display: flex;
+  gap: 20px; /* Adjust spacing between buttons */
+  border: 2px solid black; /* Add a border around the buttons */
+  padding: 15px; 
+  border-radius: 10px; 
   flex-direction: column;
-  gap: 20px;
   align-items: center;
-  justify-content: flex-end; /* Push buttons to the bottom of the right box */
+  justify-content: flex-end;
 }
+
+
+
 
 
 
@@ -100,9 +97,10 @@ body {
 /* CSS */
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&family=Poppins:wght@400;500;600&display=swap');
-.login{
-  position: absolute;
-  left: 56%;
+.login {
+  position: fixed; /* keeps the popup within the visible area */
+  bottom: 36%; /* Place it at the vertical center */
+  left: 43%; /* Place it at the horizontal center */
   transform: translate(-50%, -50%);
   width: 350px;
   background: white;
@@ -110,9 +108,11 @@ body {
   box-shadow: 10px 10px 15px rgba(0,0,0,0.05);
 }
 
+
 .register{
   position: absolute;
-  left: 56%;
+  bottom: 30%; /* Place it at the vertical center */
+  left: 43%; /* Place it at the horizontal center */
   transform: translate(-50%, -50%);
   width: 350px;
   background: white;
