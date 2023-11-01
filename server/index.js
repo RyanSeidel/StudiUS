@@ -72,12 +72,13 @@ const storage = new CloudinaryStorage({
 
 // Socket.io Logic
 io.on('connection', (socket) => {
-    console.log('a user connected');
 
     socket.on('join-room', (roomId, userName) => {
         socket.join(roomId);
-        // You might also want to notify others in the room about the new user
-        // socket.to(roomId).broadcast.emit('event-name', data);
+
+        console.log(`${userName} connected`);
+
+        socket.to(roomId).emit('user-connected', userName);
     });
 
     socket.on('sendMessage', async ({ roomId, senderName, body }) => {
@@ -96,17 +97,17 @@ io.on('connection', (socket) => {
     });
     
 
-    socket.on('offer', (offer) => {
-        socket.broadcast.emit('offer', offer);
-    });
-
-    socket.on('answer', (answer) => {
-        socket.broadcast.emit('answer', answer);
-    });
-
-    socket.on('ice-candidate', (iceCandidate) => {
-        socket.broadcast.emit('ice-candidate', iceCandidate);
-    });
+    socket.on('offer', (offer, to) => {
+        socket.to(to).emit('offer', offer, socket.id);
+      });
+  
+      socket.on('answer', (answer, to) => {
+        socket.to(to).emit('answer', answer, socket.id);
+      });
+  
+      socket.on('ice-candidate', (candidate, to) => {
+        socket.to(to).emit('ice-candidate', candidate, socket.id);
+      });
 
     socket.on('disconnect', () => {
         console.log('user disconnected');

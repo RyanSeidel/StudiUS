@@ -53,9 +53,6 @@
         word-wrap: break-word;
         overflow-wrap: break-word; /* Helps break long words */
     }
-    #localVideo.inactive {
-        opacity: 0;
-    }
     
     .msg-bottom {
         padding: 10px 20px;
@@ -117,22 +114,25 @@
     .camera-active, .microphone-active {
         color: red;
     }
-    #localVideo,
-    #remoteVideo {
-        height: 120px;
-    }
-    #localVideo {
-        border-radius: 10px;
-    }
-    .video-container {
+    #video-container {
         margin: 10px 100px;
-        height: 15vh;
+        min-height: 5vh; /* Using min-height to ensure that the container does not become too small */
         background-color: var(--blue-color-light);
         display: flex;
-        justify-content: center;
+        flex-wrap: nowrap; /* Prevents the videos from wrapping onto multiple lines */
+        overflow-x: auto; /* Adds a horizontal scrollbar if there are many videos */
+        justify-content: start; /* Aligns videos to the start of the container */
         align-items: center;
         border-radius: 10px;
     }
+    
+    video {
+        width: 30%; /* Sets a base width for each video */
+        max-width: 240px; /* Ensures that the video does not become too large */
+        margin: 5px; /* Adds some space between videos */
+        border-radius: 5px; /* Optional: Rounds the corners of the video elements */
+    }
+    
     .screen-parent {
         background-color: #fff;
         width: 90%;
@@ -222,10 +222,7 @@
 </style>
 
 <body>
-    <div class="video-container">
-        <video id="localVideo" autoplay playsinline></video>
-        <video id="remoteVideo" autoplay playsinline></video>
-    </div>
+<div id="video-container"></div>
     <div id="audioMeter"><div></div></div>
     <div class="screen-center">
         <div class="screen-parent">
@@ -283,27 +280,173 @@
     const urlParams = new URLSearchParams(window.location.search);
     const roomId = urlParams.get("roomId");
     const Username = "<%= name %>"; 
-    
-    socket.emit("join-room", roomId, Username);
+    const videoContainer = document.getElementById('video-container'); // Ensure you have a container for video elements
+    let localStream;
 
-    const localVideo = document.getElementById("localVideo");
+    const ROOM_NAME = new URLSearchParams(window.location.search).get('room'); // Get the room name from URL
+    const myPeerConnections = {};
+
+    // Configuration for the STUN and TURN servers
     const configuration = {
-    iceServers: [
-        { 
-            urls: "stun:18.117.68.27:3478" 
-        },
-        {
-            urls: "turn:18.117.68.27:3478",
-            username: "test",
-            credential: "password"
-        }
-    ]
+        iceServers: [
+            { urls: "stun:18.117.68.27:3478" },
+            {
+                urls: "turn:18.117.68.27:3478",
+                username: "test",
+                credential: "password"
+            }
+        ]
     };
 
-    const peerConnection = new RTCPeerConnection(configuration);
-    let isCameraOn = true;
-    let isMicrophoneOn = true;
-    let localStream;
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+  .then(stream => {
+    localStream = stream;
+    addVideoStream(stream);
+    
+    socket.emit('join-room', roomId, socket.id);
+    
+    socket.on('user-connected', userId => {
+      console.log('User connected:', userId);
+      const peerConnection = createPeerConnection(userId);
+      myPeerConnections[userId] = peerConnection;
+    });
+
+    socket.on('offer', handleReceiveOffer);
+    socket.on('answer', handleReceiveAnswer);
+    socket.on('ice-candidate', handleNewICECandidateMsg);
+  })
+  .catch(e => {
+    console.error('Failed to get local stream:', e);
+  });
+
+  socket.on('user-disconnected', userId => {
+    console.log(`User disconnected: ${userId}`);
+    if (myPeerConnections[userId]) {
+      myPeerConnections[userId].close();
+      delete myPeerConnections[userId];
+      console.log(`Peer connection for user ${userId} closed.`);
+    }
+  
+    const videoElement = document.querySelector(`[data-peer-id="${userId}"]`);
+    if (videoElement) {
+      videoElement.remove();
+      console.log(`Video for user ${userId} removed.`);
+    } else {
+      console.log(`No video element found for user ${userId}.`);
+    }
+  });
+  
+
+function createPeerConnection(userId) {
+  const peerConnection = new RTCPeerConnection({
+    // Your ICE servers here
+  });
+
+  localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
+
+  peerConnection.onicecandidate = event => {
+    if (event.candidate) {
+      socket.emit('ice-candidate', event.candidate.toJSON(), userId);
+    }
+  };
+
+  peerConnection.ontrack = event => {
+    const remoteStream = event.streams[0];
+    addVideoStream(remoteStream, userId); // Pass the userId associated with this stream
+  };
+  
+
+  peerConnection.createOffer()
+    .then(offer => peerConnection.setLocalDescription(offer))
+    .then(() => {
+      socket.emit('offer', peerConnection.localDescription.toJSON(), userId);
+    })
+    .catch(e => {
+      console.error('Offer creation error:', e);
+    });
+
+  return peerConnection;
+}
+
+function handleReceiveOffer(offer, from) {
+  const peerConnection = createPeerConnection(from);
+  myPeerConnections[from] = peerConnection;
+  
+  peerConnection.setRemoteDescription(new RTCSessionDescription(offer))
+    .then(() => peerConnection.createAnswer())
+    .then(answer => peerConnection.setLocalDescription(answer))
+    .then(() => {
+      socket.emit('answer', peerConnection.localDescription.toJSON(), from);
+    })
+    .catch(e => {
+      console.error('Answer handling error:', e);
+    });
+}
+
+function handleReceiveAnswer(answer, from) {
+  const peerConnection = myPeerConnections[from];
+  peerConnection.setRemoteDescription(new RTCSessionDescription(answer))
+    .catch(e => {
+      console.error('Answer setting error:', e);
+    });
+}
+
+function handleNewICECandidateMsg(candidate, from) {
+  const peerConnection = myPeerConnections[from];
+  peerConnection.addIceCandidate(new RTCIceCandidate(candidate))
+    .catch(e => {
+      console.error('ICE candidate error:', e);
+    });
+}
+
+function addVideoStream(stream, userId) {
+    // Use the userId to check if the video already exists
+    if (!videoContainer.querySelector(`[data-peer-id="${userId}"]`)) {
+      const video = document.createElement('video');
+      video.srcObject = stream;
+      video.dataset.peerId = userId; // Use peerId attribute to link the video to the user
+      video.dataset.streamId = stream.id; // You can also keep the streamId if you want
+      video.autoplay = true;
+      video.playsInline = true;
+      video.controls = true; // Optional, if you want to give users control over their video playback
+      video.muted = userId === socket.id; // Mute the local user's video
+      videoContainer.appendChild(video);
+    }
+  }
+
+  // Define the function to remove the video element associated with the user
+function removeVideoStream(userId) {
+    const videoElement = videoContainer.querySelector(`[data-peer-id="${userId}"]`);
+    if (videoElement) {
+      videoElement.remove();
+    }
+  }
+
+    socket.on("receiveMessage", (message) => {
+        const chatBox = document.getElementById("chat-box");
+        const isAtTop = chatBox.scrollTop === 0;
+        const messageDiv = document.createElement("div");
+    
+        if (message.senderName === "<%= name %>") {
+            messageDiv.classList.add("current-user-message");
+        } else {
+            messageDiv.classList.add("other-user-message");
+        }
+    
+        if (message.body.startsWith("<img")) {
+            messageDiv.innerHTML = `${message.body} : ${message.senderName}`;
+        } else {
+            messageDiv.textContent = `${message.body} : ${message.senderName}`;
+        }
+    
+        chatBox.insertBefore(messageDiv, chatBox.firstChild);
+    
+        // If the chat was at the top, scroll to the top after adding a new message
+        if (isAtTop) {
+            chatBox.scrollTop = 0;
+        }
+    });
+
 
     function startAudioMetering(stream, meterElementId) {
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -364,79 +507,6 @@
                 console.log("Microphone muted");
                 microphoneIcon.classList.remove('microphone-active');
             }
-        }
-    });
-
-    navigator.mediaDevices
-        .getUserMedia({ video: true, audio: true })
-        .then((stream) => {
-            localStream = stream;
-            localVideo.srcObject = stream;
-            stream
-                .getTracks()
-                .forEach((track) => peerConnection.addTrack(track, stream));
-        })
-        .catch((error) => {
-            console.error("Error accessing the camera and microphone", error);
-        });
-
-    peerConnection.onnegotiationneeded = async () => {
-        const offer = await peerConnection.createOffer();
-        await peerConnection.setLocalDescription(offer);
-        socket.emit("offer", offer);
-    };
-
-    peerConnection.ontrack = (event) => {
-        const remoteVideo = document.getElementById("remoteVideo");
-        if (remoteVideo.srcObject !== event.streams[0]) {
-            remoteVideo.srcObject = event.streams[0];
-        }
-    };
-
-    socket.on("offer", async (offer) => {
-        await peerConnection.setRemoteDescription(offer);
-        const answer = await peerConnection.createAnswer();
-        await peerConnection.setLocalDescription(answer);
-        socket.emit("answer", answer);
-    });
-
-    socket.on("answer", (answer) => {
-        peerConnection.setRemoteDescription(answer);
-    });
-
-    peerConnection.onicecandidate = (event) => {
-        if (event.candidate) {
-            socket.emit("ice-candidate", event.candidate);
-        }
-    };
-
-    socket.on("ice-candidate", (iceCandidate) => {
-        const candidate = new RTCIceCandidate(iceCandidate);
-        peerConnection.addIceCandidate(candidate);
-    });
-
-    socket.on("receiveMessage", (message) => {
-        const chatBox = document.getElementById("chat-box");
-        const isAtTop = chatBox.scrollTop === 0;
-        const messageDiv = document.createElement("div");
-    
-        if (message.senderName === "<%= name %>") {
-            messageDiv.classList.add("current-user-message");
-        } else {
-            messageDiv.classList.add("other-user-message");
-        }
-    
-        if (message.body.startsWith("<img")) {
-            messageDiv.innerHTML = `${message.body} : ${message.senderName}`;
-        } else {
-            messageDiv.textContent = `${message.body} : ${message.senderName}`;
-        }
-    
-        chatBox.insertBefore(messageDiv, chatBox.firstChild);
-    
-        // If the chat was at the top, scroll to the top after adding a new message
-        if (isAtTop) {
-            chatBox.scrollTop = 0;
         }
     });
 
