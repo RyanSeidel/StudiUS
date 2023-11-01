@@ -84,6 +84,7 @@ io.on('connection', (socket) => {
         const message = new Message({
             body,
             senderName,
+            roomId,
         });
         await message.save();
     
