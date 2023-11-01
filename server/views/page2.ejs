@@ -440,8 +440,6 @@
         }
     });
 
-    document.getElementById('image-preview').innerHTML = ''; // Clear the image preview
-
     function displayPreview(input) {
         const file = input.files[0];
         if (file) {
@@ -497,6 +495,7 @@
             .then((data) => {
                 const imageUrl = data.imageUrl;
                 socket.emit("sendMessage", {
+                    roomId: roomId,
                     senderName: "<%= name %>",
                     body: `<img src="${imageUrl}" alt="Image" width="150">`,
                 });
@@ -507,6 +506,7 @@
             });
         } else if (inputValue) {
             socket.emit("sendMessage", {
+                roomId: roomId,
                 senderName: "<%= name %>",
                 body: inputValue,
             });
