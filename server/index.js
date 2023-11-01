@@ -80,19 +80,20 @@ io.on('connection', (socket) => {
         // socket.to(roomId).broadcast.emit('event-name', data);
     });
 
-    socket.on('sendMessage', async ({ senderName, body }) => {
+    socket.on('sendMessage', async ({ roomId, senderName, body }) => {
         const message = new Message({
             body,
-            senderName,  // Store the sender's name directly in the message
+            senderName,
         });
         await message.save();
-
-        // Broadcast the message to all connected clients
-        io.emit('receiveMessage', {
+    
+        // Broadcast the message only to users in the same room
+        io.to(roomId).emit('receiveMessage', {
             body,
             senderName
         });
     });
+    
 
     socket.on('offer', (offer) => {
         socket.broadcast.emit('offer', offer);
