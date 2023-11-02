@@ -337,10 +337,20 @@
   });
   
 
-function createPeerConnection(userId) {
-  const peerConnection = new RTCPeerConnection({
-    // Your ICE servers here
-  });
+  function createPeerConnection(userId) {
+    // Configuration for the STUN and TURN servers
+    const configuration = {
+      iceServers: [
+        { urls: "stun:18.117.68.27:3478" },
+        {
+          urls: "turn:18.117.68.27:3478",
+          username: "test",
+          credential: "password"
+        }
+      ]
+    };
+  
+    const peerConnection = new RTCPeerConnection(configuration);
 
   localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream));
 
