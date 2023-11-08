@@ -1,225 +1,8 @@
-<style>
-    :root {
-        --blue-color-light: #6eb5ff;
-        --blue-color-dark: #4b7eff;
-        --background-color: #f9f9f9;
-        --background-message-color: #f6f8fc;
-        --text-color: #fff;
-    }
-    body {
-        font-family: Arial, sans-serif;
-        height: 100vh;
-        margin: 0 10px;
-        justify-content: center;
-        align-items: center;
-        background-color: #fff;
-    }
-    button {
-        background-color: var(--blue-color-light);
-        display: inline-block;
-        width: 150px;
-        height: 40px;
-        padding: 0;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-    .chat-container {
-        padding: 30px;
-    }
-    .chat-container-content {
-        margin: 30px;
-        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
-    }
-    #chat-box {
-        width: 100%;
-        height: 70%;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column-reverse;
-        background-color: var(--background-message-color);
-        min-height: 0; /* Add this line */
-    }
-    
-    .current-user-message,
-    .other-user-message {
-        margin: 5px 0;
-        padding: 10px;
-        border-radius: 15px;
-        max-width: 250px;
-        word-wrap: break-word;
-        overflow-wrap: break-word; /* Helps break long words */
-    }
-    
-    .msg-bottom {
-        padding: 10px 20px;
-        background-color: #fff;
-        border-radius: 0px 0px 10px 10px;
-    }
-    .msg-top {
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 10px 10px 0px 0px;
-    }
-    #message-input {
-        width: 100%;
-        padding: 12px 20px;
-        margin: 5px 0;
-        border-radius: 30px;
-        border: 1px solid #ccc;
-        background-size: 85px 80px;
-        background-repeat: no-repeat; /* Ensure the image doesn't repeat */
-        background-position: right 10px center; /* Position the image to the right with some padding */
-        padding-right: 60px; /* Provide space for the image preview so text doesn't overlap */
-        max-height: 10vh;
-        min-height: 1vh;
-        height: auto; /* Allow the height to adjust dynamically */
-        transition: height 0.3s; /* Smooth transition for height changes */
-    }
-      
-
-    .icon-group {
-        margin: 5px 15px;
-        display: flex;
-        justify-content: space-between;
-    }
-    .icon-left span {
-        margin-right: 10px;
-    }
-    .icon-left span i,
-    .send-icon {
-        font-size: 20px;
-    }
-    .icon-left span i:hover,
-    .send-icon:hover {
-        color: var(--blue-color-light);
-        cursor: pointer;
-        transition: 0.2s;
-    }
-    .current-user-message {
-        margin: 0 15px 15px 0;
-        text-align: right;
-        background-color: var(--blue-color-dark);
-        align-self: flex-end;
-        color: #fff;
-    }
-    .other-user-message {
-        text-align: left;
-        background-color: #ededed;
-        align-self: flex-start;
-    }
-    .camera-active, .microphone-active {
-        color: red;
-    }
-    #video-container {
-        margin: 10px 100px;
-        min-height: 5vh; /* Using min-height to ensure that the container does not become too small */
-        background-color: var(--blue-color-light);
-        display: flex;
-        flex-wrap: nowrap; /* Prevents the videos from wrapping onto multiple lines */
-        overflow-x: auto; /* Adds a horizontal scrollbar if there are many videos */
-        justify-content: start; /* Aligns videos to the start of the container */
-        align-items: center;
-        border-radius: 10px;
-    }
-    
-    video {
-        width: 30%; /* Sets a base width for each video */
-        max-width: 240px; /* Ensures that the video does not become too large */
-        margin: 5px; /* Adds some space between videos */
-        border-radius: 5px; /* Optional: Rounds the corners of the video elements */
-    }
-    
-    .screen-parent {
-        background-color: #fff;
-        width: 90%;
-        display: flex;
-        flex-direction: row;
-    }
-    .screen-center {
-        display: flex;
-        justify-content: center;
-        height: 80vh;
-    }
-    .left-screen,
-    .chat-container {
-        flex: 1;
-    }
-    .left-screen {
-        padding: 30px;
-        border-right: 1px solid #ccc;
-    }
-    #audioMeterModal {
-        margin-top: 10px;
-        height: 10px;
-        background-color: #ddd;
-        width: 100%; /* Ensures it takes the full width of its container */
-    }
-    
-    #audioMeterModal div {
-        height: 10px;
-        width: 0;
-        background-color: green;
-        transition: width 0.1s;
-    }
-    
-
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0,0,0,0.4);
-    }
-    
-    .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 30%;
-        position: relative;
-    }
-    
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        position: absolute;
-        top: 0;
-        right: 15px;
-        cursor: pointer;
-    }
-    
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-    
-    .input-container {
-        position: relative;
-    }
-    
-    .clear-preview {
-        display: none;
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        cursor: pointer;
-    }
-    
-</style>
+<head>
+    <link rel="stylesheet" href="../css/chatRoom.css">
+    <script src="https://kit.fontawesome.com/fb5c3cd0c8.js" crossorigin="anonymous"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
 
 <body>
 <div id="video-container"></div>
@@ -255,9 +38,7 @@
             </div>
         </div>
     </div>
-
-
-
+    
     <div id="settingsModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -269,12 +50,13 @@
 
         </div>
     </div>
+
     
+  <script src="../js/audioMetering.js"></script>
+  <script src="../js/preview.js"></script>
 </body>
 
 <!-- Embed code for icon -->
-<script src="https://kit.fontawesome.com/fb5c3cd0c8.js" crossorigin="anonymous"></script>
-<script src="/socket.io/socket.io.js"></script>
 <script>
     const socket = io();
     const urlParams = new URLSearchParams(window.location.search);
@@ -285,18 +67,6 @@
 
     const ROOM_NAME = new URLSearchParams(window.location.search).get('room'); // Get the room name from URL
     const myPeerConnections = {};
-
-    // Configuration for the STUN and TURN servers
-    const configuration = {
-        iceServers: [
-            { urls: "stun:18.117.68.27:3478" },
-            {
-                urls: "turn:18.117.68.27:3478",
-                username: "test",
-                credential: "password"
-            }
-        ]
-    };
 
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
   .then(stream => {
@@ -410,19 +180,31 @@ function handleNewICECandidateMsg(candidate, from) {
 }
 
 function addVideoStream(stream, userId) {
+    console.log('Adding video stream. userId:', userId, 'socket.id:', socket.id);
+
     // Use the userId to check if the video already exists
     if (!videoContainer.querySelector(`[data-peer-id="${userId}"]`)) {
-      const video = document.createElement('video');
-      video.srcObject = stream;
-      video.dataset.peerId = userId; // Use peerId attribute to link the video to the user
-      video.dataset.streamId = stream.id; // You can also keep the streamId if you want
-      video.autoplay = true;
-      video.playsInline = true;
-      video.controls = true; // Optional, if you want to give users control over their video playback
-      video.muted = userId === socket.id; // Mute the local user's video
-      videoContainer.appendChild(video);
+        const video = document.createElement('video');
+        video.srcObject = stream;
+        video.dataset.peerId = userId; // Use peerId attribute to link the video to the user
+        video.dataset.streamId = stream.id; // You can also keep the streamId if you want
+        video.autoplay = true;
+        video.playsInline = true;
+        video.controls = true; // Optional, if you want to give users control over their video playback
+        
+        // Check if the userId matches the socket.id and mute the video if it does
+        if (userId === Username) {
+            video.muted = true;
+            console.log('Muting local video element because userId matches socket.id');
+        } else {
+            console.log('Not muting video element because userId does not match socket.id');
+        }
+
+        videoContainer.appendChild(video);
     }
-  }
+}
+
+
 
   // Define the function to remove the video element associated with the user
 function removeVideoStream(userId) {
@@ -456,34 +238,6 @@ function removeVideoStream(userId) {
             chatBox.scrollTop = 0;
         }
     });
-
-
-    function startAudioMetering(stream, meterElementId) {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const analyser = audioContext.createAnalyser();
-        const source = audioContext.createMediaStreamSource(stream);
-        source.connect(analyser);
-    
-        analyser.fftSize = 256;
-        const bufferLength = analyser.frequencyBinCount;
-        const dataArray = new Uint8Array(bufferLength);
-    
-        function updateAudioMeter() {
-            analyser.getByteFrequencyData(dataArray);
-    
-            let values = 0;
-            let length = dataArray.length;
-            for (let i = 0; i < length; i++) {
-                values += dataArray[i];
-            }
-    
-            const volume = Math.floor(values / length);
-            document.getElementById(meterElementId).querySelector('div').style.width = `${volume}%`
-            requestAnimationFrame(updateAudioMeter);
-        }
-    
-        updateAudioMeter();
-    }
     
 
     document.getElementById("toggleCamera").addEventListener("click", function () {
@@ -519,43 +273,6 @@ function removeVideoStream(userId) {
             }
         }
     });
-
-    function displayPreview(input) {
-        const file = input.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const messageInput = document.getElementById('message-input');
-                messageInput.style.backgroundImage = `url(${event.target.result})`;
-    
-                // Display the clear preview button
-                document.querySelector('.clear-preview').style.display = 'block';
-    
-                // Adjust the height of the text box based on the image's height
-                const img = new Image();
-                img.src = event.target.result;
-                img.onload = function() {
-                    // Adjust the height of the input field if the image is large
-                    if (img.height > 100) {  // Example: Adjust based on a certain height, you can change this value
-                        messageInput.style.height = `${img.height}px`;
-                    }
-                }
-            }
-            reader.readAsDataURL(file);
-        }
-    }
-    
-
-    function clearPreview() {
-        const messageInput = document.getElementById('message-input');
-        const imageInput = document.getElementById("image-input");
-        
-        messageInput.style.backgroundImage = 'none';
-        messageInput.style.height = '40px'; // Reset the height to original size
-        document.querySelector('.clear-preview').style.display = 'none';
-        
-        imageInput.value = ''; // Clear the file input's value
-    }
        
      
     function sendMessage() {
@@ -595,80 +312,5 @@ function removeVideoStream(userId) {
             alert("Sorry, you didn't type anything or attach an image.");
         }
     }
-    
-
-
- // this is for PPOPUP SETTINGS
-// Get modal and elements
-let modal = document.getElementById("settingsModal");
-let btn = document.getElementById("settingsBtn");
-let span = document.getElementsByClassName("close")[0];
-let microphoneSelect = document.getElementById("microphoneList");
-
-// Open the modal
-btn.onclick = function() {
-    populateMicrophones();
-    if (localStream && localStream.getAudioTracks().length > 0) {
-        startAudioMetering(localStream, 'audioMeterModal');
-    } else {
-        console.error("No audio tracks available in localStream.");
-    }
-    modal.style.display = "block";
-}
-
-microphoneSelect.addEventListener('change', function() {
-    const selectedDeviceId = this.value;
-    navigator.mediaDevices.getUserMedia({ audio: { deviceId: selectedDeviceId } })
-        .then(stream => {
-            localStream = stream;
-            startAudioMetering(localStream, 'audioMeterModal');
-            console.log("Change has been confirmed"); // Added this line
-        })
-        .catch(error => {
-            console.error("Error accessing the selected microphone", error);
-        });
-});
-
-
-
-// Close the modal
-span.onclick = function() {
-    modal.style.display = "none";
-}
-
-// Close the modal if clicked outside content
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
-
-// Function to populate microphone list
-function populateMicrophones() {
-    navigator.mediaDevices.enumerateDevices()
-    .then(devices => {
-        let microphoneList = document.getElementById("microphoneList");
-        microphoneList.innerHTML = ''; // Clear existing options
-
-        const currentAudioTrack = localStream && localStream.getAudioTracks()[0];
-        const currentDeviceId = currentAudioTrack && currentAudioTrack.getSettings().deviceId;
-
-        devices.forEach(device => {
-            if (device.kind === "audioinput") {
-                let option = document.createElement("option");
-                option.value = device.deviceId;
-                option.text = device.label || 'Microphone ' + (microphoneList.length + 1);
-                if (device.deviceId === currentDeviceId) {
-                    option.selected = true;
-                }
-                microphoneList.appendChild(option);
-            }
-        });
-    })
-    .catch(err => {
-        console.error("Error populating microphones:", err);
-    });
-}
-
 
 </script>
