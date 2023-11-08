@@ -159,7 +159,7 @@ app.get('/get-rooms', async (req, res) => {
 
 app.get('/chatroom', (req, res) => {
     if (!req.user) return res.status(401).send('Not authenticated.');
-    res.render('page2', { name: req.user.name });
+    res.render('page2', { name: req.user.name, userId: req.user._id });
 });
 
 
