@@ -5,12 +5,6 @@
 </head>
 
 <body>
-  <script>
-    const name = `<%= name %>`
-    const userid = `<%= userId %>`
-    console.log(name);
-    console.log(`the user id is: ${userid}`)
-  </script>
 <div id="video-container"></div>
     <div id="audioMeter"><div></div></div>
     <div class="screen-center">
@@ -62,8 +56,12 @@
   <script src="../js/preview.js"></script>
 </body>
 
-<!-- Embed code for icon -->
 <script>
+    const name = `<%= name %>`
+    const userid = `<%= userId %>`
+    console.log(name);
+    console.log(`the user id is: ${userid}`)
+
     const socket = io();
     const urlParams = new URLSearchParams(window.location.search);
     const roomId = urlParams.get("roomId");
@@ -77,15 +75,17 @@
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
   .then(stream => {
     localStream = stream;
-    addVideoStream(stream);
+    addVideoStream(stream, userid);
     
-    socket.emit('join-room', roomId, socket.id);
+    socket.emit('join-room', roomId, userid, name); // sent the userid and name to server
     
-    socket.on('user-connected', userId => {
-      console.log('User connected:', userId);
-      const peerConnection = createPeerConnection(userId);
-      myPeerConnections[userId] = peerConnection;
-    });
+    socket.on('user-connected', (connectedUserId, userName) => {
+      console.log(`User connected: ${userName} (ID: ${connectedUserId})`);
+      if (connectedUserId !== userid) { // Comparing with the same 'userid'
+          const peerConnection = createPeerConnection(connectedUserId);
+          myPeerConnections[connectedUserId] = peerConnection;
+      }
+  });
 
     socket.on('offer', handleReceiveOffer);
     socket.on('answer', handleReceiveAnswer);
@@ -186,28 +186,22 @@ function handleNewICECandidateMsg(candidate, from) {
 }
 
 function addVideoStream(stream, userId) {
-    console.log('Adding video stream. userId:', userId, 'socket.id:', socket.id);
+  console.log('Adding video stream. UserId:', userId);
 
-    // Use the userId to check if the video already exists
-    if (!videoContainer.querySelector(`[data-peer-id="${userId}"]`)) {
-        const video = document.createElement('video');
-        video.srcObject = stream;
-        video.dataset.peerId = userId; // Use peerId attribute to link the video to the user
-        video.dataset.streamId = stream.id; // You can also keep the streamId if you want
-        video.autoplay = true;
-        video.playsInline = true;
-        video.controls = true; // Optional, if you want to give users control over their video playback
-        
-        // Check if the userId matches the socket.id and mute the video if it does
-        if (userId === Username) {
-            video.muted = true;
-            console.log('Muting local video element because userId matches socket.id');
-        } else {
-            console.log('Not muting video element because userId does not match socket.id');
-        }
+  if (!videoContainer.querySelector(`[data-peer-id="${userId}"]`)) {
+      const video = document.createElement('video');
+      video.srcObject = stream;
+      video.dataset.peerId = userId; // Set the data attribute to userId
+      video.autoplay = true;
+      video.playsInline = true;
+      video.controls = true;
 
-        videoContainer.appendChild(video);
-    }
+      if (userId === userid) {
+          video.muted = true; // Mute for local user's own stream
+      }
+
+      videoContainer.appendChild(video);
+  }
 }
 
 

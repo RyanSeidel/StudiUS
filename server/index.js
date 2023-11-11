@@ -73,12 +73,10 @@ const storage = new CloudinaryStorage({
 // Socket.io Logic
 io.on('connection', (socket) => {
 
-    socket.on('join-room', (roomId, userName) => {
+    socket.on('join-room', (roomId, userId, userName) => {
         socket.join(roomId);
-
-        console.log(`${userName} connected`);
-
-        socket.to(roomId).emit('user-connected', userName);
+        console.log(`${userName} (ID: ${userId}) connected to room ${roomId}`);
+        socket.to(roomId).emit('user-connected', userId, userName);
     });
 
     socket.on('sendMessage', async ({ roomId, senderName, body }) => {
