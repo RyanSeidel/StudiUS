@@ -191,18 +191,20 @@ function addVideoStream(stream, userId) {
   if (!videoContainer.querySelector(`[data-peer-id="${userId}"]`)) {
       const video = document.createElement('video');
       video.srcObject = stream;
-      video.dataset.peerId = userId; // Set the data attribute to userId
+      video.dataset.peerId = userId; 
       video.autoplay = true;
       video.playsInline = true;
       video.controls = true;
 
       if (userId === userid) {
-          video.muted = true; // Mute for local user's own stream
+          video.muted = true;
+          window.localVideo = video; // Assign the local video element for reference
       }
 
       videoContainer.appendChild(video);
   }
 }
+
 
 
 
@@ -241,21 +243,21 @@ function removeVideoStream(userId) {
     
 
     document.getElementById("toggleCamera").addEventListener("click", function () {
-        const cameraIcon = this.querySelector('i');
-        if (localStream && localStream.getVideoTracks().length > 0) {
-            let videoTrack = localStream.getVideoTracks()[0];
-            videoTrack.enabled = !videoTrack.enabled;
-            if (videoTrack.enabled) {
-                console.log("Camera turned on");
-                cameraIcon.classList.add('camera-active');
-                localVideo.classList.remove('inactive'); // Show video
-            } else {
-                console.log("Camera turned off");
-                cameraIcon.classList.remove('camera-active');
-                localVideo.classList.add('inactive'); // Hide video (opacity 0)
-            }
-        }
-    });
+      if (localStream && localStream.getVideoTracks().length > 0) {
+          let videoTrack = localStream.getVideoTracks()[0];
+          videoTrack.enabled = !videoTrack.enabled;
+  
+          // Assuming localVideo is the video element showing the local stream
+          if (videoTrack.enabled) {
+              console.log("Camera turned on");
+              localVideo.classList.remove('inactive-video'); // Show video by setting opacity to normal
+          } else {
+              console.log("Camera turned off");
+              localVideo.classList.add('inactive-video'); // Hide video by setting opacity to 0
+          }
+      }
+  });
+  
     
 
     document.getElementById("toggleMicrophone").addEventListener("click", function () {

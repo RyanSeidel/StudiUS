@@ -217,3 +217,7 @@ video {
   transform: translateY(-50%);
   cursor: pointer;
 }
+
+.inactive-video {
+  opacity: 0;
+}
