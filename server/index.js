@@ -157,7 +157,7 @@ app.get('/get-rooms', async (req, res) => {
 
 app.get('/chatroom', (req, res) => {
     if (!req.user) return res.status(401).send('Not authenticated.');
-    res.render('page2', { name: req.user.name, userId: req.user._id });
+    res.render('chat', { name: req.user.name, userId: req.user._id });
 });
 
 
@@ -221,7 +221,6 @@ app.post('/update-profile', upload.none(), async (req, res) => {
 });
 
 
-
 app.post('/upload-profile-pic', upload.single('image'), async (req, res) => {
     try {
         // Image is uploaded and req.file holds its details
@@ -239,15 +238,6 @@ app.post('/upload-profile-pic', upload.single('image'), async (req, res) => {
     }
 });
 
-
-app.delete('/conversation/:id', async (req, res) => {
-    if (!req.user) return res.status(401).send('Not authenticated.');
-
-    await Conversation.findByIdAndDelete(req.params.id);
-    await Message.deleteMany({ conversationId: req.params.id });
-
-    res.send('Conversation deleted');
-});
 
 app.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
@@ -294,16 +284,8 @@ app.get('/home', (req, res) => {
     res.render('home', { name: req.user.name, image: req.user.image });
 });
 
-app.get('/page2', (req, res) => {
-    if (!req.user) return res.status(401).send('Not authenticated.');
-    res.render('page2', { name: req.user.name });
-});
 
 server.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
-
-// server.listen(PORT, '3.12.163.231', () => {
-//     console.log(`Server is running on https://${'3.12.163.231'}:${PORT}`);
-// });
