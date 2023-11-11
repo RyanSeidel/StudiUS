@@ -1,31 +1,33 @@
 // audioMetering.js
 function startAudioMetering(stream, meterElementId) {
-  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  const analyser = audioContext.createAnalyser();
-  const source = audioContext.createMediaStreamSource(stream);
-  source.connect(analyser);
-
-  analyser.fftSize = 256;
-  const bufferLength = analyser.frequencyBinCount;
-  const dataArray = new Uint8Array(bufferLength);
-
-  function updateAudioMeter() {
-      analyser.getByteFrequencyData(dataArray);
-
-      let values = 0;
-      let length = dataArray.length;
-      for (let i = 0; i < length; i++) {
-          values += dataArray[i];
-      }
-
-      const volume = Math.floor(values / length);
-      document.getElementById(meterElementId).querySelector('div').style.width = `${volume}%`;
-      requestAnimationFrame(updateAudioMeter);
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const analyser = audioContext.createAnalyser();
+    const source = audioContext.createMediaStreamSource(stream);
+    source.connect(analyser);
+  
+    analyser.fftSize = 256;
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+  
+    function updateAudioMeter() {
+        analyser.getByteFrequencyData(dataArray);
+  
+        let values = 0;
+        let length = dataArray.length;
+        for (let i = 0; i < length; i++) {
+            values += dataArray[i];
+        }
+  
+        const volume = Math.floor(values / length);
+        document.getElementById(meterElementId).querySelector('div').style.width = `${volume}%`;
+        requestAnimationFrame(updateAudioMeter);
+    }
+  
+    updateAudioMeter();
   }
 
-  updateAudioMeter();
-}
 
+document.addEventListener('DOMContentLoaded', (event) => {
 
 // Get modal and elements
 let modal = document.getElementById("settingsModal");
@@ -97,3 +99,22 @@ function populateMicrophones() {
         console.error("Error populating microphones:", err);
     });
 }
+
+
+
+document.getElementById("toggleMicrophone").addEventListener("click", function () {
+    const microphoneIcon = this.querySelector('i');
+    if (localStream && localStream.getAudioTracks().length > 0) {
+        let audioTrack = localStream.getAudioTracks()[0];
+        audioTrack.enabled = !audioTrack.enabled;
+        if (audioTrack.enabled) {
+            console.log("Microphone activated");
+            microphoneIcon.classList.add('microphone-active');
+        } else {
+            console.log("Microphone muted");
+            microphoneIcon.classList.remove('microphone-active');
+        }
+    }
+});
+
+});

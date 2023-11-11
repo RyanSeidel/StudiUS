@@ -54,13 +54,13 @@
     
   <script src="../js/audioMetering.js"></script>
   <script src="../js/preview.js"></script>
+  <script src="../js/cameraToggle.js"></script>
+  <script src="../js/Message.js"></script>
 </body>
 
 <script>
     const name = `<%= name %>`
     const userid = `<%= userId %>`
-    console.log(name);
-    console.log(`the user id is: ${userid}`)
 
     const socket = io();
     const urlParams = new URLSearchParams(window.location.search);
@@ -206,8 +206,6 @@ function addVideoStream(stream, userId) {
 }
 
 
-
-
   // Define the function to remove the video element associated with the user
 function removeVideoStream(userId) {
     const videoElement = videoContainer.querySelector(`[data-peer-id="${userId}"]`);
@@ -215,104 +213,31 @@ function removeVideoStream(userId) {
       videoElement.remove();
     }
   }
+    
 
     socket.on("receiveMessage", (message) => {
-        const chatBox = document.getElementById("chat-box");
-        const isAtTop = chatBox.scrollTop === 0;
-        const messageDiv = document.createElement("div");
-    
-        if (message.senderName === "<%= name %>") {
-            messageDiv.classList.add("current-user-message");
-        } else {
-            messageDiv.classList.add("other-user-message");
-        }
-    
-        if (message.body.startsWith("<img")) {
-            messageDiv.innerHTML = `${message.body} : ${message.senderName}`;
-        } else {
-            messageDiv.textContent = `${message.body} : ${message.senderName}`;
-        }
-    
-        chatBox.insertBefore(messageDiv, chatBox.firstChild);
-    
-        // If the chat was at the top, scroll to the top after adding a new message
-        if (isAtTop) {
-            chatBox.scrollTop = 0;
-        }
-    });
-    
-
-    document.getElementById("toggleCamera").addEventListener("click", function () {
-      if (localStream && localStream.getVideoTracks().length > 0) {
-          let videoTrack = localStream.getVideoTracks()[0];
-          videoTrack.enabled = !videoTrack.enabled;
+      const chatBox = document.getElementById("chat-box");
+      const isAtTop = chatBox.scrollTop === 0;
+      const messageDiv = document.createElement("div");
   
-          // Assuming localVideo is the video element showing the local stream
-          if (videoTrack.enabled) {
-              console.log("Camera turned on");
-              localVideo.classList.remove('inactive-video'); // Show video by setting opacity to normal
-          } else {
-              console.log("Camera turned off");
-              localVideo.classList.add('inactive-video'); // Hide video by setting opacity to 0
-          }
+      if (message.senderName === "<%= name %>") {
+          messageDiv.classList.add("current-user-message");
+      } else {
+          messageDiv.classList.add("other-user-message");
+      }
+  
+      if (message.body.startsWith("<img")) {
+          messageDiv.innerHTML = `${message.body} : ${message.senderName}`;
+      } else {
+          messageDiv.textContent = `${message.body} : ${message.senderName}`;
+      }
+  
+      chatBox.insertBefore(messageDiv, chatBox.firstChild);
+  
+      // If the chat was at the top, scroll to the top after adding a new message
+      if (isAtTop) {
+          chatBox.scrollTop = 0;
       }
   });
-  
-    
-
-    document.getElementById("toggleMicrophone").addEventListener("click", function () {
-        const microphoneIcon = this.querySelector('i');
-        if (localStream && localStream.getAudioTracks().length > 0) {
-            let audioTrack = localStream.getAudioTracks()[0];
-            audioTrack.enabled = !audioTrack.enabled;
-            if (audioTrack.enabled) {
-                startAudioMetering(localStream);
-                console.log("Microphone activated");
-                microphoneIcon.classList.add('microphone-active');
-            } else {
-                console.log("Microphone muted");
-                microphoneIcon.classList.remove('microphone-active');
-            }
-        }
-    });
-       
-     
-    function sendMessage() {
-        const input = document.getElementById("message-input");
-        const inputValue = input.value.trim();
-        const imageInput = document.getElementById("image-input");
-    
-        if (imageInput.files.length > 0) {
-            const formData = new FormData();
-            formData.append("image", imageInput.files[0]);
-    
-            fetch("/upload", {
-                method: "POST",
-                body: formData,
-            })
-            .then((response) => response.json())
-            .then((data) => {
-                const imageUrl = data.imageUrl;
-                socket.emit("sendMessage", {
-                    roomId: roomId,
-                    senderName: "<%= name %>",
-                    body: `<img src="${imageUrl}" alt="Image" width="150">`,
-                });
-                imageInput.value = ""; // Clear the image input
-                input.style.backgroundImage = 'none'; // Remove the image preview
-                input.style.height = '40px'; // Reset the height to original size
-                document.querySelector('.clear-preview').style.display = 'none'; // Hide the clear preview button
-            });
-        } else if (inputValue) {
-            socket.emit("sendMessage", {
-                roomId: roomId,
-                senderName: "<%= name %>",
-                body: inputValue,
-            });
-            input.value = ""; // Clear the input field
-        } else {
-            alert("Sorry, you didn't type anything or attach an image.");
-        }
-    }
 
 </script>
