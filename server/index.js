@@ -74,6 +74,7 @@ const storage = new CloudinaryStorage({
 io.on('connection', (socket) => {
 
     socket.on('join-room', (roomId, userId, userName) => {
+
         socket.join(roomId);
         console.log(`${userName} (ID: ${userId}) connected to room ${roomId}`);
         socket.to(roomId).emit('user-connected', userId, userName);
@@ -94,11 +95,22 @@ io.on('connection', (socket) => {
         });
     });
 
-    socket.on('disconnect', (userName) => {
-        console.log(`${userName} disconnected`);
+    socket.on('offer', (offer, to) => {
+        socket.to(to).emit('offer', offer, socket.id);
+      });
+  
+      socket.on('answer', (answer, to) => {
+        socket.to(to).emit('answer', answer, socket.id);
+      });
+  
+      socket.on('ice-candidate', (candidate, to) => {
+        socket.to(to).emit('ice-candidate', candidate, socket.id);
+      });
+
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
     });
 });
-
 
 app.get('/users', async (req, res) => {
     if (!req.user) return res.status(401).send('Not authenticated.');
