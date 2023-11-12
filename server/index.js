@@ -93,22 +93,9 @@ io.on('connection', (socket) => {
             senderName
         });
     });
-    
 
-    socket.on('offer', (offer, to) => {
-        socket.to(to).emit('offer', offer, socket.id);
-      });
-  
-      socket.on('answer', (answer, to) => {
-        socket.to(to).emit('answer', answer, socket.id);
-      });
-  
-      socket.on('ice-candidate', (candidate, to) => {
-        socket.to(to).emit('ice-candidate', candidate, socket.id);
-      });
-
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
+    socket.on('disconnect', (userName) => {
+        console.log(`${userName} disconnected`);
     });
 });
 
