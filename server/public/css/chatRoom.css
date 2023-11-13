@@ -30,6 +30,22 @@ button:hover {
   color: black; /* Change text color to black on hover */
 }
 
+.chat-btn, .participants-btn{
+  background-color: transparent; /* No background color */
+  color: gray; /* Gray text */
+  border: none; /* No border */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+  padding: 10px; /* Optional padding for better click area */
+  font-size: 1em; /* Optional font size adjustment */
+  display: flex; /* To align the icon and text */
+  align-items: center; /* Vertical alignment */
+  justify-content: center; /* Horizontal alignment */
+}
+
+.chat-btn:hover, .participants-btn:hover{
+  color: #339965; 
+  font-weight: 600;
+}
 
 .chat-container {
   padding: 10px;
@@ -38,25 +54,21 @@ button:hover {
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
 }
-#chat-box {
+
+#chat-box-container {
   width: 100%;
   height: 82%;
   overflow-y: auto;
   display: flex;
   flex-direction: column-reverse;
   background-color: var(--background-message-color);
-  min-height: 0; /* Add this line */
+  min-height: 0;
 }
 
-.current-user-message,
-.other-user-message {
-  margin: 5px 0;
-  padding: 10px;
-  border-radius: 15px;
-  max-width: 250px;
-  word-wrap: break-word;
-  overflow-wrap: break-word; /* Helps break long words */
+
+#chat-box {
 }
+
 
 .sender-info-current-user {
   font-size: 0.8em;
@@ -74,7 +86,6 @@ button:hover {
   text-align: left; /* Align left for other users */
 }
 
-
 .msg-bottom {
   display: flex;
   justify-content: space-between; /* Aligns children to both ends */
@@ -91,7 +102,6 @@ button:hover {
   border-radius: 10px 10px 0px 0px;
 }
  
-
 #message-input {
   flex-grow: 1;
   width: 80%;
@@ -140,7 +150,6 @@ button:hover {
   background-color: var(--blue-color-dark);
   min-width: 15%; /* Minimum width of the message */
   max-width: 40%; /* Maximum width to ensure messages don't get too wide */
-  align-self: flex-end; /* Align to the right (end) */
   color: #fff;
   padding: 10px; /* Add padding for the content inside the message box */
   
@@ -148,11 +157,6 @@ button:hover {
   border-radius: 15px; /* Rounded corners for aesthetic */
   border-bottom-right-radius: 0; /* Make bottom right corner not rounded */
 
-  /* Centering content */
-  display: flex; /* Use flexbox to center content */
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  text-align: center; /* Center the text itself */
 }
 
 
@@ -187,7 +191,7 @@ button:hover {
   display: flex;
   flex-wrap: nowrap; /* Prevents the videos from wrapping onto multiple lines */
   overflow-x: auto; /* Adds a horizontal scrollbar if there are many videos */
-  justify-content: start; /* Aligns videos to the start of the container */
+  justify-content: center; /* Aligns videos to the start of the container */
   align-items: center;
   border-radius: 10px;
 }
@@ -227,7 +231,7 @@ video {
 #audioMeterModal div {
   height: 10px;
   width: 0;
-  background-color: green;
+  background-color: #339965;
   transition: width 0.1s;
 }
 
@@ -308,8 +312,8 @@ video {
 }
 
 .active-btn {
-  background-color: var(--blue-color-light); /* Light blue background for the active button */
-  color: green; /* White text color */
+  color: #339965; /* White text color */
+  font-weight: 600;
 }
 
 

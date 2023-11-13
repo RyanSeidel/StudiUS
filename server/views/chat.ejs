@@ -14,18 +14,17 @@
             <div class="chat-container">
                 <div class="chat-container-content">
                   <div class="msg-top">
-                    <button id="chatBtn" onclick="toggleView('chat')">Chat</button>
-                    <button id="participantsBtn" onclick="toggleView('participants')">Participants</button>
-                  </div>
+                    <button id="chatBtn" class="chat-btn" onclick="toggleView('chat')">Chat</button>
+                    <button id="participantsBtn" class="participants-btn" onclick="toggleView('participants')">Participants</button>
+                </div>
                 
-                    <div id="chat-box">
-                      <div id="sender-info"></div>  
-                    </div>
-
-                    <div id="participants-list" style="display: none;">
-                      <!-- Participant list content goes here -->
-                      <span> bob the juiorr</span>
+                
+                <div id="chat-box-container">
+                  <div id="chat-box">
+                    <!-- Messages will be appended here -->
                   </div>
+                </div>
+              
 
                     <div class="msg-bottom">
                       <button id="settingsBtn">
@@ -54,6 +53,8 @@
             </div>
         </div>
     </div>
+
+    
     
     <div id="settingsModal" class="modal">
         <div class="modal-content">
@@ -253,31 +254,36 @@ function removeVideoStream(userId) {
     const chatBox = document.getElementById("chat-box");
     const messageDiv = document.createElement("div");
     const senderInfoDiv = document.createElement("div"); // Div for sender's info
-
+  
     if (message.senderName === "<%= name %>") {
       messageDiv.classList.add("current-user-message");
-      senderInfoDiv.classList.add("sender-info-current-user"); // Apply specific class for current user
-  } else {
+      senderInfoDiv.classList.add("sender-info-current-user"); // Apply specific class for the current user
+    } else {
       messageDiv.classList.add("other-user-message");
       senderInfoDiv.classList.add("sender-info-other-user"); // General class for other users
-  }
-
-    if (message.body.startsWith("<img")) {
-        messageDiv.innerHTML = message.body;
-    } else {
-        messageDiv.textContent = message.body;
     }
-
+  
+    if (message.body.startsWith("<img")) {
+      messageDiv.innerHTML = message.body;
+    } else {
+      messageDiv.textContent = message.body;
+    }
+  
     // Add sender's name and timestamp
     const currentTime = new Date().toLocaleTimeString();
     senderInfoDiv.textContent = `${message.senderName} - ${currentTime}`;
-
+  
     // Append message and sender info to chat box
-    chatBox.insertBefore(messageDiv, chatBox.firstChild); // Then insert the message
-    chatBox.insertBefore(senderInfoDiv, chatBox.firstChild); // Insert sender info first
-
+    const messageContainer = document.createElement("div");
+    messageContainer.appendChild(messageDiv);
+    messageContainer.appendChild(senderInfoDiv);
+  
+    chatBox.appendChild(messageContainer);
+  
     chatBox.scrollTop = chatBox.scrollHeight;
-});
+  });
+  
+  
 
 
 
