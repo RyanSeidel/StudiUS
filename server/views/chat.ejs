@@ -13,10 +13,20 @@
             </div>
             <div class="chat-container">
                 <div class="chat-container-content">
-                    <div class="msg-top"></div>
+                  <div class="msg-top">
+                    <button id="chatBtn" onclick="toggleView('chat')">Chat</button>
+                    <button id="participantsBtn" onclick="toggleView('participants')">Participants</button>
+                  </div>
+                
                     <div id="chat-box">
                       <div id="sender-info"></div>  
                     </div>
+
+                    <div id="participants-list" style="display: none;">
+                      <!-- Participant list content goes here -->
+                      <span> bob the juiorr</span>
+                  </div>
+
                     <div class="msg-bottom">
                       <button id="settingsBtn">
                         <i class="fa-sharp fa-solid fa-gear fa-spin"></i> Settings
@@ -61,6 +71,7 @@
   <script src="../js/chatRoom/preview.js"></script>
   <script src="../js/chatRoom/cameraToggle.js"></script>
   <script src="../js/chatRoom/Message.js"></script>
+  <script src="../js/chatRoom/toggleView.js"></script>
 </body>
 
 <script>
