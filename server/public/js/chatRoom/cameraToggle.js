@@ -1,15 +1,15 @@
 document.getElementById("toggleCamera").addEventListener("click", function () {
-  if (localStream && localStream.getVideoTracks().length > 0) {
-      let videoTrack = localStream.getVideoTracks()[0];
-      videoTrack.enabled = !videoTrack.enabled;
+    if (localStream && localStream.getVideoTracks().length > 0) {
+        let videoTrack = localStream.getVideoTracks()[0];
+        videoTrack.enabled = !videoTrack.enabled;
 
-      // Assuming localVideo is the video element showing the local stream
-      if (videoTrack.enabled) {
-          console.log("Camera turned on");
-          localVideo.classList.remove('inactive-video'); // Show video by setting opacity to normal
-      } else {
-          console.log("Camera turned off");
-          localVideo.classList.add('inactive-video'); // Hide video by setting opacity to 0
-      }
-  }
+        if (videoTrack.enabled) {
+            console.log("Camera turned on");
+            if (localVideoElement) localVideoElement.classList.remove('inactive-video');
+        } else {
+            console.log("Camera turned off");
+            if (localVideoElement) localVideoElement.classList.add('inactive-video');
+        }
+    }
 });
+

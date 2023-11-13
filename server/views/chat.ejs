@@ -65,6 +65,10 @@
     const userId = "<%= userId %>";
     const videoContainer = document.getElementById('video-container'); // Ensure you have a container for video elements
     let localStream;
+    let localVideoElement;
+
+
+    let localSocketId;
 
     const ROOM_NAME = new URLSearchParams(window.location.search).get('room'); // Get the room name from URL
     const myPeerConnections = {};
@@ -84,10 +88,14 @@
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
   .then(stream => {
     localStream = stream;
-    addVideoStream(stream);
+    addVideoStream(stream, localSocketId);
 
     // issue we need to not use socket.id this is GARBAGE
-    socket.emit('join-room', roomId, socket.id, name);
+
+    localSocketId = socket.id; 
+    console.log("Connected with socket ID:", localSocketId);
+
+    socket.emit('join-room', roomId, localSocketId, name);
     
     socket.on('user-connected', userId => {
       console.log('User connected:', userId);
@@ -194,7 +202,6 @@ function handleNewICECandidateMsg(candidate, from) {
 }
 
 function addVideoStream(stream, userId) {
-    // Check if video for this userId already exists
     let video = videoContainer.querySelector(`[data-peer-id="${userId}"]`);
     if (!video) {
         video = document.createElement('video');
@@ -205,8 +212,16 @@ function addVideoStream(stream, userId) {
     video.autoplay = true;
     video.playsInline = true;
     video.controls = true;
-    video.muted = userId == "<%= userId %>"; // Mute the local user's video
+
+    if (userId === localSocketId) {
+        video.muted = true;
+        localVideoElement = video; // Store the local video element
+    } else {
+        video.muted = false;
+    }
 }
+
+
 
 
   // Define the function to remove the video element associated with the user
