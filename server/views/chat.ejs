@@ -18,24 +18,27 @@
                       <div id="sender-info"></div>  
                     </div>
                     <div class="msg-bottom">
+                      <button id="settingsBtn">
+                        <i class="fa-sharp fa-solid fa-gear fa-spin"></i> Settings
+                    </button>
+                      <div class="icon-group">
+                        <div class="icon-left">
+                            <span class="image-input-container">
+                                <input type="file" id="image-input" name="file" style="display: none; visibility: none" onchange="displayPreview(this)" />
+                                <label for="image-input"><i class="fa-regular fa-image"></i></label>
+                            </span>
+                            <span id="toggleCamera"><i class="fa-solid fa-camera camera-active"></i></span>
+                            <span id="toggleMicrophone"><i class="fa-solid fa-microphone microphone-active"></i></span>
+                            
+                        </div>
+                    </div>
                         <div class="input-container">
                             <input type="text" id="message-input" placeholder="Write Something..." />
                             <span class="clear-preview" onclick="clearPreview()">&#10005;</span> <!-- Button to clear preview -->
                             <span onclick="sendMessage()"><i class="send-icon fa-regular fa-paper-plane"></i></span>
                         </div>
                                         
-                        <div class="icon-group">
-                            <div class="icon-left">
-                                <span class="image-input-container">
-                                    <input type="file" id="image-input" name="file" style="display: none; visibility: none" onchange="displayPreview(this)" />
-                                    <label for="image-input"><i class="fa-regular fa-image"></i></label>
-                                </span>
-                                <span id="toggleCamera"><i class="fa-solid fa-camera camera-active"></i></span>
-                                <span id="toggleMicrophone"><i class="fa-solid fa-microphone microphone-active"></i></span>
-                                
-                            </div>
-                            <button id="settingsBtn">Settings</button>
-                        </div>
+                
                     </div>
                 </div>
             </div>
