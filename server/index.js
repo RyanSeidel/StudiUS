@@ -74,8 +74,8 @@ const storage = new CloudinaryStorage({
 io.on('connection', (socket) => {
 
     socket.on('join-room', (roomId, userId, userName) => {
-
         socket.join(roomId);
+        socket.roomId = roomId; // Store roomId in the socket instance
         console.log(`${userName} (ID: ${userId}) connected to room ${roomId}`);
         socket.to(roomId).emit('user-connected', userId, userName);
     });
@@ -107,9 +107,12 @@ io.on('connection', (socket) => {
         socket.to(to).emit('ice-candidate', candidate, socket.id);
       });
 
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-    });
+      socket.on('disconnect', () => {
+        console.log(`${socket.id} disconnected`);
+        if(socket.roomId) {
+            socket.to(socket.roomId).emit('user-disconnected', socket.id);
+        }
+    });   
 });
 
 app.get('/users', async (req, res) => {

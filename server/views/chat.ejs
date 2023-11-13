@@ -194,19 +194,20 @@ function handleNewICECandidateMsg(candidate, from) {
 }
 
 function addVideoStream(stream, userId) {
-    // Use the userId to check if the video already exists
-    if (!videoContainer.querySelector(`[data-peer-id="${userId}"]`)) {
-      const video = document.createElement('video');
-      video.srcObject = stream;
-      video.dataset.peerId = userId; // Use peerId attribute to link the video to the user
-      video.dataset.streamId = stream.id; // You can also keep the streamId if you want
-      video.autoplay = true;
-      video.playsInline = true;
-      video.controls = true; // Optional, if you want to give users control over their video playback
-      video.muted = userId; // Mute the local user's video
-      videoContainer.appendChild(video);
+    // Check if video for this userId already exists
+    let video = videoContainer.querySelector(`[data-peer-id="${userId}"]`);
+    if (!video) {
+        video = document.createElement('video');
+        video.dataset.peerId = userId;
+        videoContainer.appendChild(video);
     }
-  }
+    video.srcObject = stream;
+    video.autoplay = true;
+    video.playsInline = true;
+    video.controls = true;
+    video.muted = userId == "<%= userId %>"; // Mute the local user's video
+}
+
 
   // Define the function to remove the video element associated with the user
 function removeVideoStream(userId) {
