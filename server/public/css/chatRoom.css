@@ -53,6 +53,23 @@ button {
   overflow-wrap: break-word; /* Helps break long words */
 }
 
+.sender-info-current-user {
+  font-size: 0.8em;
+  color: #000; /* Black font color */
+  margin-top: 2px; /* Small space above sender info */
+  margin-bottom: 10px; /* Space below sender info before next message */
+  text-align: right; /* Align right for current user */
+}
+
+.sender-info-other-user {
+  font-size: 0.8em;
+  color: #000; /* Black font color */
+  margin-top: 2px; /* Small space above sender info */
+  margin-bottom: 10px; /* Space below sender info before next message */
+  text-align: left; /* Align left for other users */
+}
+
+
 .msg-bottom {
   padding: 10px 20px;
   background-color: #fff;
@@ -63,8 +80,10 @@ button {
   background-color: #fff;
   border-radius: 10px 10px 0px 0px;
 }
+
+
 #message-input {
-  width: 100%;
+  width: 90%;
   padding: 12px 20px;
   margin: 5px 0;
   border-radius: 30px;
@@ -98,25 +117,57 @@ button {
   cursor: pointer;
   transition: 0.2s;
 }
+
+
 .current-user-message {
-  margin: 0 15px 15px 0;
-  text-align: right;
+  margin: 0 45px 15px 0;
   background-color: var(--blue-color-dark);
-  align-self: flex-end;
+  min-width: 15%; /* Minimum width of the message */
+  max-width: 40%; /* Maximum width to ensure messages don't get too wide */
+  align-self: flex-end; /* Align to the right (end) */
   color: #fff;
+  padding: 10px; /* Add padding for the content inside the message box */
+  
+  /* Rounded corners except bottom right */
+  border-radius: 15px; /* Rounded corners for aesthetic */
+  border-bottom-right-radius: 0; /* Make bottom right corner not rounded */
+
+  /* Centering content */
+  display: flex; /* Use flexbox to center content */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  text-align: center; /* Center the text itself */
 }
+
+
 .other-user-message {
+  margin: 0 0px 15px 45px;
   text-align: left;
   background-color: #ededed;
   align-self: flex-start;
+  min-width: 15%; /* Minimum width of the message */
+  max-width: 40%; /* Maximum width to ensure messages don't get too wide */
+  color: #000; /* Text color */
+  padding: 10px; /* Add padding for the content inside the message box */
+  
+  /* Rounded corners except bottom left */
+  border-radius: 15px; /* Rounded corners for aesthetic */
+  border-bottom-left-radius: 0; /* Make bottom left corner not rounded */
+
+  /* Centering content */
+  display: flex; /* Use flexbox to center content */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  text-align: center; /* Center the text itself */
 }
+
 .camera-active, .microphone-active {
   color: red;
 }
 #video-container {
   margin: 10px 100px;
   min-height: 5vh; /* Using min-height to ensure that the container does not become too small */
-  background-color: var(--blue-color-light);
+  background-color: #0071d7;
   display: flex;
   flex-wrap: nowrap; /* Prevents the videos from wrapping onto multiple lines */
   overflow-x: auto; /* Adds a horizontal scrollbar if there are many videos */

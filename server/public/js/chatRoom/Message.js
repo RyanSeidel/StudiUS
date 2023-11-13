@@ -1,3 +1,25 @@
+function debounce(func, delay) {
+    let debounceTimer;
+    return function(...args) {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => func.apply(this, args), delay);
+    };
+}
+
+const debouncedSendMessage = debounce(sendMessage, 300); // Apply debounce
+
+document.getElementById("message-input").addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault(); // Prevent default Enter key action
+        const imageInput = document.getElementById("image-input");
+        if (imageInput.files.length > 0) {
+            debouncedSendMessage(); // Use debounced function
+        } else {
+            debouncedSendMessage(); // Use debounced function
+        }
+    }
+});
+
 function sendMessage() {
   const input = document.getElementById("message-input");
   const inputValue = input.value.trim();

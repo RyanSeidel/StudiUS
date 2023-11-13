@@ -14,12 +14,16 @@
             <div class="chat-container">
                 <div class="chat-container-content">
                     <div class="msg-top"></div>
-                    <div id="chat-box"></div>
+                    <div id="chat-box">
+                      <div id="sender-info"></div>  
+                    </div>
                     <div class="msg-bottom">
                         <div class="input-container">
                             <input type="text" id="message-input" placeholder="Write Something..." />
                             <span class="clear-preview" onclick="clearPreview()">&#10005;</span> <!-- Button to clear preview -->
-                        </div>                        
+                            <span onclick="sendMessage()"><i class="send-icon fa-regular fa-paper-plane"></i></span>
+                        </div>
+                                        
                         <div class="icon-group">
                             <div class="icon-left">
                                 <span class="image-input-container">
@@ -30,7 +34,6 @@
                                 <span id="toggleMicrophone"><i class="fa-solid fa-microphone microphone-active"></i></span>
                                 
                             </div>
-                            <span onclick="sendMessage()"><i class="send-icon fa-regular fa-paper-plane"></i></span>
                             <button id="settingsBtn">Settings</button>
                         </div>
                     </div>
@@ -233,27 +236,36 @@ function removeVideoStream(userId) {
   }
 
   socket.on("receiveMessage", (message) => {
-      const chatBox = document.getElementById("chat-box");
-      const isAtTop = chatBox.scrollTop === 0;
-      const messageDiv = document.createElement("div");
+    const chatBox = document.getElementById("chat-box");
+    const messageDiv = document.createElement("div");
+    const senderInfoDiv = document.createElement("div"); // Div for sender's info
 
-      if (message.senderName === "<%= name %>") {
-          messageDiv.classList.add("current-user-message");
-      } else {
-          messageDiv.classList.add("other-user-message");
-      }
+    if (message.senderName === "<%= name %>") {
+      messageDiv.classList.add("current-user-message");
+      senderInfoDiv.classList.add("sender-info-current-user"); // Apply specific class for current user
+  } else {
+      messageDiv.classList.add("other-user-message");
+      senderInfoDiv.classList.add("sender-info-other-user"); // General class for other users
+  }
 
-      if (message.body.startsWith("<img")) {
-          messageDiv.innerHTML = `${message.body} : ${message.senderName}`;
-      } else {
-          messageDiv.textContent = `${message.body} : ${message.senderName}`;
-      }
+    if (message.body.startsWith("<img")) {
+        messageDiv.innerHTML = message.body;
+    } else {
+        messageDiv.textContent = message.body;
+    }
 
-      chatBox.insertBefore(messageDiv, chatBox.firstChild);
+    // Add sender's name and timestamp
+    const currentTime = new Date().toLocaleTimeString();
+    senderInfoDiv.textContent = `${message.senderName} - ${currentTime}`;
 
-      // If the chat was at the top, scroll to the top after adding a new message
-      if (isAtTop) {
-          chatBox.scrollTop = 0;
-      }
-  });
+    // Append message and sender info to chat box
+    chatBox.insertBefore(messageDiv, chatBox.firstChild); // Then insert the message
+    chatBox.insertBefore(senderInfoDiv, chatBox.firstChild); // Insert sender info first
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+
+
+
 </script>
