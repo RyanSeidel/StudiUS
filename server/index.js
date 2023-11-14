@@ -223,22 +223,31 @@ app.post('/update-profile', upload.none(), async (req, res) => {
 });
 
 
-app.post('/upload-profile-pic', upload.single('image'), async (req, res) => {
+app.post('/upload-profile-pic', upload.any(), async (req, res) => {
     try {
-        // Image is uploaded and req.file holds its details
-        const imageUrl = req.file.path; // This is the Cloudinary URL
-
-        // Now, you can save this URL to your user's record in the database
         const user = await User.findById(req.user.id);
-        user.image = imageUrl;
-        await user.save();
+        if (!user) {
+            return res.status(404).json({ error: 'User not found.' });
+        }
 
-        res.json({ success: true, message: 'Image uploaded successfully', newImageUrl: imageUrl });
+        // Update the username
+        user.name = req.body.name || user.name;
+
+        // Update the image if it is included
+        const imageFile = req.files.find(file => file.fieldname === 'image');
+        if (imageFile) {
+            user.image = imageFile.path;
+        }
+
+        await user.save();
+        res.json({ success: true, message: 'Profile updated successfully' });
     } catch (error) {
-        console.error("Error uploading image:", error);
+        console.error("Error updating profile:", error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+
 
 
 app.post('/register', async (req, res) => {

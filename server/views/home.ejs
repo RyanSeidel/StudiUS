@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/home.css">
     <link rel="stylesheet" href="../css/todolist.css">
+    <link  href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
     <title>Welcome to the Island</title>
     
 </head>
@@ -26,7 +29,7 @@
                 <h2>Users</h2>
                 <div style="display: flex; gap: 10px; align-items: center;">
                     <input type="text" id="userSearch" placeholder="Search users...">
-                    <button class="unselect-btn">Unselect</button>
+                    <button id="unselectAllButton" class="unselect-btn">Unselect</button>
                 </div>
                 <div id="users-list">
                     <div id="users-for-room">
@@ -63,14 +66,13 @@
         <span class="close">&times;</span>
         <h2>Edit Profile</h2>
         <div class="profile-pic-container">
-            <img id="profilePic" src="<%= image %>" alt="Profile Picture" />
+            <img id="profilePicPreview" src="<%= image %>" alt="Profile Picture Preview" style="max-width: 100%;"/>
             <input type="file" id="imageUpload" style="display:none;">
             <button onclick="document.getElementById('imageUpload').click();">Change Picture</button>
         </div>
         <label for="name">Name:</label>
         <input type="text" id="nameInput" value="<%= name %>">
-        <button id="updateUsernameBtn">Update Username</button>
-        <button id="saveProfileBtn">Update Image</button>
+        <button id="submitChangesBtn">Submit Changes</button>
     </div>
 </div>
 

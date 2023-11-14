@@ -1,4 +1,3 @@
-
 // Edit Profile Modal handlers
 const editProfileModal = document.getElementById("editProfileModal");
 const editProfileBtn = document.querySelector(".greeting-button");
@@ -35,41 +34,61 @@ const updateProfile = async (formData) => {
     }
 };
 
-document.getElementById('saveProfileBtn').addEventListener('click', async () => {
-    const newName = document.getElementById('nameInput').value;
-    const imageInput = document.getElementById('imageUpload');
-    const formDataForProfile = new FormData();
-    formDataForProfile.append('name', newName);
-
-    if (imageInput && imageInput.files.length > 0) {
-        const formDataForImage = new FormData();
-        formDataForImage.append('image', imageInput.files[0]);
-        try {
-            const imageResponse = await fetch('/upload-profile-pic', {
-                method: 'POST',
-                body: formDataForImage
-            });
-            const imageData = await imageResponse.json();
-            if (imageData.success) {
-                formDataForProfile.append('image', imageData.newImageUrl);
-                location.reload();  // Refresh the page
-            } else {
-                throw new Error(imageData.error);
+let cropper;
+document.getElementById('imageUpload').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('profilePicPreview').src = e.target.result;
+            if (cropper) {
+                cropper.destroy();
             }
-        } catch(error) {
-            console.error("Error uploading image:", error);
-            return;
-        }
-    } else {
-        formDataForProfile.append('image', document.getElementById('profilePic').src);
+            cropper = new Cropper(document.getElementById('profilePicPreview'), {
+                aspectRatio: 1,  // For a square crop box
+                viewMode: 1,
+                // other options as per your requirement
+            });
+        };
+        reader.readAsDataURL(file);
     }
-
-    updateProfile(formDataForProfile);
 });
 
-document.getElementById('updateUsernameBtn').addEventListener('click', () => {
+
+document.getElementById('submitChangesBtn').addEventListener('click', async () => {
     const newName = document.getElementById('nameInput').value;
-    const formDataForName = new FormData();
-    formDataForName.append('name', newName);
-    updateProfile(formDataForName);
+    const formDataForProfile = new FormData();
+    formDataForProfile.append('name', newName); // Append user name
+
+    // Check if the cropper has an image and it's changed
+    if (cropper && document.getElementById('imageUpload').files.length > 0) {
+        cropper.getCroppedCanvas({
+            width: 64,
+            height: 64
+        }).toBlob(async (blob) => {
+            formDataForProfile.append('image', blob); // Append image blob if it's changed
+            await submitProfileUpdate(formDataForProfile);
+        });
+    } else {
+        // If the image isn't changed or doesn't exist, submit only the name change
+        await submitProfileUpdate(formDataForProfile);
+    }
 });
+
+async function submitProfileUpdate(formData) {
+    try {
+        const response = await fetch('/upload-profile-pic', {
+            method: 'POST',
+            body: formData
+        });
+        const responseData = await response.json();
+        if (responseData.success) {
+            location.reload(); // Refresh the page on successful update
+        } else {
+            throw new Error(responseData.error);
+        }
+    } catch (error) {
+        console.error("Error updating profile:", error);
+    }
+}
+
