@@ -14,17 +14,16 @@
 </head>
 
 <body>
-   
-    <h1 style="color: #0071d7; font-size: 36px;">Welcome to the Island!</h1>
+    <div class="greet-wrapper">
+        <button class="greeting-button">Hello <%= name %>!</button>
+        <h2 style="color: #0071d7;">Welcome to StudiUS</h2>
+        <form action="/logout" method="post">
+            <button type="submit" class="create-button">Log out</button>
+        </form>
+    </div>
     <div class="center-box">
         <div class="column-wrapper">
             <div class="left-column">
-                <div style="display:flex; gap: 20px; align-items:center;">
-                    <button class="greeting-button">Hello <%= name %>!</button>
-                    <form action="/logout" method="post">
-                        <button type="submit" class="create-button">Log out</button>
-                    </form>
-                </div>
 
                 <h2>Users</h2>
                 <div style="display: flex; gap: 10px; align-items: center;">
