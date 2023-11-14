@@ -137,7 +137,7 @@ h2 {
 #create-group-button {
   background-color: #4CAF50;
   color: white;
-  padding: 10px 20px;
+  padding: 8px 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -156,7 +156,7 @@ h2 {
 .create-button{
   background-color: white;
   color: black;
-  padding: 10px 20px;
+  padding: 8px 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -273,7 +273,7 @@ align-items: center;
 justify-content: center;
 white-space: nowrap;
 font-size: 16px; /* adjust as needed */
-padding: 10px 20px;
+padding: 8px 10px;
 box-sizing: border-box;
 border: none;
 border-radius: 5px;
