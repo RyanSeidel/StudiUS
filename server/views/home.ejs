@@ -5,41 +5,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../css/todolist.css">
     <title>Welcome to the Island</title>
 </head>
+
 <body>
     <h1 style="color: #0071d7; font-size: 36px;">Welcome to the Island!</h1>
     <div class="center-box">
         <div class="column-wrapper">
-        <div class="left-column">
-            <div style="display:flex; gap: 20px; align-items:center;">
-                <button class="greeting-button">Hello <%= name %>!</button>
-                <form action="/logout" method="post">
-                    <button type="submit" class="create-button">Log out</button>
-                </form>                
+            <div class="left-column">
+                <div style="display:flex; gap: 20px; align-items:center;">
+                    <button class="greeting-button">Hello <%= name %>!</button>
+                    <form action="/logout" method="post">
+                        <button type="submit" class="create-button">Log out</button>
+                    </form>
+                </div>
+
+                <h2>Users</h2>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="text" id="userSearch" placeholder="Search users...">
+                    <button id="unselectAllButton">Unselect All</button>
+                </div>
+                <div id="users-list">
+                    <div id="users-for-room">
+                    </div>
+                </div>
             </div>
-                                
-            <h2>Users:</h2>
-            <div style="display: flex; gap: 10px; align-items: center;">
-            <input type="text" id="userSearch" placeholder="Search users...">
-             <button id="unselectAllButton">Unselect All</button>
+            <div class="middle-column">
+                <h2>All Rooms</h2>
+                <button class="create-button" id="init-create-room">Create Room</button>
+                <div id="rooms-list">
+                </div>
             </div>
-            <div id="users-list">
-            <div id="users-for-room">
-             </div>
+            <div class="right-column">
+                <h2>To Do List</h2>
+                <div class="container">
+                    <div id="newtask">
+                        <input type="text" id="taskInput" placeholder="Task to be done..">
+                        <button id="addTask">Add</button>
+                    </div>
+
+                    <div id="tasks"></div>
+                </div>
             </div>
-        </div>
-        <div class="middle-column">
-            <h2>ALL ROOMS</h2>
-            <button class="create-button" id="init-create-room">Create Room</button>
-            <div id="rooms-list">
-            </div>
-        </div>
-        <div class="right-column">
-            <h2>Statistics</h2>
         </div>
     </div>
-    </div>
+
+
+
+
 
 <!-- Edit Profile Modal -->
 <div id="editProfileModal" class="modal">
@@ -64,7 +78,7 @@
         <h2>Create Room</h2>
         <label for="newRoomName">Room Name:</label>
         <input type="text" id="newRoomName" placeholder="Enter Room Name">
-        <h3>Selected Users:</h3>
+        <h3>Selected Users</h3>
         <div id="selectedUsersDisplay"></div>
         <button id="confirmCreateRoom">Confirm</button>
     </div>
@@ -72,6 +86,8 @@
 <script src="../js/home/fetchUsers.js"></script>
 <script src="../js/home/fetchRooms.js"></script>
 <script src="../js/home/editProfile.js"></script>
+<script src="../js/home/todolist.js"></script>
+
 </body>
 
 </html>

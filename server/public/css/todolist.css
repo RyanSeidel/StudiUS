@@ -1,0 +1,65 @@
+/* Add this to your ../css/home.css or create a new CSS file for to-do list styles */
+
+/* To-Do List Styles */
+.container {
+    margin-top: 20px;
+}
+
+#newtask {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+#taskInput {
+    flex-grow: 1;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ddd; /* Add border styling */
+    border-radius: 5px; /* Add border-radius for rounded edges */
+    outline: none; /* Remove outline on focus */
+}
+
+#addTask {
+    background-color: #0071d7;
+    color: black;
+    border: none;
+    padding: 12px 20px; /* Increase padding for a more rounded button */
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 20px; /* Add border-radius for a more rounded button */
+}
+
+#addTask:hover {
+    background-color: #ddd;
+}
+
+#tasks {
+    list-style-type: none;
+    padding: 0;
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 5px; /* Add border-radius for rounded edges */
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+}
+
+.task-text {
+    flex-grow: 1;
+}
+
+.delete-task {
+    color: black; /* Fix typo: #black to black */
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.delete-task:hover {
+    text-decoration: underline;
+}
