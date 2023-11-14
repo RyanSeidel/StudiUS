@@ -28,8 +28,8 @@ fetch('/users')
             const img = document.createElement('img');
             img.src = user.image;
             img.alt = `${user.name}'s Profile Image`;
-            img.style.width = '30px';
-            img.style.height = '30px';
+            img.style.width = '64px';
+            img.style.height = '64px';
             img.style.borderRadius = '15px';
             img.style.marginRight = '10px';
     
