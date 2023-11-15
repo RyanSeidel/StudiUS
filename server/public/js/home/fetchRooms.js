@@ -8,28 +8,68 @@ function fetchRooms() {
         })
         .then(rooms => {
             const roomsListDiv = document.getElementById('rooms-list');
+            roomsListDiv.innerHTML = ''; // Clear existing rooms
+
             rooms.forEach(room => {
                 const roomDiv = document.createElement('div');
                 roomDiv.className = 'room';
                 roomDiv.style.cursor = 'pointer';
-                roomDiv.style.margin = '10px 0';  // Margin for spacing between each room
-
+                roomDiv.style.margin = '10px 0';
+                roomDiv.style.display = 'flex'; // Make the room box a flex container
+                roomDiv.style.justifyContent = 'space-between'; // Align items to the right
+            
+                const roomInfo = document.createElement('div'); // Container for room info
+                roomInfo.style.display = 'flex';
+                roomInfo.style.flexDirection = 'column'; // Stack room info vertically
+            
                 const roomName = document.createElement('div');
                 roomName.textContent = `Group Name: ${room.name}`;
-                roomName.style.marginBottom = '5px';  // Margin for spacing between room name and member count
-
+                roomName.style.marginBottom = '5px';
+            
+                const roomOwner = document.createElement('div');
+                roomOwner.textContent = `Owner: ${room.ownerName}`;
+                roomOwner.style.fontSize = '12px';
+                roomOwner.style.marginBottom = '5px';
+            
                 const roomMembers = document.createElement('div');
-                // Use the length of the userNames array to display the number of members
-                roomMembers.textContent = `${room.userNames.length} members`;
+                roomMembers.textContent = `Members: ${room.userNames.length}`;
                 roomMembers.style.fontSize = '12px';
+            
+                roomInfo.appendChild(roomName);
+                roomInfo.appendChild(roomOwner);
+                roomInfo.appendChild(roomMembers);
+            
+                // Create a div for the buttons and apply flexbox
+                const buttonContainer = document.createElement('div');
+                buttonContainer.style.display = 'flex';
+                buttonContainer.style.flexDirection = 'row'; // Buttons in a row
+                
 
-                roomDiv.appendChild(roomName);
-                roomDiv.appendChild(roomMembers);
-
-                roomDiv.addEventListener('click', () => {
+                // Create the Edit button
+                const editButton = document.createElement('button');
+                editButton.textContent = 'Edit';
+                editButton.style.marginRight = '5px';
+                editButton.addEventListener('click', () => {
+                    // Handle Edit button click here
+                    // You can open a modal or perform any other action for editing the room
+                });
+            
+                // Create the Go button
+                const goButton = document.createElement('button');
+                goButton.textContent = 'Go';
+                goButton.addEventListener('click', () => {
+                    // Handle Go button click here
+                    // You can navigate to the room or perform any other action for entering the room
                     window.location.href = `/chatroom?roomId=${room._id}`;
                 });
-
+            
+                buttonContainer.appendChild(editButton);
+                buttonContainer.appendChild(goButton);
+            
+                // Add room info and button container to the roomDiv
+                roomDiv.appendChild(roomInfo);
+                roomDiv.appendChild(buttonContainer);
+            
                 roomsListDiv.appendChild(roomDiv);
             });
         })
@@ -40,7 +80,6 @@ function fetchRooms() {
 
 fetchRooms();
 
-    
 // Initiate Create Room Modal handlers
 const initCreateRoomBtn = document.getElementById('init-create-room');
 const createRoomModal = document.getElementById('createRoomModal');
@@ -67,20 +106,23 @@ initCreateRoomBtn.addEventListener('click', () => {
 
         userNames.forEach((userName, index) => {
             const userDiv = document.createElement('div');
-            userDiv.textContent = userName;
             userDiv.style.display = 'flex';
             userDiv.style.alignItems = 'center';
             userDiv.style.justifyContent = 'space-between';
+
+            // Display user name
+            const userNameText = document.createElement('span');
+            userNameText.textContent = userName;
+            userDiv.appendChild(userNameText);
 
             // Create the remove button
             const removeBtn = document.createElement('button');
             removeBtn.textContent = 'X';
             removeBtn.style.marginLeft = '10px';
-
-            // Event listener for the remove button
             removeBtn.addEventListener('click', () => {
-                selectedUsers.splice(index, 1); // Remove the user from the array
-                userDiv.remove(); // Remove the user div from the display
+                // Remove the user from the array and the display
+                selectedUsers.splice(index, 1);
+                userDiv.remove();
             });
 
             userDiv.appendChild(removeBtn);
@@ -94,9 +136,6 @@ initCreateRoomBtn.addEventListener('click', () => {
     createRoomModal.style.display = "block"; // Show the modal
 });
 
-
-
-
 closeCreateRoomModalBtn.onclick = () => createRoomModal.style.display = "none";
 
 window.onclick = event => {
@@ -106,6 +145,8 @@ window.onclick = event => {
 };
 
 confirmCreateRoomBtn.addEventListener('click', () => {
+    console.log("Confirm button clicked"); // Debugging log
+
     const roomName = newRoomNameInput.value;
     if (!roomName.trim()) {
         alert("Please provide a room name.");
@@ -124,10 +165,14 @@ confirmCreateRoomBtn.addEventListener('click', () => {
         return res.json();
     })
     .then(room => {
-        fetchRooms();
-        createRoomModal.style.display = "none"; // Hide the modal
+        console.log("Room created, calling fetchRooms()"); // Debugging log
+        fetchRooms(); // Refresh the rooms list
     })
     .catch(error => {
         console.error("Error creating room:", error);
+    })
+    .finally(() => {
+        console.log("Hiding modal"); // Debugging log
+        createRoomModal.style.display = "none"; // Hide the modal
     });
 });

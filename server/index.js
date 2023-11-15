@@ -143,19 +143,29 @@ app.get('/conversation', async (req, res) => {
 app.get('/get-rooms', async (req, res) => {
     try {
         const currentUser = req.user;
-        const rooms = await ChatRoom.find({ userIds: currentUser._id }).lean();  // Use .lean() for performance and to get plain JS objects
+        const rooms = await ChatRoom.find({ userIds: currentUser._id }).lean();
 
-        // Fetch user names for each room
         for (let room of rooms) {
+            // Fetch user names for each room
             const users = await User.find({ _id: { $in: room.userIds } });
             room.userNames = users.map(user => user.name);
+
+            // Fetch the owner's name
+            if (room.ownerId) {
+                const owner = await User.findById(room.ownerId).lean();
+                room.ownerName = owner ? owner.name : 'Unknown';
+            }
         }
 
         res.json(rooms);
     } catch (error) {
+        console.error("Error fetching rooms:", error);
         res.status(500).send("Error fetching rooms");
     }
 });
+
+
+
 
 app.get('/chatroom', (req, res) => {
     if (!req.user) return res.status(401).send('Not authenticated.');
@@ -170,7 +180,10 @@ app.post('/create-room', async (req, res) => {
     const currentUser = req.user;
     console.log("Current User ID:", currentUser._id);
     
-    allowedUsers.push(currentUser._id.toString());
+    // Ensure the current user is included in the allowed users
+    if (!allowedUsers.includes(currentUser._id.toString())) {
+        allowedUsers.push(currentUser._id.toString());
+    }
     console.log("Allowed Users:", allowedUsers);
 
     const existingRoom = await ChatRoom.findOne({ userIds: { $all: allowedUsers, $size: allowedUsers.length } });
@@ -178,16 +191,22 @@ app.post('/create-room', async (req, res) => {
         return res.status(400).json({ error: 'Room with the same set of users already exists' });
     }
 
-    const newRoom = new ChatRoom({ 
-        name: roomName, 
+    // Create a new room with the current user as the owner
+    const newRoom = new ChatRoom({
+        name: roomName,
         userIds: allowedUsers,
-        isGroup: allowedUsers.length > 1 
+        ownerId: currentUser._id, // Set the current user as the owner of the room
+        ownerName: currentUser.name, // Set the owner's name
+        isGroup: allowedUsers.length > 1,
     });
+    
+
     await newRoom.save();
     console.log("New Room Data:", newRoom);
 
     res.json(newRoom);
 });
+
 
 app.post('/get-user-names', async (req, res) => {
     try {
