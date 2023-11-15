@@ -189,6 +189,18 @@ app.post('/create-room', async (req, res) => {
     res.json(newRoom);
 });
 
+app.post('/get-user-names', async (req, res) => {
+    try {
+        const userIds = req.body.userIds;
+        const users = await User.find({ _id: { $in: userIds } });
+        const userNames = users.map(user => user.name);
+        res.json(userNames);
+    } catch (error) {
+        res.status(500).send("Error fetching user names");
+    }
+});
+
+
 const upload = multer({ 
     storage: storage,
     limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit

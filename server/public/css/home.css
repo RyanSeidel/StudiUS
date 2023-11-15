@@ -73,21 +73,6 @@ h2 {
   outline: none; /* Remove outline on focus */
 }
 
-
-/* #unselectAllButton {
-  background-color: #4CAF50;
-  color: black;
-  border: none;
-  padding: 12px 20px;
-  cursor: pointer;
-  font-size: 16px;
-  border-radius: 70px;
-}
-
-#unselectAllButton:hover {
-  background-color: #d7002f;
-} */
-
 #users-list {
   width: 100%;          
   border-radius: 10px;
