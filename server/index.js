@@ -207,6 +207,30 @@ app.post('/create-room', async (req, res) => {
     res.json(newRoom);
 });
 
+app.post('/remove-user-from-room', async (req, res) => {
+    const { roomId, userName } = req.body;
+
+    try {
+        // Find the user by name to get their ID
+        const user = await User.findOne({ name: userName });
+        if (!user) {
+            return res.status(404).send('User not found.');
+        }
+
+        // Update the chat room to remove the user ID
+        await ChatRoom.findByIdAndUpdate(
+            roomId,
+            { $pull: { userIds: user._id } },
+            { new: true }
+        );
+
+        res.send('User removed from room.');
+    } catch (error) {
+        console.error('Error removing user from room:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 
 app.post('/get-user-names', async (req, res) => {
     try {

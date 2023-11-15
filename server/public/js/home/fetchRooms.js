@@ -99,7 +99,22 @@ function fetchRooms() {
                             removeButton.addEventListener('click', () => {
                                 const isConfirmed = window.confirm(`Are you sure you want to remove ${userName}?`);
                                 if (isConfirmed) {
-                                    // Logic to remove the member
+                                    fetch('/remove-user-from-room', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify({ roomId: room._id, userName: userName })
+                                    })
+                                    .then(response => {
+                                        if (response.ok) {
+                                            // Handle successful removal
+                                            console.log('User removed from room');
+                                            // Optionally, refresh the room list or UI
+                                        } else {
+                                            // Handle error
+                                            console.error('Error removing user from room');
+                                        }
+                                    })
+                                    .catch(error => console.error('Error:', error));
                                 }
                             });
 

@@ -6,13 +6,16 @@ const chatRoomSchema = new mongoose.Schema({
     createAt: { type: Date, default: Date.now },
     lastMessageAt: { type: Date, default: Date.now },
     messagesIds: [mongoose.Schema.Types.ObjectId],
-    userIds: [mongoose.Schema.Types.ObjectId], // This array includes all members of the room
+    userIds: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User' // References the User model
+    }], // Array includes references to User documents
     ownerId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', // Link to your user model
-        required: true, // The room must have an owner
+        ref: 'User', // Reference to the User model for room owner
+        required: true
     },
-    ownerName: String, // Store the owner's name directly in the ChatRoom schema
+    ownerName: String // Optionally, keep the owner's name for quick access
 });
 
 const ChatRoom = mongoose.model('ChatRoom', chatRoomSchema);
