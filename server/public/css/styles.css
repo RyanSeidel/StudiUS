@@ -26,17 +26,15 @@ body {
 
 .button-wrapper {
   display: flex;
-  gap: 20px; /* Adjust spacing between buttons */
-  border: 2px solid black; /* Add a border around the buttons */
-  padding: 15px; 
-  border-radius: 10px; 
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  border-radius: 5%;
+  justify-content: center; /* Center content horizontally and vertically */
+  background-color: rgb(255, 255, 255); /* Set the background color */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
+  width: 250px; /* Set the width */
+  height: 300px; /* Set the height */
 }
-
-
-
 
 
 
@@ -97,6 +95,61 @@ body {
 /* CSS */
 
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&family=Poppins:wght@400;500;600&display=swap');
+
+.join-text {
+  text-align: center; /* Center the text */
+  color: #333; /* Adjust text color */
+  font-size: 20px; /* Adjust font size */
+  margin-bottom: 10px; /* Adjust margin as needed */
+}
+
+.buttonloginpage {
+  display: block;
+  width: 150px; /* Set the width to your desired fixed size */
+  height: 40px; /* Set the height to your desired fixed size */
+  margin: 40px 0; /* Add margin for spacing between buttons (top and bottom) */
+  background-color: #6eb5ff; /* Light blue background color */
+  color: #ffffff; /* White text color */
+  border: none; /* Remove button border */
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer; /* Add cursor pointer on hover */
+  transition: background-color 0.3s; /* Smooth background color transition on hover */
+}
+
+/* Hover effect */
+.buttonloginpage:hover {
+  background-color: #4a90e2; /* Darker blue background color on hover */
+}
+
+.or {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #adadad; /* Adjust text color */
+  margin: 10px 0; /* Adjust margin */
+  position: relative;
+}
+
+.or::before,
+.or::after {
+  content: '';
+  border-bottom: 1px solid #adadad; /* Style the lines */
+  position: absolute;
+  top: 50%;
+  width: 400%; /* Adjust the width of the line */
+}
+
+.or::before {
+  right: 100%; /* Place the line before the text */
+  margin-right: 10px; /* Adjust the space between the line and text */
+}
+
+.or::after {
+  left: 100%; /* Place the line after the text */
+  margin-left: 10px; /* Adjust the space between the text and line */
+}
+
+/* login and register pop ups */
 .login {
   position: fixed; /* keeps the popup within the visible area */
   bottom: 36%; /* Place it at the vertical center */
@@ -108,21 +161,22 @@ body {
   box-shadow: 10px 10px 15px rgba(0,0,0,0.05);
 }
 
-
 .register{
   position: absolute;
   bottom: 30%; /* Place it at the vertical center */
   left: 43%; /* Place it at the horizontal center */
   transform: translate(-50%, -50%);
   width: 350px;
-  background: white;
+  background: rgb(255, 255, 255);
   border-radius: 10px;
   box-shadow: 10px 10px 15px rgba(0,0,0,0.05);
 }
+
+/* ************************************************ */
 .login h1, .register h1 {
   text-align: center;
   padding: 20px 0;
-  border-bottom: 1px solid silver;
+  border-bottom: 1px solid #adadad;
 }
 
 .login form, .register form{
