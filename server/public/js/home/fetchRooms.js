@@ -45,14 +45,28 @@ function fetchRooms() {
                 buttonContainer.style.flexDirection = 'row'; // Buttons in a row
                 
 
-                // Create the Edit button
+                // existing code to create the Edit button
                 const editButton = document.createElement('button');
                 editButton.textContent = 'Edit';
                 editButton.style.marginRight = '5px';
                 editButton.addEventListener('click', () => {
-                    // Handle Edit button click here
-                    // You can open a modal or perform any other action for editing the room
+                // Handle Edit button click here
                 });
+
+                // Create the Leave button
+                const leaveButton = document.createElement('button');
+                leaveButton.textContent = 'Leave';
+                leaveButton.style.marginRight = '5px';
+                leaveButton.addEventListener('click', () => {
+                // Handle Leave button click here
+                });
+
+                // Check if the current user is the room's owner
+                if (room.ownerId === currentUserId) {
+                    buttonContainer.appendChild(editButton);
+                } else {
+                    buttonContainer.appendChild(leaveButton);
+                }
             
                 // Create the Go button
                 const goButton = document.createElement('button');

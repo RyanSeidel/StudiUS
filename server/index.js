@@ -323,7 +323,7 @@ app.get('/', (req, res) => {
 
 app.get('/home', (req, res) => {
     if (!req.user) return res.status(401).send('Not authenticated.');
-    res.render('home', { name: req.user.name, image: req.user.image });
+    res.render('home', { name: req.user.name, image: req.user.image, userId: req.user._id });
 });
 
 
