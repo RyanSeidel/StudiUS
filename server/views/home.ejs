@@ -86,8 +86,30 @@
         <button id="confirmCreateRoom">Confirm</button>
     </div>
 </div>
+
+
+<div id="editRoomModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close" id="closeEditRoomModal">&times;</span>
+        <h2>Edit Room</h2>
+
+        <div class="room-edit-header">
+            <div>
+                <label for="editRoomName">Room Name:</label>
+                <input type="text" id="editRoomName" placeholder="Enter Room Name">
+            </div>
+            <button id="saveRoomChanges">Save Changes</button>
+        </div>
+        
+        <div id="roomMembersList"></div>
+    </div>
+</div>
+
+
+
 <script src="../js/home/fetchUsers.js"></script>
 <script src="../js/home/fetchRooms.js"></script>
+<script src="../js/home/editRoom.js"></script>
 <script src="../js/home/editProfile.js"></script>
 <script src="../js/home/todolist.js"></script>
 

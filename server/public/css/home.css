@@ -275,3 +275,15 @@ cursor: pointer;
 background-color: #0056b3;
 color: white;
 }
+
+.room-edit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.room-edit-header > div {
+  flex-grow: 1;
+}
+

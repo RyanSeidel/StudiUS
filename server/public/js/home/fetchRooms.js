@@ -50,8 +50,71 @@ function fetchRooms() {
                 editButton.textContent = 'Edit';
                 editButton.style.marginRight = '5px';
                 editButton.addEventListener('click', () => {
-                // Handle Edit button click here
+                    // Open the modal
+                    document.getElementById('editRoomModal').style.display = 'block';
+                
+                    // Populate the modal with room details
+                    document.getElementById('editRoomName').value = room.name;
+                    const roomMembersList = document.getElementById('roomMembersList');
+                    roomMembersList.innerHTML = ''; // Clear existing list
+                
+                    // Create an element for the owner
+                    const ownerElement = document.createElement('div');
+                    ownerElement.textContent = `Owner: ${room.ownerName}`;
+                    roomMembersList.appendChild(ownerElement);
+                
+                    // Create a heading for members
+                    const membersHeading = document.createElement('h4');
+                    membersHeading.textContent = 'Members:';
+                    roomMembersList.appendChild(membersHeading);
+                
+                       // List each member
+                    room.userNames.forEach((userName, index) => {
+                        // Skip adding the owner to the members list
+                        if (userName !== room.ownerName) {              
+                            const memberItem = document.createElement('div');
+                            memberItem.style.display = 'flex';
+                            memberItem.style.justifyContent = 'space-between';
+                            memberItem.style.alignItems = 'center';
+
+                            const memberName = document.createElement('span');
+                            memberName.textContent = `${index + 1}. ${userName}`;
+                            memberItem.appendChild(memberName);
+
+                            const buttonContainer = document.createElement('div');
+
+                            // Create and add the Promote button
+                            const promoteButton = document.createElement('button');
+                            promoteButton.textContent = 'Promote';
+                            promoteButton.addEventListener('click', () => {
+                                const isConfirmed = window.confirm(`Are you sure you want to give Ownership to ${userName}?`);
+                                if (isConfirmed) {
+                                    // Logic to promote the member to owner
+                                }
+                            });
+
+                            // Create and add the Remove button
+                            const removeButton = document.createElement('button');
+                            removeButton.textContent = 'X';
+                            removeButton.addEventListener('click', () => {
+                                const isConfirmed = window.confirm(`Are you sure you want to remove ${userName}?`);
+                                if (isConfirmed) {
+                                    // Logic to remove the member
+                                }
+                            });
+
+                            // Append buttons to the button container
+                            buttonContainer.appendChild(promoteButton);
+                            buttonContainer.appendChild(removeButton);
+                            memberItem.appendChild(buttonContainer);
+
+                            roomMembersList.appendChild(memberItem);
+                        }
+                    });
+                
+                    // Add more functionalities as required (e.g., save changes)
                 });
+                
 
                 // Create the Leave button
                 const leaveButton = document.createElement('button');
@@ -93,6 +156,20 @@ function fetchRooms() {
 }
 
 fetchRooms();
+
+
+// Close the modal when the close button is clicked
+document.getElementById('closeEditRoomModal').addEventListener('click', () => {
+    document.getElementById('editRoomModal').style.display = 'none';
+});
+
+// Close the modal when clicking outside of it
+window.onclick = function(event) {
+    if (event.target == document.getElementById('editRoomModal')) {
+        document.getElementById('editRoomModal').style.display = 'none';
+    }
+};
+
 
 // Initiate Create Room Modal handlers
 const initCreateRoomBtn = document.getElementById('init-create-room');
