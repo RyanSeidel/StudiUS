@@ -125,7 +125,7 @@ body {
   display: flex;
   align-items: center;
   text-align: center;
-  color: #adadad; /* Adjust text color */
+  color: #000000; /* Adjust text color */
   margin: 10px 0; /* Adjust margin */
   position: relative;
 }
@@ -133,7 +133,7 @@ body {
 .or::before,
 .or::after {
   content: '';
-  border-bottom: 1px solid #adadad; /* Style the lines */
+  border-bottom: 1px solid #000000; /* Style the lines */
   position: absolute;
   top: 50%;
   width: 400%; /* Adjust the width of the line */
