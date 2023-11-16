@@ -45,6 +45,7 @@ function fetchRooms() {
 
                 const editButton = document.createElement('button');
                 editButton.textContent = 'Edit';
+                editButton.className = 'edit-button'; // Add a class for styling
                 editButton.style.marginRight = '5px';
                 editButton.addEventListener('click', () => {
                     const editRoomModal = document.getElementById('editRoomModal');
@@ -124,11 +125,13 @@ function fetchRooms() {
 
                 const leaveButton = document.createElement('button');
                 leaveButton.textContent = 'Leave';
+                leaveButton.className = 'leave-button'; // Add a class for styling
                 leaveButton.style.marginRight = '5px';
                 // Add logic for leaveButton click event
 
                 const goButton = document.createElement('button');
                 goButton.textContent = 'Go';
+                goButton.className = 'go-button'; // Add a class for styling
                 goButton.addEventListener('click', () => {
                     window.location.href = `/chatroom?roomId=${room._id}`;
                 });

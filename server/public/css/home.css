@@ -332,4 +332,34 @@ color: white;
   /* Additional styling as needed */
 }
 
+.edit-button, .leave-button{
+  background-color: white;
+  font-size: 16px; /* adjust as needed */
+  padding: 8px 10px;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.go-button{
+  background-color: white;
+  font-size: 16px; /* adjust as needed */
+  padding: 8px 10px;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
+  margin-right: 5px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.edit-button:hover, .go-button:hover, .leave-button:hover{
+  background-color: #ddd;
+}
 
