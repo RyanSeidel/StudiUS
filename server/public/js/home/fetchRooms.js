@@ -11,6 +11,7 @@ function fetchRooms() {
             roomsListDiv.innerHTML = ''; // Clear existing rooms
 
             rooms.forEach(room => {
+                
                 const roomDiv = document.createElement('div');
                 roomDiv.className = 'room';
                 roomDiv.style.cursor = 'pointer';
@@ -43,59 +44,69 @@ function fetchRooms() {
                 buttonContainer.style.display = 'flex';
                 buttonContainer.style.flexDirection = 'row';
 
-                const editButton = document.createElement('button');
-                editButton.textContent = 'Edit';
-                editButton.className = 'edit-button'; // Add a class for styling
-                editButton.style.marginRight = '5px';
-                editButton.addEventListener('click', () => {
-                    const editRoomModal = document.getElementById('editRoomModal');
-                    editRoomModal.style.display = 'block';
+                const goButton = document.createElement('button');
+                goButton.textContent = 'Go';
+                goButton.className = 'go-button'; // Add a class for styling
+                goButton.addEventListener('click', () => {
+                    window.location.href = `/chatroom?roomId=${room._id}`;
+                });
 
-                    document.getElementById('editRoomName').value = room.name;
-                    const roomMembersList = document.getElementById('roomMembersList');
-                    roomMembersList.innerHTML = '';
+                
+                
 
-                    const ownerElement = document.createElement('div');
-                    ownerElement.textContent = `Owner: ${room.ownerName}`;
-                    roomMembersList.appendChild(ownerElement);
+                if (room.ownerId === currentUserId) {
+                    console.log("Current user is the owner of the room:", room.name);
+                    const editButton = document.createElement('button');
+                    editButton.textContent = 'Edit';
+                    editButton.className = 'edit-button'; // Add a class for styling
+                    editButton.style.marginRight = '5px';
+                    editButton.addEventListener('click', () => {
+                        const editRoomModal = document.getElementById('editRoomModal');
+                        editRoomModal.style.display = 'block';
 
-                    const membersHeading = document.createElement('h4');
-                    membersHeading.textContent = 'Members:';
-                    roomMembersList.appendChild(membersHeading);
+                        document.getElementById('editRoomName').value = room.name;
+                        const roomMembersList = document.getElementById('roomMembersList');
+                        roomMembersList.innerHTML = '';
 
-                    room.userNames.forEach((userName, index) => {
-                        if (userName !== room.ownerName) {
-                            const memberItem = document.createElement('div');
-                            memberItem.style.display = 'flex';
-                            memberItem.style.justifyContent = 'space-between';
-                            memberItem.style.alignItems = 'center';
-                    
-                            const memberName = document.createElement('span');
-                            memberName.textContent = `${index + 1}. ${userName}`;
-                            memberItem.appendChild(memberName);
-                    
-                            const innerButtonContainer = document.createElement('div');
-                    
-                            const promoteButton = document.createElement('button');
-                            promoteButton.textContent = 'Promote';
-                            promoteButton.className = 'promote-button'; // Add a class for styling
-                            // Add logic for promoteButton click event
-                    
-                            const removeButton = document.createElement('button');
-                            removeButton.textContent = 'X';
-                            removeButton.className = 'remove-button'; // Add a class for styling
-                            // Add logic for removeButton click event
-                    
-                            innerButtonContainer.appendChild(promoteButton);
-                            innerButtonContainer.appendChild(removeButton);
-                            memberItem.appendChild(innerButtonContainer);
-                    
-                            roomMembersList.appendChild(memberItem);
-                        }
-                    });
-                    
+                        const ownerElement = document.createElement('div');
+                        ownerElement.textContent = `Owner: ${room.ownerName}`;
+                        roomMembersList.appendChild(ownerElement);
 
-                    if (room.ownerId === currentUserId) {
+                        const membersHeading = document.createElement('h4');
+                        membersHeading.textContent = 'Members:';
+                        roomMembersList.appendChild(membersHeading);
+
+                        room.userNames.forEach((userName, index) => {
+                            if (userName !== room.ownerName) {
+                                const memberItem = document.createElement('div');
+                                memberItem.style.display = 'flex';
+                                memberItem.style.justifyContent = 'space-between';
+                                memberItem.style.alignItems = 'center';
+                        
+                                const memberName = document.createElement('span');
+                                memberName.textContent = `${index + 1}. ${userName}`;
+                                memberItem.appendChild(memberName);
+                        
+                                const innerButtonContainer = document.createElement('div');
+                        
+                                const promoteButton = document.createElement('button');
+                                promoteButton.textContent = 'Promote';
+                                promoteButton.className = 'promote-button'; // Add a class for styling
+                                // Add logic for promoteButton click event
+                        
+                                const removeButton = document.createElement('button');
+                                removeButton.textContent = 'X';
+                                removeButton.className = 'remove-button'; // Add a class for styling
+                                // Add logic for removeButton click event
+                        
+                                innerButtonContainer.appendChild(promoteButton);
+                                innerButtonContainer.appendChild(removeButton);
+                                memberItem.appendChild(innerButtonContainer);
+                        
+                                roomMembersList.appendChild(memberItem);
+                            }
+                        });
+
                         const deleteRoomButton = document.createElement('button');
                         deleteRoomButton.textContent = 'Delete Room';
                         deleteRoomButton.className = 'delete-room-button'; // Add a class for the delete button
@@ -119,27 +130,19 @@ function fetchRooms() {
                             }
                         });
                         roomMembersList.appendChild(deleteRoomButton);
-                    }
-                    
-                });
 
-                const leaveButton = document.createElement('button');
-                leaveButton.textContent = 'Leave';
-                leaveButton.className = 'leave-button'; // Add a class for styling
-                leaveButton.style.marginRight = '5px';
-                // Add logic for leaveButton click event
-
-                const goButton = document.createElement('button');
-                goButton.textContent = 'Go';
-                goButton.className = 'go-button'; // Add a class for styling
-                goButton.addEventListener('click', () => {
-                    window.location.href = `/chatroom?roomId=${room._id}`;
-                });
-
-                buttonContainer.appendChild(editButton);
-                buttonContainer.appendChild(goButton);
-                if (room.ownerId !== currentUserId) {
+                        
+                    });
+                    buttonContainer.appendChild(editButton);
+                    buttonContainer.appendChild(goButton);
+                } else {
+                    const leaveButton = document.createElement('button');
+                    leaveButton.textContent = 'Leave';
+                    leaveButton.className = 'leave-button'; // Add a class for styling
+                    leaveButton.style.marginRight = '5px';
+                    // Add logic for leaveButton click event
                     buttonContainer.appendChild(leaveButton);
+                    buttonContainer.appendChild(goButton);
                 }
 
                 roomDiv.appendChild(roomInfo);
@@ -154,6 +157,7 @@ function fetchRooms() {
 }
 
 fetchRooms();
+
 
 
 
