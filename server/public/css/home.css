@@ -290,3 +290,21 @@ color: white;
   flex-grow: 1;
 }
 
+
+/* The buttons for the edit button */
+.promote-button {
+  background-color: green;
+}
+
+.remove-button {
+  background-color: red;
+}
+
+.delete-room-button {
+  background-color: red;
+  color: white;
+  margin-top: 10px;
+  /* Additional styling as needed */
+}
+
+

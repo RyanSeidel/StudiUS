@@ -68,35 +68,36 @@ function fetchRooms() {
                             memberItem.style.display = 'flex';
                             memberItem.style.justifyContent = 'space-between';
                             memberItem.style.alignItems = 'center';
-
+                    
                             const memberName = document.createElement('span');
                             memberName.textContent = `${index + 1}. ${userName}`;
                             memberItem.appendChild(memberName);
-
+                    
                             const innerButtonContainer = document.createElement('div');
-
+                    
                             const promoteButton = document.createElement('button');
                             promoteButton.textContent = 'Promote';
+                            promoteButton.className = 'promote-button'; // Add a class for styling
                             // Add logic for promoteButton click event
-
+                    
                             const removeButton = document.createElement('button');
                             removeButton.textContent = 'X';
+                            removeButton.className = 'remove-button'; // Add a class for styling
                             // Add logic for removeButton click event
-
+                    
                             innerButtonContainer.appendChild(promoteButton);
                             innerButtonContainer.appendChild(removeButton);
                             memberItem.appendChild(innerButtonContainer);
-
+                    
                             roomMembersList.appendChild(memberItem);
                         }
                     });
+                    
 
                     if (room.ownerId === currentUserId) {
                         const deleteRoomButton = document.createElement('button');
                         deleteRoomButton.textContent = 'Delete Room';
-                        deleteRoomButton.style.backgroundColor = 'red';
-                        deleteRoomButton.style.color = 'white';
-                        deleteRoomButton.style.marginTop = '10px';
+                        deleteRoomButton.className = 'delete-room-button'; // Add a class for the delete button
                         deleteRoomButton.addEventListener('click', () => {
                             const isConfirmed = window.confirm(`Are you sure you want to delete '${room.name}'?`);
                             if (isConfirmed) {
@@ -118,6 +119,7 @@ function fetchRooms() {
                         });
                         roomMembersList.appendChild(deleteRoomButton);
                     }
+                    
                 });
 
                 const leaveButton = document.createElement('button');
