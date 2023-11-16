@@ -1,373 +1,375 @@
 :root {
-  --blue-color-light: #6eb5ff;
-  --blue-color-dark: #4b7eff;
-  --background-color: #f9f9f9;
-  --background-message-color: #f6f8fc;
-  --text-color: #fff;
+    --blue-color-light: #6eb5ff;
+    --blue-color-dark: #4b7eff;
+    --background-color: #f9f9f9;
+    --background-message-color: #f6f8fc;
+    --text-color: #fff;
 }
 body {
-  font-family: Arial, sans-serif;
-  height: 100vh;
-  margin: 0 5px;
-  justify-content: center;
-  align-items: center;
-  background-color: #fff;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    margin: 0 5px;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
 }
 button {
-  background-color: transparent; /* No background color */
-  color: gray; /* Gray text */
-  border: none; /* No border */
-  cursor: pointer; /* Changes cursor to pointer on hover */
-  padding: 10px; /* Optional padding for better click area */
-  font-size: 1em; /* Optional font size adjustment */
-  display: flex; /* To align the icon and text */
-  align-items: center; /* Vertical alignment */
-  justify-content: center; /* Horizontal alignment */
+    background-color: transparent; /* No background color */
+    color: gray; /* Gray text */
+    border: none; /* No border */
+    cursor: pointer; /* Changes cursor to pointer on hover */
+    padding: 10px; /* Optional padding for better click area */
+    font-size: 1em; /* Optional font size adjustment */
+    display: flex; /* To align the icon and text */
+    align-items: center; /* Vertical alignment */
+    justify-content: center; /* Horizontal alignment */
 }
-
 
 button:hover {
-  color: black; /* Change text color to black on hover */
+    color: black; /* Change text color to black on hover */
 }
 
-.chat-btn, .participants-btn{
-  background-color: transparent; /* No background color */
-  color: gray; /* Gray text */
-  border: none; /* No border */
-  cursor: pointer; /* Changes cursor to pointer on hover */
-  padding: 10px; /* Optional padding for better click area */
-  font-size: 1em; /* Optional font size adjustment */
-  display: flex; /* To align the icon and text */
-  align-items: center; /* Vertical alignment */
-  justify-content: center; /* Horizontal alignment */
+.chat-btn,
+.participants-btn {
+    background-color: transparent; /* No background color */
+    color: gray; /* Gray text */
+    border: none; /* No border */
+    cursor: pointer; /* Changes cursor to pointer on hover */
+    padding: 10px; /* Optional padding for better click area */
+    font-size: 1em; /* Optional font size adjustment */
+    display: flex; /* To align the icon and text */
+    align-items: center; /* Vertical alignment */
+    justify-content: center; /* Horizontal alignment */
 }
 
-.chat-btn:hover, .participants-btn:hover{
-  color: #339965; 
-  font-weight: 600;
+.chat-btn:hover,
+.participants-btn:hover {
+    color: #339965;
+    font-weight: 600;
 }
 
 .chat-container {
-  padding: 10px;
+    padding: 10px;
 }
 .chat-container-content {
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
 }
 
 #chat-box-container {
-  width: 100%;
-  height: 82%; /* Adjust based on your layout */
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: flex-start;
-  background-color: var(--background-message-color); /* Adjust as needed */
-  min-height: 0;
+    width: 100%;
+    height: 82%; /* Adjust based on your layout */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    background-color: var(--background-message-color); /* Adjust as needed */
+    min-height: 0;
 }
 
 #participants-container {
-  width: 100%;
-  height: 82%;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column; /* Stack items vertically */
-  align-items: center; /* Align items in the center */
-  background-color: var(--background-message-color);
-  min-height: 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow for the whole container */
+    width: 100%;
+    height: 82%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Align items in the center */
+    background-color: var(--background-message-color);
+    min-height: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow for the whole container */
 }
 
 .participants-title {
-  margin-top: 15px;
-  margin-bottom: 15px; /* Space between the title and the list */
-  font-size: 1.2em; /* Larger font size for the title */
-  font-weight: bold; /* Optional: make the title bold */
+    margin-top: 15px;
+    margin-bottom: 15px; /* Space between the title and the list */
+    font-size: 1.2em; /* Larger font size for the title */
+    font-weight: bold; /* Optional: make the title bold */
 }
 
 #participants-list div {
-  background-color: #ffffff;
-  margin-bottom: 8px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    margin-bottom: 8px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .sender-info-current-user {
-  align-self: flex-end;
-  font-size: 0.8em;
-  color: #000; /* Black font color */
-  margin-top: 2px; /* Small space above sender info */
-  margin-bottom: 10px; /* Space below sender info before next message */
-  text-align: right; /* Align right for current user */
-  width: fit-content;
-
+    align-self: flex-end;
+    font-size: 0.8em;
+    color: #000; /* Black font color */
+    margin-top: 2px; /* Small space above sender info */
+    margin-bottom: 10px; /* Space below sender info before next message */
+    text-align: right; /* Align right for current user */
+    width: fit-content;
 }
 
 .sender-info-other-user {
-  font-size: 0.8em;
-  color: #000; /* Black font color */
-  margin-top: 2px; /* Small space above sender info */
-  margin-bottom: 10px; /* Space below sender info before next message */
-  text-align: left; /* Align left for other users */
-  width: fit-content;
+    font-size: 0.8em;
+    color: #000; /* Black font color */
+    margin-top: 2px; /* Small space above sender info */
+    margin-bottom: 10px; /* Space below sender info before next message */
+    text-align: left; /* Align left for other users */
+    width: fit-content;
 }
 
 .current-user-message {
-  color: white;
-  align-self: flex-end;
-  background-color: var(--blue-color-dark);
-  margin: 5px 5px;
-  padding: 10px 15px;
-  border-radius: 15px;
-  width: fit-content;
-  position: relative; /* Add relative positioning */
+    color: white;
+    align-self: flex-end;
+    background-color: var(--blue-color-dark);
+    margin: 5px 5px;
+    padding: 10px 15px;
+    border-radius: 15px;
+    width: fit-content;
+    position: relative; /* Add relative positioning */
 }
 
 .current-user-message::after {
-  content: "";
-  position: absolute;
-  bottom: -5px;
-  right: -3px;
-  width: 20px;
-  height: 20px;
-  background-color: var(--blue-color-dark);
-  clip-path: polygon(100% 80%, 0 0, 0 100%);
-  border-radius: 50px;
-  transform: rotate(45deg);
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    right: -3px;
+    width: 20px;
+    height: 20px;
+    background-color: var(--blue-color-dark);
+    clip-path: polygon(100% 80%, 0 0, 0 100%);
+    border-radius: 50px;
+    transform: rotate(45deg);
 }
 
-
 .other-user-message {
-  background-color: #ededed;
-  color: black;
-  margin: 5px 5px;
-  padding: 10px 15px;
-  border-radius: 15px;
-  width: fit-content;
-  position: relative; /* Add relative positioning */
+    background-color: #ededed;
+    color: black;
+    margin: 5px 5px;
+    padding: 10px 15px;
+    border-radius: 15px;
+    width: fit-content;
+    position: relative; /* Add relative positioning */
 }
 
 .other-user-message::after {
-  content: "";
-  position: absolute;
-  bottom: -5px;
-  left: -3px; /* Adjust for the left side */
-  width: 20px;
-  height: 20px;
-  background-color: #ededed; /* Match the message background color */
-  clip-path: polygon(0 80%, 100% 0, 100% 100%); /* Shark tooth shape with curved flat line */
-  border-radius: 50px;
-  transform: rotate(310deg);
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: -3px; /* Adjust for the left side */
+    width: 20px;
+    height: 20px;
+    background-color: #ededed; /* Match the message background color */
+    clip-path: polygon(
+        0 80%,
+        100% 0,
+        100% 100%
+    ); /* Shark tooth shape with curved flat line */
+    border-radius: 50px;
+    transform: rotate(310deg);
 }
 
-
 .msg-bottom {
-  display: flex;
-  justify-content: space-between; /* Aligns children to both ends */
-  align-items: center; /* Vertically centers children */
-  padding: 10px 20px;
-  background-color: #fff;
-  border-radius: 0px 0px 10px 10px;
+    display: flex;
+    justify-content: space-between; /* Aligns children to both ends */
+    align-items: center; /* Vertically centers children */
+    padding: 10px 20px;
+    background-color: #fff;
+    border-radius: 0px 0px 10px 10px;
 }
 
 .msg-top {
-  display: flex;
-  align-items: center; /* Aligns items vertically in the center */
-  padding: 5px;
-  background-color: #fff;
-  border-radius: 10px 10px 0px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 10px;
 }
 
-#leaveHomeBtn{
-  background-color: orange;
-  color: black;
+.msg-top-left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.spacer {
-  flex-grow: 1; /* Causes the spacer to take up all available space */
+
+#leaveHomeBtn {
+    margin-top: 15px;
+    border-radius: 10px;
+    color: grey;
+    border: 1px solid var(--blue-color-dark);
 }
- 
+#leaveHomeBtn:hover {
+    color: #fff;
+    background-color: var(--blue-color-dark);
+}
+
 #message-input {
-  flex-grow: 1;
-  width: 80%;
-  padding: 12px 20px;
-  margin: 5px 0;
-  border-radius: 30px;
-  border: 1px solid #ccc;
-  background-size: 85px 80px;
-  background-repeat: no-repeat; /* Ensure the image doesn't repeat */
-  background-position: right 10px center; /* Position the image to the right with some padding */
-  padding-right: 60px; /* Provide space for the image preview so text doesn't overlap */
-  max-height: 10vh;
-  min-height: 1vh;
-  height: auto; /* Allow the height to adjust dynamically */
-  transition: height 0.3s; /* Smooth transition for height changes */
+    flex-grow: 1;
+    width: 80%;
+    padding: 12px 20px;
+    margin: 5px 0;
+    border-radius: 30px;
+    border: 1px solid #ccc;
+    background-size: 85px 80px;
+    background-repeat: no-repeat; /* Ensure the image doesn't repeat */
+    background-position: right 10px center; /* Position the image to the right with some padding */
+    padding-right: 60px; /* Provide space for the image preview so text doesn't overlap */
+    max-height: 10vh;
+    min-height: 1vh;
+    height: auto; /* Allow the height to adjust dynamically */
+    transition: height 0.3s; /* Smooth transition for height changes */
 }
-
 
 .icon-group {
-  margin: 5px 15px;
-  display: flex;
-  justify-content: space-between;
+    margin: 5px 15px;
+    display: flex;
+    justify-content: space-between;
 }
 .icon-left span {
-  margin-right: 10px;
+    margin-right: 10px;
 }
 .icon-left span i,
 .send-icon {
-  font-size: 20px;
+    font-size: 20px;
 }
 .icon-left span i:hover,
 .send-icon:hover {
-  color: #0071d7;
-  cursor: pointer;
-  transition: 0.2s;
+    color: #0071d7;
+    cursor: pointer;
+    transition: 0.2s;
 }
 
 .send-icon {
-  font-size: 1.6em; /* Increase the size of the icon */
-  margin-left: 10px; /* Add space between the message input and the send icon */
-  cursor: pointer; /* Change cursor to indicate it's clickable */
+    font-size: 1.6em; /* Increase the size of the icon */
+    margin-left: 10px; /* Add space between the message input and the send icon */
+    cursor: pointer; /* Change cursor to indicate it's clickable */
 }
 
-
-
-.camera-active, .microphone-active {
-  color: red;
+.camera-active,
+.microphone-active {
+    color: red;
 }
+
 #video-container {
-  margin: 10px 80px;
-  min-height: 5vh; /* Using min-height to ensure that the container does not become too small */
-  background-color: #0071d7;
-  display: flex;
-  flex-wrap: nowrap; /* Prevents the videos from wrapping onto multiple lines */
-  overflow-x: auto; /* Adds a horizontal scrollbar if there are many videos */
-  justify-content: center; /* Aligns videos to the start of the container */
-  align-items: center;
-  border-radius: 10px;
+    margin: 10px 80px;
+    min-height: 5vh; /* Using min-height to ensure that the container does not become too small */
+    background-color: #0071d7;
+    display: flex;
+    flex-wrap: nowrap; /* Prevents the videos from wrapping onto multiple lines */
+    overflow-x: auto; /* Adds a horizontal scrollbar if there are many videos */
+    justify-content: center; /* Aligns videos to the start of the container */
+    align-items: center;
+    border-radius: 10px;
 }
 
 video {
-  width: 30%; /* Sets a base width for each video */
-  max-width: 240px; /* Ensures that the video does not become too large */
-  margin: 5px; /* Adds some space between videos */
-  border-radius: 5px; /* Optional: Rounds the corners of the video elements */
+    width: 30%; /* Sets a base width for each video */
+    max-width: 240px; /* Ensures that the video does not become too large */
+    margin: 5px; /* Adds some space between videos */
+    border-radius: 5px; /* Optional: Rounds the corners of the video elements */
 }
 
 .screen-parent {
-  background-color: #fff;
-  width: 92%;
-  display: flex;
-  flex-direction: row;
+    background-color: #fff;
+    width: 92%;
+    display: flex;
+    flex-direction: row;
 }
 .screen-center {
-  display: flex;
-  justify-content: center;
-  height: 80vh;
+    display: flex;
+    justify-content: center;
+    height: 80vh;
 }
 /* This edit the size of the screens  */
-.chat-container{
-  flex: 1;
+.chat-container {
+    flex: 1;
 }
 .left-screen {
-  flex: 1.75;
+    flex: 1.75;
 }
 
 #audioMeterModal {
-  margin-top: 10px;
-  height: 10px;
-  background-color: #ddd;
-  width: 100%; /* Ensures it takes the full width of its container */
+    margin-top: 10px;
+    height: 10px;
+    background-color: #ddd;
+    width: 100%; /* Ensures it takes the full width of its container */
 }
 
 #audioMeterModal div {
-  height: 10px;
-  width: 0;
-  background-color: #339965;
-  transition: width 0.1s;
+    height: 10px;
+    width: 0;
+    background-color: #339965;
+    transition: width 0.1s;
 }
 
-
 .modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.4);
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 30%;
-  position: relative;
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    position: relative;
 }
 
 .close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  position: absolute;
-  top: 0;
-  right: 15px;
-  cursor: pointer;
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 0;
+    right: 15px;
+    cursor: pointer;
 }
 
 .close:hover,
 .close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 .input-container {
-  flex-grow: 1; /* Takes up the remaining space */
-  position: relative; /* For absolute positioning of inner elements */
-  display: flex; /* Use flexbox for layout */
-  align-items: center; /* Align items vertically in the center */
+    flex-grow: 1; /* Takes up the remaining space */
+    position: relative; /* For absolute positioning of inner elements */
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Align items vertically in the center */
 }
-
 
 .clear-preview {
-  display: none;
-  position: absolute;
-  right: 29px;
-  top: 40%;
-  transform: translateY(-40%);
-  cursor: pointer;
-  color: red; /* Set text color to red */
-  font-size: 1.2em; /* Optionally adjust the size */
+    display: none;
+    position: absolute;
+    right: 29px;
+    top: 40%;
+    transform: translateY(-40%);
+    cursor: pointer;
+    color: red; /* Set text color to red */
+    font-size: 1.2em; /* Optionally adjust the size */
 }
-
 
 .inactive-video {
-  opacity: 0;
+    opacity: 0;
 }
 
-
 #settingsBtn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* other styling properties as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* other styling properties as needed */
 }
 
 #settingsBtn i {
-  margin-right: 5px; /* Adds space between the icon and the text */
+    margin-right: 5px; /* Adds space between the icon and the text */
 }
 
 .active-btn {
-  color: #339965; /* White text color */
-  font-weight: 600;
+    color: #339965; /* White text color */
+    font-weight: 600;
 }
-
-
-

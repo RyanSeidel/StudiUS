@@ -14,12 +14,18 @@
             <div class="chat-container">
                 <div class="chat-container-content">
                   <div class="msg-top">
-                    <button id="chatBtn" class="chat-btn" onclick="toggleView('chat')">Chat</button>
-                    <button id="participantsBtn" class="participants-btn" onclick="toggleView('participants')">Participants</button>
-                    <div class="spacer"></div> <!-- Spacer element -->
-                    <form action="/home" method="get">
-                      <button type="submit" id="leaveHomeBtn">Leave to Home</button>
-                  </form>
+
+                    <div  class="msg-top-left">
+                      <button id="chatBtn" class="chat-btn" onclick="toggleView('chat')">Chat</button>
+                      <button id="participantsBtn" class="participants-btn" onclick="toggleView('participants')">Participants</button>
+                    </div>
+                    
+                    <div class="msg-top-right">
+                      <form action="/home" method="get">
+                        <button type="submit" id="leaveHomeBtn">Leave Room</button>
+                    </form>
+                    </div>
+                    
                 </div>
                 
                 
