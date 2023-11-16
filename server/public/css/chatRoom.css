@@ -55,15 +55,16 @@ button:hover {
   border-radius: 10px;
 }
 
-#chat-box-container {
+#chat-box-container, #participants-container {
   width: 100%;
-  height: 82%;
+  height: 82%; /* Adjust based on your layout */
   overflow-y: auto;
   display: flex;
-  flex-direction: column-reverse;
-  background-color: var(--background-message-color);
+  flex-direction: column;
+  background-color: var(--background-message-color); /* Adjust as needed */
   min-height: 0;
 }
+
 
 
 #chat-box {
@@ -315,5 +316,6 @@ video {
   color: #339965; /* White text color */
   font-weight: 600;
 }
+
 
 

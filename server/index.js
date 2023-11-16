@@ -69,6 +69,7 @@ const storage = new CloudinaryStorage({
     },
 });
 
+const participantsByRoom = {};
 
 // Socket.io Logic
 io.on('connection', (socket) => {
@@ -77,6 +78,17 @@ io.on('connection', (socket) => {
         socket.join(roomId);
         socket.roomId = roomId; // Store roomId in the socket instance
         console.log(`${userName} (ID: ${userId}) connected to room ${roomId}`);
+
+
+        // Add the user to the participants list for the room
+        if (!participantsByRoom[roomId]) {
+            participantsByRoom[roomId] = [];
+        }
+        participantsByRoom[roomId].push({ userId, userName });
+
+        // Emit the updated participants list to everyone in the room
+        io.to(roomId).emit('participants-updated', participantsByRoom[roomId]);
+
         socket.to(roomId).emit('user-connected', userId, userName);
     });
 
@@ -109,8 +121,13 @@ io.on('connection', (socket) => {
 
       socket.on('disconnect', () => {
         console.log(`${socket.id} disconnected`);
-        if(socket.roomId) {
+        if (socket.roomId) {
+            // Remove the user from the participants list
+            participantsByRoom[socket.roomId] = participantsByRoom[socket.roomId].filter(participant => participant.userId !== socket.id);
             socket.to(socket.roomId).emit('user-disconnected', socket.id);
+
+            // Send the updated participants list to everyone in the room
+            io.to(socket.roomId).emit('participants-updated', participantsByRoom[socket.roomId]);
         }
     });   
 });

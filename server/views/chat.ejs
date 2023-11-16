@@ -24,6 +24,14 @@
                     <!-- Messages will be appended here -->
                   </div>
                 </div>
+
+                <div id="participants-container" style="display: none;">
+                  <div id="participants-list">
+                      <!-- Participants will be listed here -->
+                  </div>
+              </div>
+          
+              
               
 
                     <div class="msg-bottom">
@@ -49,10 +57,13 @@
                                         
                 
                     </div>
+                  </div>
                 </div>
             </div>
         </div>
     </div>
+
+
 
     
     
@@ -282,6 +293,20 @@ function removeVideoStream(userId) {
   
     chatBox.scrollTop = chatBox.scrollHeight;
   });
+
+  // Handle the 'participants-updated' event
+  socket.on('participants-updated', (participants) => {
+    const participantsList = document.getElementById('participants-list');
+    participantsList.innerHTML = ''; // Clear existing list
+
+    participants.forEach(participant => {
+        const participantDiv = document.createElement('div');
+        participantDiv.textContent = participant.userName;
+        participantsList.appendChild(participantDiv);
+    });
+});
+
+
   
   
 
