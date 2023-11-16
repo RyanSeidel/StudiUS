@@ -97,9 +97,8 @@ button:hover {
 .sender-info-current-user {
     align-self: flex-end;
     font-size: 0.8em;
-    color: #000; /* Black font color */
-    margin-top: 2px; /* Small space above sender info */
-    margin-bottom: 10px; /* Space below sender info before next message */
+    color: black; /* Black font color */
+    margin: 2px 15px 10px 15px;
     text-align: right; /* Align right for current user */
     width: fit-content;
 }
@@ -117,7 +116,7 @@ button:hover {
     color: white;
     align-self: flex-end;
     background-color: var(--blue-color-dark);
-    margin: 5px 5px;
+    margin: 5px 15px;
     padding: 10px 15px;
     border-radius: 15px;
     width: fit-content;
@@ -166,7 +165,7 @@ button:hover {
 
 .msg-bottom {
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: center; /* Vertically centers children */
     padding: 10px 20px;
     background-color: #fff;
@@ -233,10 +232,10 @@ button:hover {
     transition: 0.2s;
 }
 
-.icon-left{
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.icon-left {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .send-icon {
     font-size: 1.6em; /* Increase the size of the icon */
@@ -363,8 +362,7 @@ video {
 }
 
 #settingsBtn {
-    color:black;
-    
+    color: black;
 }
 .active-btn {
     color: #339965; /* White text color */
