@@ -287,10 +287,12 @@ function removeVideoStream(userId) {
     senderInfoDiv.textContent = `${message.senderName} - ${currentTime}`;
 
     // Append message and sender info directly to chatBoxContainer
-    chatBoxContainer.appendChild(senderInfoDiv);
-    chatBoxContainer.appendChild(messageDiv);
+    chatBoxContainer.insertBefore(messageDiv, chatBoxContainer.firstChild);
+    chatBoxContainer.insertBefore(senderInfoDiv, chatBoxContainer.firstChild);
+
 
     chatBoxContainer.scrollTop = chatBoxContainer.scrollHeight;
+
 });
 
   // Handle the 'participants-updated' event
