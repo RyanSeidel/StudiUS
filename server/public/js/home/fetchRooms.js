@@ -15,63 +15,55 @@ function fetchRooms() {
                 roomDiv.className = 'room';
                 roomDiv.style.cursor = 'pointer';
                 roomDiv.style.margin = '10px 0';
-                roomDiv.style.display = 'flex'; // Make the room box a flex container
-                roomDiv.style.justifyContent = 'space-between'; // Align items to the right
-            
-                const roomInfo = document.createElement('div'); // Container for room info
+                roomDiv.style.display = 'flex';
+                roomDiv.style.justifyContent = 'space-between';
+
+                const roomInfo = document.createElement('div');
                 roomInfo.style.display = 'flex';
-                roomInfo.style.flexDirection = 'column'; // Stack room info vertically
-            
+                roomInfo.style.flexDirection = 'column';
+
                 const roomName = document.createElement('div');
                 roomName.textContent = `Group Name: ${room.name}`;
                 roomName.style.marginBottom = '5px';
-            
+
                 const roomOwner = document.createElement('div');
                 roomOwner.textContent = `Owner: ${room.ownerName}`;
                 roomOwner.style.fontSize = '12px';
                 roomOwner.style.marginBottom = '5px';
-            
+
                 const roomMembers = document.createElement('div');
                 roomMembers.textContent = `Members: ${room.userNames.length}`;
                 roomMembers.style.fontSize = '12px';
-            
+
                 roomInfo.appendChild(roomName);
                 roomInfo.appendChild(roomOwner);
                 roomInfo.appendChild(roomMembers);
-            
-                // Create a div for the buttons and apply flexbox
+
                 const buttonContainer = document.createElement('div');
                 buttonContainer.style.display = 'flex';
-                buttonContainer.style.flexDirection = 'row'; // Buttons in a row
-                
+                buttonContainer.style.flexDirection = 'row';
 
-                // existing code to create the Edit button
                 const editButton = document.createElement('button');
                 editButton.textContent = 'Edit';
                 editButton.style.marginRight = '5px';
                 editButton.addEventListener('click', () => {
-                    // Open the modal
-                    document.getElementById('editRoomModal').style.display = 'block';
-                
-                    // Populate the modal with room details
+                    const editRoomModal = document.getElementById('editRoomModal');
+                    editRoomModal.style.display = 'block';
+
                     document.getElementById('editRoomName').value = room.name;
                     const roomMembersList = document.getElementById('roomMembersList');
-                    roomMembersList.innerHTML = ''; // Clear existing list
-                
-                    // Create an element for the owner
+                    roomMembersList.innerHTML = '';
+
                     const ownerElement = document.createElement('div');
                     ownerElement.textContent = `Owner: ${room.ownerName}`;
                     roomMembersList.appendChild(ownerElement);
-                
-                    // Create a heading for members
+
                     const membersHeading = document.createElement('h4');
                     membersHeading.textContent = 'Members:';
                     roomMembersList.appendChild(membersHeading);
-                
-                       // List each member
+
                     room.userNames.forEach((userName, index) => {
-                        // Skip adding the owner to the members list
-                        if (userName !== room.ownerName) {              
+                        if (userName !== room.ownerName) {
                             const memberItem = document.createElement('div');
                             memberItem.style.display = 'flex';
                             memberItem.style.justifyContent = 'space-between';
@@ -81,87 +73,73 @@ function fetchRooms() {
                             memberName.textContent = `${index + 1}. ${userName}`;
                             memberItem.appendChild(memberName);
 
-                            const buttonContainer = document.createElement('div');
+                            const innerButtonContainer = document.createElement('div');
 
-                            // Create and add the Promote button
                             const promoteButton = document.createElement('button');
                             promoteButton.textContent = 'Promote';
-                            promoteButton.addEventListener('click', () => {
-                                const isConfirmed = window.confirm(`Are you sure you want to give Ownership to ${userName}?`);
-                                if (isConfirmed) {
-                                    // Logic to promote the member to owner
-                                }
-                            });
+                            // Add logic for promoteButton click event
 
-                            // Create and add the Remove button
                             const removeButton = document.createElement('button');
                             removeButton.textContent = 'X';
-                            removeButton.addEventListener('click', () => {
-                                const isConfirmed = window.confirm(`Are you sure you want to remove ${userName}?`);
-                                if (isConfirmed) {
-                                    fetch('/remove-user-from-room', {
-                                        method: 'POST',
-                                        headers: { 'Content-Type': 'application/json' },
-                                        body: JSON.stringify({ roomId: room._id, userName: userName })
-                                    })
-                                    .then(response => {
-                                        if (response.ok) {
-                                            // Handle successful removal
-                                            console.log('User removed from room');
-                                            // Optionally, refresh the room list or UI
-                                        } else {
-                                            // Handle error
-                                            console.error('Error removing user from room');
-                                        }
-                                    })
-                                    .catch(error => console.error('Error:', error));
-                                }
-                            });
+                            // Add logic for removeButton click event
 
-                            // Append buttons to the button container
-                            buttonContainer.appendChild(promoteButton);
-                            buttonContainer.appendChild(removeButton);
-                            memberItem.appendChild(buttonContainer);
+                            innerButtonContainer.appendChild(promoteButton);
+                            innerButtonContainer.appendChild(removeButton);
+                            memberItem.appendChild(innerButtonContainer);
 
                             roomMembersList.appendChild(memberItem);
                         }
                     });
-                
-                    // Add more functionalities as required (e.g., save changes)
-                });
-                
 
-                // Create the Leave button
+                    if (room.ownerId === currentUserId) {
+                        const deleteRoomButton = document.createElement('button');
+                        deleteRoomButton.textContent = 'Delete Room';
+                        deleteRoomButton.style.backgroundColor = 'red';
+                        deleteRoomButton.style.color = 'white';
+                        deleteRoomButton.style.marginTop = '10px';
+                        deleteRoomButton.addEventListener('click', () => {
+                            const isConfirmed = window.confirm(`Are you sure you want to delete '${room.name}'?`);
+                            if (isConfirmed) {
+                                fetch('/delete-room', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ roomId: room._id })
+                                })
+                                .then(response => {
+                                    if (response.ok) {
+                                        editRoomModal.style.display = 'none';
+                                        fetchRooms();
+                                    } else {
+                                        console.error('Error deleting room');
+                                    }
+                                })
+                                .catch(error => console.error('Error:', error));
+                            }
+                        });
+                        roomMembersList.appendChild(deleteRoomButton);
+                    }
+                });
+
                 const leaveButton = document.createElement('button');
                 leaveButton.textContent = 'Leave';
                 leaveButton.style.marginRight = '5px';
-                leaveButton.addEventListener('click', () => {
-                // Handle Leave button click here
-                });
+                // Add logic for leaveButton click event
 
-                // Check if the current user is the room's owner
-                if (room.ownerId === currentUserId) {
-                    buttonContainer.appendChild(editButton);
-                } else {
-                    buttonContainer.appendChild(leaveButton);
-                }
-            
-                // Create the Go button
                 const goButton = document.createElement('button');
                 goButton.textContent = 'Go';
                 goButton.addEventListener('click', () => {
-                    // Handle Go button click here
-                    // You can navigate to the room or perform any other action for entering the room
                     window.location.href = `/chatroom?roomId=${room._id}`;
                 });
-            
+
                 buttonContainer.appendChild(editButton);
                 buttonContainer.appendChild(goButton);
-            
-                // Add room info and button container to the roomDiv
+                if (room.ownerId !== currentUserId) {
+                    buttonContainer.appendChild(leaveButton);
+                }
+
                 roomDiv.appendChild(roomInfo);
                 roomDiv.appendChild(buttonContainer);
-            
+
                 roomsListDiv.appendChild(roomDiv);
             });
         })
@@ -171,6 +149,7 @@ function fetchRooms() {
 }
 
 fetchRooms();
+
 
 
 // Close the modal when the close button is clicked
