@@ -20,15 +20,12 @@
                     <form action="/home" method="get">
                       <button type="submit" id="leaveHomeBtn">Leave to Home</button>
                   </form>
-                  
                 </div>
                 
                 
                 
                 <div id="chat-box-container">
-                  <div id="chat-box">
-                    <!-- Messages will be appended here -->
-                  </div>
+                  
                 </div>
 
                 <div id="participants-container" style="display: none;">
@@ -268,37 +265,33 @@ function removeVideoStream(userId) {
   }
 
   socket.on("receiveMessage", (message) => {
-    const chatBox = document.getElementById("chat-box");
+    const chatBoxContainer = document.getElementById("chat-box-container");
     const messageDiv = document.createElement("div");
-    const senderInfoDiv = document.createElement("div"); // Div for sender's info
-  
+    const senderInfoDiv = document.createElement("div");
+
     if (message.senderName === "<%= name %>") {
-      messageDiv.classList.add("current-user-message");
-      senderInfoDiv.classList.add("sender-info-current-user"); // Apply specific class for the current user
+        messageDiv.classList.add("current-user-message");
+        senderInfoDiv.classList.add("sender-info-current-user");
     } else {
-      messageDiv.classList.add("other-user-message");
-      senderInfoDiv.classList.add("sender-info-other-user"); // General class for other users
+        messageDiv.classList.add("other-user-message");
+        senderInfoDiv.classList.add("sender-info-other-user");
     }
-  
+
     if (message.body.startsWith("<img")) {
-      messageDiv.innerHTML = message.body;
+        messageDiv.innerHTML = message.body;
     } else {
-      messageDiv.textContent = message.body;
+        messageDiv.textContent = message.body;
     }
-  
-    // Add sender's name and timestamp
+
     const currentTime = new Date().toLocaleTimeString();
     senderInfoDiv.textContent = `${message.senderName} - ${currentTime}`;
-  
-    // Append message and sender info to chat box
-    const messageContainer = document.createElement("div");
-    messageContainer.appendChild(messageDiv);
-    messageContainer.appendChild(senderInfoDiv);
-  
-    chatBox.appendChild(messageContainer);
-  
-    chatBox.scrollTop = chatBox.scrollHeight;
-  });
+
+    // Append message and sender info directly to chatBoxContainer
+    chatBoxContainer.appendChild(senderInfoDiv);
+    chatBoxContainer.appendChild(messageDiv);
+
+    chatBoxContainer.scrollTop = chatBoxContainer.scrollHeight;
+});
 
   // Handle the 'participants-updated' event
   socket.on('participants-updated', (participants) => {
@@ -311,12 +304,6 @@ function removeVideoStream(userId) {
         participantsList.appendChild(participantDiv);
     });
 });
-
-
-  
-  
-
-
 
 
 </script>

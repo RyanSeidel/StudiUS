@@ -56,19 +56,13 @@ button:hover {
 }
 
 #chat-box-container, #participants-container {
-  
+  width: 100%;
   height: 82%; /* Adjust based on your layout */
   overflow-y: auto;
   display: flex;
   flex-direction: column-reverse;
   background-color: var(--background-message-color); /* Adjust as needed */
   min-height: 0;
-}
-
-#chat-box{
-  display: flex;
-  width: 100%;
-  flex-direction: column;
 }
 
 
@@ -171,14 +165,17 @@ button:hover {
   border-radius: 15px; /* Rounded corners for aesthetic */
   border-bottom-right-radius: 0; /* Make bottom right corner not rounded */
 
-}
+  /* Centering content */
+  display: flex; /* Use flexbox to center content */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  text-align: center; /* Center the text itself */
 
+}
 
 .other-user-message {
   margin: 0 0px 15px 45px;
-  text-align: left;
   background-color: #ededed;
-  align-self: flex-start;
   min-width: 15%; /* Minimum width of the message */
   max-width: 40%; /* Maximum width to ensure messages don't get too wide */
   color: #000; /* Text color */
@@ -190,6 +187,7 @@ button:hover {
 
   /* Centering content */
   display: flex; /* Use flexbox to center content */
+  align-self: flex-start;
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
   text-align: center; /* Center the text itself */
