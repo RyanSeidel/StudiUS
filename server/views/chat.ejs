@@ -1,6 +1,11 @@
 <head>
     <link rel="stylesheet" href="../css/chatRoom.css">
     <script src="https://kit.fontawesome.com/fb5c3cd0c8.js" crossorigin="anonymous"></script>
+    <script>
+      // You need this or else you wouldnt know what the id/name of user
+      const name = "<%= name %>"; 
+      const userId = "<%= userId %>";
+    </script>
     <script src="/socket.io/socket.io.js"></script>
 </head>
 
@@ -93,10 +98,4 @@
   <script src="../js/chatRoom/socket.js"></script>
 </body>
 
-
-<script>
-  // You need this or else you wouldnt know what the id/name of user
-  const name = "<%= name %>"; 
-  const userId = "<%= userId %>";
-</script>
 

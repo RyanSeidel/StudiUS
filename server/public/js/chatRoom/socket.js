@@ -1,3 +1,4 @@
+
 const socket = io();
     const urlParams = new URLSearchParams(window.location.search);
     const roomId = urlParams.get("roomId");
@@ -190,7 +191,7 @@ socket.on('camera-toggled', (userId, isCameraOn) => {
     const messageDiv = document.createElement("div");
     const senderInfoDiv = document.createElement("div");
 
-    if (message.senderName === "<%= name %>") {
+    if (message.senderName === name) {
         messageDiv.classList.add("current-user-message");
         senderInfoDiv.classList.add("sender-info-current-user");
     } else {
