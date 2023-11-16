@@ -187,6 +187,77 @@ app.post('/delete-room', async (req, res) => {
     }
 });
 
+app.post('/promote-user', async (req, res) => {
+    try {
+        const { roomId, username } = req.body;
+        
+        // Find the user to be promoted by username
+        const userToPromote = await User.findOne({ name: username });
+        if (!userToPromote) {
+            return res.status(404).send('User not found');
+        }
+
+        // Find the room and check if the current user is the owner
+        const room = await ChatRoom.findById(roomId);
+        if (!room) {
+            return res.status(404).send('Room not found');
+        }
+        if (req.user._id.toString() !== room.ownerId.toString()) {
+            return res.status(403).send('You are not authorized to promote users in this room');
+        }
+
+        // Update the ownerId to the new owner's ID
+        room.ownerId = userToPromote._id;
+        await room.save();
+
+        res.send('Room ownership updated successfully');
+    } catch (error) {
+        console.error("Error promoting user:", error);
+        res.status(500).send("Error promoting user");
+    }
+});
+
+app.post('/leave-room', async (req, res) => {
+    try {
+        const { roomId } = req.body;
+        const userId = req.user._id; // Get the current user's ID from the session or authentication context
+
+        // Log the user ID and room ID
+        console.log(`User ID: ${userId}, Room ID: ${roomId}`);
+
+        await ChatRoom.updateOne(
+            { _id: roomId },
+            { $pull: { userIds: userId } }
+        );
+
+        res.send('Left the room successfully');
+    } catch (error) {
+        console.error("Error leaving room:", error);
+        res.status(500).send("Error leaving room");
+    }
+});
+
+app.post('/remove-user-from-room', async (req, res) => {
+    try {
+        const { roomId, username } = req.body;
+        const userToRemove = await User.findOne({ name: username });
+        if (!userToRemove) {
+            return res.status(404).send('User not found');
+        }
+
+        await ChatRoom.updateOne(
+            { _id: roomId },
+            { $pull: { userIds: userToRemove._id } }
+        );
+
+        res.send('User removed successfully');
+    } catch (error) {
+        console.error("Error removing user from room:", error);
+        res.status(500).send("Error removing user from room");
+    }
+});
+
+
 
 app.get('/chatroom', (req, res) => {
     if (!req.user) return res.status(401).send('Not authenticated.');

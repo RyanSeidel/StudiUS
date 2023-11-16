@@ -52,8 +52,6 @@ function fetchRooms() {
                 });
 
                 
-                
-
                 if (room.ownerId === currentUserId) {
                     console.log("Current user is the owner of the room:", room.name);
                     const editButton = document.createElement('button');
@@ -92,13 +90,68 @@ function fetchRooms() {
                                 const promoteButton = document.createElement('button');
                                 promoteButton.textContent = 'Promote';
                                 promoteButton.className = 'promote-button'; // Add a class for styling
-                                // Add logic for promoteButton click event
+                                promoteButton.addEventListener('click', () => {
+                                    const userInput = prompt(`Type '${userName}' to confirm promoting them to room owner:`);
+                                    if (userInput === userName) {
+                                        fetch('/promote-user', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({ roomId: room._id, username: userName }) // Using username instead of user ID
+                                        })
+                                        .then(response => {
+                                            if (response.ok) {
+                                                console.log('User promoted successfully');
+                                
+                                                // Close the edit room modal if it's open
+                                                const editRoomModal = document.getElementById('editRoomModal');
+                                                if (editRoomModal) {
+                                                    editRoomModal.style.display = 'none';
+                                                }
+                                
+                                                // Refresh the room list
+                                                fetchRooms();
+                                            } else {
+                                                console.error('Error promoting user');
+                                            }
+                                        })
+                                        .catch(error => console.error('Error:', error));
+                                    }
+                                });
+                                
+                                
+                                
                         
                                 const removeButton = document.createElement('button');
                                 removeButton.textContent = 'X';
                                 removeButton.className = 'remove-button'; // Add a class for styling
-                                // Add logic for removeButton click event
-                        
+                                removeButton.addEventListener('click', () => {
+                                    const userInput = prompt(`Type '${userName}' to confirm removing them from the room:`);
+                                    if (userInput === userName) {
+                                        fetch('/remove-user-from-room', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({ roomId: room._id, username: userName })
+                                        })
+                                        .then(response => {
+                                            if (response.ok) {
+                                                console.log('User removed successfully');
+                                
+                                                // Close the edit room modal if it's open
+                                                const editRoomModal = document.getElementById('editRoomModal');
+                                                if (editRoomModal) {
+                                                    editRoomModal.style.display = 'none';
+                                                }
+                                
+                                                // Refresh the room list
+                                                fetchRooms();
+                                            } else {
+                                                console.error('Error removing user');
+                                            }
+                                        })
+                                        .catch(error => console.error('Error:', error));
+                                    }
+                                });                           
+                                
                                 innerButtonContainer.appendChild(promoteButton);
                                 innerButtonContainer.appendChild(removeButton);
                                 memberItem.appendChild(innerButtonContainer);
@@ -140,7 +193,27 @@ function fetchRooms() {
                     leaveButton.textContent = 'Leave';
                     leaveButton.className = 'leave-button'; // Add a class for styling
                     leaveButton.style.marginRight = '5px';
-                    // Add logic for leaveButton click event
+                    leaveButton.addEventListener('click', () => {
+                        const isConfirmed = window.confirm(`Are you sure you want to leave this room?`);
+                        if (isConfirmed) {
+                            fetch('/leave-room', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ roomId: room._id }) // Only send the room ID
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    console.log('Left the room successfully');
+                                    fetchRooms(); // Refresh the room list
+                                } else {
+                                    console.error('Error leaving the room');
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                        }
+                    });
+                    
+                    
                     buttonContainer.appendChild(leaveButton);
                     buttonContainer.appendChild(goButton);
                 }
