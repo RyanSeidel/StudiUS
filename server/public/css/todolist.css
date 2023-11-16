@@ -20,20 +20,6 @@
     outline: none; /* Remove outline on focus */
 }
 
-#addTask {
-    background-color: #0071d7;
-    color: black;
-    border: none;
-    padding: 8px 10px; /* Increase padding for a more rounded button */
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 5px; /* Add border-radius for a more rounded button */
-}
-
-#addTask:hover {
-    background-color: #ddd;
-}
-
 #tasks {
     list-style-type: none;
     padding: 0;
