@@ -205,6 +205,7 @@ initCreateRoomBtn.addEventListener('click', () => {
             // Create the remove button
             const removeBtn = document.createElement('button');
             removeBtn.textContent = 'X';
+            removeBtn.className = 'remove-button'; // Add a class for styling
             removeBtn.style.marginLeft = '10px';
             removeBtn.addEventListener('click', () => {
                 // Remove the user from the array and the display
