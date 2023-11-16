@@ -167,7 +167,7 @@ button:hover {
     display: flex;
     justify-content: space-between;
     align-items: center; /* Vertically centers children */
-    padding: 10px 20px;
+    padding: 5px 10px;
     background-color: #fff;
     border-radius: 0px 0px 10px 10px;
 }
@@ -179,6 +179,21 @@ button:hover {
     margin: 0 10px;
 }
 
+.msg-top-right {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100%; /* Ensure it has a height */
+}
+
+.msg-top-right form {
+  width: 100%; /* Full width of its parent */
+  display: flex;
+  justify-content: center;
+}
+
+
+
 .msg-top-left {
     display: flex;
     align-items: center;
@@ -186,7 +201,6 @@ button:hover {
 }
 
 #leaveHomeBtn {
-    margin-top: 15px;
     border-radius: 10px;
     color: grey;
     border: 1px solid var(--blue-color-dark);
@@ -214,7 +228,6 @@ button:hover {
 }
 
 .icon-group {
-    margin: 5px 15px 5px -10px;
     display: flex;
     justify-content: space-between;
 }
@@ -238,7 +251,7 @@ button:hover {
     justify-content: center;
 }
 .send-icon {
-    font-size: 1.6em; /* Increase the size of the icon */
+    font-size: 20px; /* Increase the size of the icon */
     margin-left: 10px; /* Add space between the message input and the send icon */
     cursor: pointer; /* Change cursor to indicate it's clickable */
 }
@@ -367,4 +380,14 @@ video {
 .active-btn {
     color: #339965; /* White text color */
     font-weight: 600;
+}
+
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+#settingsBtn:hover i {
+  animation: spin 1s infinite linear;
 }
