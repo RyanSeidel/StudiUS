@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/home.css">
     <link rel="stylesheet" href="../css/todolist.css">
+    <link rel="stylesheet" href="../css/global.css">
     <link  href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 
@@ -67,11 +68,11 @@
         <div class="profile-pic-container">
             <img id="profilePicPreview" src="<%= image %>" alt="Profile Picture Preview" style="max-width: 100%;"/>
             <input type="file" id="imageUpload" style="display:none;">
-            <button onclick="document.getElementById('imageUpload').click();">Change Picture</button>
+            <button class="button" onclick="document.getElementById('imageUpload').click();">Change Picture</button>
         </div>
         <label for="name">Name:</label>
         <input type="text" id="nameInput" value="<%= name %>">
-        <button id="submitChangesBtn">Submit Changes</button>
+        <button class="button" id="submitChangesBtn">Submit Changes</button>
     </div>
 </div>
 
@@ -83,7 +84,7 @@
         <input type="text" id="newRoomName" placeholder="Enter Room Name">
         <h3>Selected Users</h3>
         <div id="selectedUsersDisplay"></div>
-        <button id="confirmCreateRoom">Confirm</button>
+        <button class="button" id="confirmCreateRoom">Confirm</button>
     </div>
 </div>
 
@@ -98,7 +99,7 @@
                 <label for="editRoomName">Room Name:</label>
                 <input type="text" id="editRoomName" placeholder="Enter Room Name">
             </div>
-            <button id="saveRoomChanges">Save Changes</button>
+            <button class="button" id="saveRoomChanges">Save Changes</button>
         </div>
         
         <div id="roomMembersList"></div>

@@ -10,7 +10,7 @@
   width: 150px; /* Set the width to your desired fixed size */
   height: 40px; /* Set the height to your desired fixed size */
   padding: 0; /* Remove padding to maintain fixed size */
-  background-color: #6eb5ff; /* Light blue background color */
+  background-color: #0071d7; /* Light blue background color */
   color: #fff; /* White text color */
   border: none; /* Remove button border */
   border-radius: 5px; /* Rounded corners */
@@ -20,7 +20,7 @@
 
 /* Hover effect */
 .button:hover {
-  background-color: #4a90e2; /* Darker blue background color on hover */
+  background-color: #0056b3; /* Darker blue background color on hover */
 }
 
 /* Style for the close button */
