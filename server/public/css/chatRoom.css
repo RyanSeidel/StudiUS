@@ -166,7 +166,7 @@ button:hover {
 
 .msg-bottom {
     display: flex;
-    justify-content: space-between; /* Aligns children to both ends */
+    justify-content: space-between; 
     align-items: center; /* Vertically centers children */
     padding: 10px 20px;
     background-color: #fff;
@@ -185,7 +185,6 @@ button:hover {
     align-items: center;
     justify-content: center;
 }
-
 
 #leaveHomeBtn {
     margin-top: 15px;
@@ -216,7 +215,7 @@ button:hover {
 }
 
 .icon-group {
-    margin: 5px 15px;
+    margin: 5px 15px 5px -10px;
     display: flex;
     justify-content: space-between;
 }
@@ -234,6 +233,11 @@ button:hover {
     transition: 0.2s;
 }
 
+.icon-left{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .send-icon {
     font-size: 1.6em; /* Increase the size of the icon */
     margin-left: 10px; /* Add space between the message input and the send icon */
@@ -359,16 +363,9 @@ video {
 }
 
 #settingsBtn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* other styling properties as needed */
+    color:black;
+    
 }
-
-#settingsBtn i {
-    margin-right: 5px; /* Adds space between the icon and the text */
-}
-
 .active-btn {
     color: #339965; /* White text color */
     font-weight: 600;

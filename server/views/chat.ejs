@@ -19,7 +19,7 @@
                       <button id="chatBtn" class="chat-btn" onclick="toggleView('chat')">Chat</button>
                       <button id="participantsBtn" class="participants-btn" onclick="toggleView('participants')">Participants</button>
                     </div>
-                    
+
                     <div class="msg-top-right">
                       <form action="/home" method="get">
                         <button type="submit" id="leaveHomeBtn">Leave Room</button>
@@ -27,11 +27,8 @@
                     </div>
                     
                 </div>
-                
-                
-                
                 <div id="chat-box-container">
-                  
+                 
                 </div>
 
                 <div id="participants-container" style="display: none;">
@@ -39,18 +36,16 @@
                   <div id="participants-list">
                       <!-- Participants will be listed here -->
                   </div>
-              </div>
-              
-          
-              
-              
+                </div>
 
                     <div class="msg-bottom">
-                      <button id="settingsBtn">
-                        <i class="fa-sharp fa-solid fa-gear fa-spin"></i> Settings
-                    </button>
+                      
                       <div class="icon-group">
+                        
                         <div class="icon-left">
+                            <button id="settingsBtn">
+                              <i class="fa-sharp fa-solid fa-gear fa-spin"></i>
+                            </button>
                             <span class="image-input-container">
                                 <input type="file" id="image-input" name="file" style="display: none; visibility: none" onchange="displayPreview(this)" />
                                 <label for="image-input"><i class="fa-regular fa-image"></i></label>
@@ -58,13 +53,13 @@
                             <span id="toggleCamera"><i class="fa-solid fa-camera camera-active"></i></span>
                             <span id="toggleMicrophone"><i class="fa-solid fa-microphone microphone-active"></i></span>
                             
-                        </div>
-                    </div>
-                        <div class="input-container">
+                      </div>
+                      </div>
+                      <div class="input-container">
                             <input type="text" id="message-input" placeholder="Write Something..." />
                             <span class="clear-preview" onclick="clearPreview()">&#10005;</span> <!-- Button to clear preview -->
                             <span onclick="sendMessage()"><i class="send-icon fa-regular fa-paper-plane"></i></span>
-                        </div>
+                      </div>
                                         
                 
                     </div>
