@@ -164,7 +164,28 @@ app.get('/get-rooms', async (req, res) => {
     }
 });
 
+// Route to handle room deletion
+app.post('/delete-room', async (req, res) => {
+    try {
+        const { roomId } = req.body;
 
+        // Optionally, check if the current user is the owner of the room
+        const room = await ChatRoom.findById(roomId);
+        if (!room) {
+            return res.status(404).send('Room not found.');
+        }
+
+        if (req.user._id.toString() !== room.ownerId.toString()) {
+            return res.status(403).send('You are not authorized to delete this room.');
+        }
+
+        await ChatRoom.deleteOne({ _id: roomId });
+        res.send('Room deleted successfully.');
+    } catch (error) {
+        console.error('Error deleting room:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 
 app.get('/chatroom', (req, res) => {

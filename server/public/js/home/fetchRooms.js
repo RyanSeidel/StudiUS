@@ -159,8 +159,6 @@ function fetchRooms() {
 fetchRooms();
 
 
-
-
 // Close the modal when the close button is clicked
 document.getElementById('closeEditRoomModal').addEventListener('click', () => {
     document.getElementById('editRoomModal').style.display = 'none';
