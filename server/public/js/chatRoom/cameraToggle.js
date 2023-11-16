@@ -10,6 +10,9 @@ document.getElementById("toggleCamera").addEventListener("click", function () {
             console.log("Camera turned off");
             if (localVideoElement) localVideoElement.classList.add('inactive-video');
         }
+
+        // Emit an event to notify other users
+        socket.emit('camera-toggled', localSocketId, videoTrack.enabled);
     }
 });
 

@@ -264,6 +264,21 @@ function removeVideoStream(userId) {
     }
   }
 
+
+  // Other users toggling their camera
+socket.on('camera-toggled', (userId, isCameraOn) => {
+  if (userId !== localSocketId) { // Check if the toggle event is from a remote user
+      const videoElement = document.querySelector(`[data-peer-id="${userId}"]`);
+      if (videoElement) {
+          videoElement.style.display = isCameraOn ? '' : 'none'; // Show or hide the video element
+      }
+  }
+});
+
+
+
+
+
   socket.on("receiveMessage", (message) => {
     const chatBoxContainer = document.getElementById("chat-box-container");
     const messageDiv = document.createElement("div");

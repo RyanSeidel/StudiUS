@@ -92,6 +92,19 @@ io.on('connection', (socket) => {
         socket.to(roomId).emit('user-connected', userId, userName);
     });
 
+    socket.on('camera-toggled', (userId, isCameraOn) => {
+        // Retrieve roomId from the socket instance
+        const roomId = socket.roomId;
+
+        if (roomId) {
+            // If roomId is available, emit the event to other sockets in the room
+            socket.to(roomId).emit('camera-toggled', userId, isCameraOn);
+        } else {
+            // Log an error or handle the case where roomId is not available
+            console.error('Room ID not found for the socket:', socket.id);
+        }
+    });
+
     socket.on('sendMessage', async ({ roomId, senderName, body }) => {
         const message = new Message({
             body,
