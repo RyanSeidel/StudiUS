@@ -55,7 +55,7 @@ button:hover {
   border-radius: 10px;
 }
 
-#chat-box-container, #participants-container {
+#chat-box-container {
   width: 100%;
   height: 82%; /* Adjust based on your layout */
   overflow-y: auto;
@@ -66,6 +66,32 @@ button:hover {
   min-height: 0;
 }
 
+#participants-container {
+  width: 100%;
+  height: 82%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Align items in the center */
+  background-color: var(--background-message-color);
+  min-height: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow for the whole container */
+}
+
+.participants-title {
+  margin-top: 15px;
+  margin-bottom: 15px; /* Space between the title and the list */
+  font-size: 1.2em; /* Larger font size for the title */
+  font-weight: bold; /* Optional: make the title bold */
+}
+
+#participants-list div {
+  background-color: #ffffff;
+  margin-bottom: 8px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
 
 .sender-info-current-user {
   align-self: flex-end;
@@ -240,13 +266,14 @@ video {
   justify-content: center;
   height: 80vh;
 }
-.left-screen,
-.chat-container {
+/* This edit the size of the screens  */
+.chat-container{
   flex: 1;
 }
 .left-screen {
-
+  flex: 1.75;
 }
+
 #audioMeterModal {
   margin-top: 10px;
   height: 10px;
