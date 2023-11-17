@@ -1,8 +1,17 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    name: String,
-    email: { type: String, unique: true },
+    name: {
+        type: String, 
+        required: true,
+        minlength: 1, 
+        maxlength: 32,
+    },
+    email: {
+        type: String,
+        required: true, // Make email field required
+        unique: true,
+    },
     emailVerified: Date,
     image: String,
     hashedPassword: String,

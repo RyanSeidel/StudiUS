@@ -26,39 +26,49 @@
         </div>
       </div>
         
-        <!-- Registration Form (with Name, Email, and Password) -->
-        <div class="register" style="display: none;" id="registration-form">
-            <button class="close-button" id="closeButton1">X</button>
-            <h1>Registration</h1>
-          <form id="registration-" method="post" action="/register">
-              <div class="txt_field">
-               <input type="text" id="name" name="name" required>
-              <span></span>
-             <label for="name">Name</label>
-              </div>
-          <div class="txt_field">
-            <input type="email" id="email" name="email" required>
-            <span></span>
-            <label for="email">Email</label>
-          </div>
-          <div class="txt_field">
-            <input type="password" id="password" name="password" required>
-            <span></span>
-            <label for="password">Password</label>
-          </div>
-          <input type="submit" value="Register" class="submit-register">
-          <div class="signup_link">
-            Already have an account? <a href="#">Login</a>
-          </div>
-      </form>
-  </div>
+       <!-- Registration Form (with Name, Email, and Password) -->
+<div class="register" style="display: none;" id="registration-form">
+  <button class="close-button" id="closeButton1">X</button>
+  <h1>Registration</h1>
+  <form id="registration-" method="post" action="/register">
+      <!-- Name Field -->
+      <div class="txt_field">
+          <input type="text" id="name" name="name" required>
+          <span></span>
+          <label for="name">Name</label>
+      </div>
+      <div class="error" id="nameError"></div> <!-- Add this line for name error -->
+
+      <!-- Email Field -->
+      <div class="txt_field">
+          <input type="email" id="email" name="email" required>
+          <span></span>
+          <label for="email">Email</label>
+      </div>
+      <div class="error" id="emailError"></div> <!-- Add this line for email error -->
+
+      <!-- Password Field -->
+      <div class="txt_field">
+          <input type="password" id="password" name="password" required>
+          <span></span>
+          <label for="password">Password</label>
+      </div>
+      <div class="error" id="passwordError"></div> <!-- Add this line for password error -->
+
+      <input type="submit" value="Register" class="submit-register">
+      <div class="signup_link">
+          Already have an account? <a href="#">Login</a>
+      </div>
+  </form>
+</div>
 
 
-        <!-- Login Form (with Email and Password) -->
-    <div class="login" style="display: none;" id="login-form">
-      <button class="close-button" id="closeButton2">X</button>
-      <h1>Login</h1>
-      <form id="login" method="post" action="/login">
+
+<!-- Login Form (with Email and Password) -->
+<div class="login" style="display: none;" id="login-form">
+  <button class="close-button" id="closeButton2">X</button>
+  <h1>Login</h1>
+  <form id="login" method="post" action="/login">
     <div class="txt_field">
       <input type="email" id="email" name="email" required>
       <span></span>
@@ -69,9 +79,15 @@
       <span></span>
       <label for="password">Password</label>
     </div>
+    <div id="loginError" class="error-message"></div> <!-- Add this error message element -->
     <input type="submit" value="Login" class="submit-login">
   </form>
-  </div>
+</div>
+
+
+
+
+
       
     </div>
     <script src="../js/loginPage/signIn.js"></script>

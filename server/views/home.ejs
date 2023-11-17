@@ -72,7 +72,9 @@
         </div>
         <label for="name">Name:</label>
         <input type="text" id="nameInput" value="<%= name %>">
+        <div id="nameError" class="error"></div>
         <button class="button" id="submitChangesBtn">Submit Changes</button>
+
     </div>
 </div>
 
@@ -80,6 +82,7 @@
     <div class="modal-content">
         <span class="close" id="closeCreateRoomModal">&times;</span>
         <h2>Create Room</h2>
+        <div id="roomNameError" class="error"></div> <!-- Add this line for room name error -->
         <label for="newRoomName">Room Name:</label>
         <input type="text" id="newRoomName" placeholder="Enter Room Name">
         <h3>Selected Users</h3>
@@ -87,6 +90,7 @@
         <button class="button" id="confirmCreateRoom">Confirm</button>
     </div>
 </div>
+
 
 
 <div id="editRoomModal" class="modal" style="display:none;">

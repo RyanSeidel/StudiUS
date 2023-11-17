@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 
 const chatRoomSchema = new mongoose.Schema({
-    name: String,
+    name: {
+        type: String, 
+        required: true,
+        minlength: 1, 
+        maxlength: 32,
+    },
     isGroup: Boolean,
     createAt: { type: Date, default: Date.now },
     lastMessageAt: { type: Date, default: Date.now },

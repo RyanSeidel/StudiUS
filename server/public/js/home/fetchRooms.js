@@ -243,8 +243,6 @@ window.onclick = function(event) {
         document.getElementById('editRoomModal').style.display = 'none';
     }
 };
-
-
 // Initiate Create Room Modal handlers
 const initCreateRoomBtn = document.getElementById('init-create-room');
 const createRoomModal = document.getElementById('createRoomModal');
@@ -252,6 +250,7 @@ const closeCreateRoomModalBtn = document.getElementById('closeCreateRoomModal');
 const confirmCreateRoomBtn = document.getElementById('confirmCreateRoom');
 const selectedUsersDisplay = document.getElementById('selectedUsersDisplay');
 const newRoomNameInput = document.getElementById('newRoomName');
+const roomNameError = document.getElementById('roomNameError');
 
 initCreateRoomBtn.addEventListener('click', () => {
     if (selectedUsers.length === 0) {
@@ -300,23 +299,33 @@ initCreateRoomBtn.addEventListener('click', () => {
     });
 
     createRoomModal.style.display = "block"; // Show the modal
+    roomNameError.textContent = ""; // Clear any previous error message
 });
 
-closeCreateRoomModalBtn.onclick = () => createRoomModal.style.display = "none";
-
-window.onclick = event => {
-    if (event.target === createRoomModal) {
-        createRoomModal.style.display = "none";
-    }
+closeCreateRoomModalBtn.onclick = () => {
+    createRoomModal.style.display = "none";
+    roomNameError.textContent = ""; // Clear any previous error message
 };
 
 confirmCreateRoomBtn.addEventListener('click', () => {
     console.log("Confirm button clicked"); // Debugging log
 
     const roomName = newRoomNameInput.value;
-    if (!roomName.trim()) {
-        alert("Please provide a room name.");
+    
+    // Check if the room name is too long
+    if (roomName.length > 32) {
+        roomNameError.textContent = 'Name is too long (maximum 32 characters).';
         return;
+    } else {
+        roomNameError.textContent = ''; // Clear the error message
+    }
+
+    // Check if the room name is empty
+    if (!roomName.trim()) {
+        roomNameError.textContent = "Please provide a room name.";
+        return;
+    } else {
+        roomNameError.textContent = ""; // Clear the error message
     }
 
     fetch('/create-room', {
@@ -336,6 +345,8 @@ confirmCreateRoomBtn.addEventListener('click', () => {
     })
     .catch(error => {
         console.error("Error creating room:", error);
+        // Display the error message in the "roomNameError" div
+        roomNameError.textContent = "Error creating room: " + error.message;
     })
     .finally(() => {
         console.log("Hiding modal"); // Debugging log

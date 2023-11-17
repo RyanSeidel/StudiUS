@@ -57,6 +57,15 @@ document.getElementById('imageUpload').addEventListener('change', function(event
 
 document.getElementById('submitChangesBtn').addEventListener('click', async () => {
     const newName = document.getElementById('nameInput').value;
+    
+    // Check if the name is too long
+    if (newName.length > 32) {
+        document.getElementById('nameError').textContent = 'Name is too long (maximum 32 characters).';
+        return; // Prevent form submission
+    } else {
+        document.getElementById('nameError').textContent = ''; // Clear any previous error message
+    }
+
     const formDataForProfile = new FormData();
     formDataForProfile.append('name', newName); // Append user name
 
@@ -74,6 +83,7 @@ document.getElementById('submitChangesBtn').addEventListener('click', async () =
         await submitProfileUpdate(formDataForProfile);
     }
 });
+
 
 async function submitProfileUpdate(formData) {
     try {

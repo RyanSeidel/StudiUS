@@ -9,7 +9,7 @@ const socketIo = require('socket.io');
 const User = require('./models/user');
 const Message = require('./models/message');
 const Conversation = require('./models/conversation');
-const ChatRoom = require('./models/chatRoom');
+const ChatRoom = require('./models/ChatRoom');
 
 
 const cloudinary = require('cloudinary').v2;
@@ -294,40 +294,45 @@ app.get('/chatroom', (req, res) => {
     res.render('chat', { name: req.user.name, userId: req.user._id });
 });
 
+app.post('/create-room', async (req, res, next) => {
+    try {
+        const roomName = req.body.roomName;
+        const allowedUsers = req.body.allowedUsers || [];
 
-app.post('/create-room', async (req, res) => {
-    const roomName = req.body.roomName;
-    const allowedUsers = req.body.allowedUsers || [];
+        const currentUser = req.user;
+        console.log("Current User ID:", currentUser._id);
 
-    const currentUser = req.user;
-    console.log("Current User ID:", currentUser._id);
-    
-    // Ensure the current user is included in the allowed users
-    if (!allowedUsers.includes(currentUser._id.toString())) {
-        allowedUsers.push(currentUser._id.toString());
+        // Ensure the current user is included in the allowed users
+        if (!allowedUsers.includes(currentUser._id.toString())) {
+            allowedUsers.push(currentUser._id.toString());
+        }
+        console.log("Allowed Users:", allowedUsers);
+
+        const existingRoom = await ChatRoom.findOne({ userIds: { $all: allowedUsers, $size: allowedUsers.length } });
+        if (existingRoom) {
+            return res.status(400).json({ error: 'Room with the same set of users already exists' });
+        }
+
+        // Create a new room with the current user as the owner
+        const newRoom = new ChatRoom({
+            name: roomName,
+            userIds: allowedUsers,
+            ownerId: currentUser._id, // Set the current user as the owner of the room
+            ownerName: currentUser.name, // Set the owner's name
+            isGroup: allowedUsers.length > 1,
+        });
+
+        await newRoom.save();
+        console.log("New Room Data:", newRoom);
+
+        res.json(newRoom);
+    } catch (error) {
+        console.error("Error creating room:", error);
+        // Pass the error to the error-handling middleware
+        next(error);
     }
-    console.log("Allowed Users:", allowedUsers);
-
-    const existingRoom = await ChatRoom.findOne({ userIds: { $all: allowedUsers, $size: allowedUsers.length } });
-    if (existingRoom) {
-        return res.status(400).json({ error: 'Room with the same set of users already exists' });
-    }
-
-    // Create a new room with the current user as the owner
-    const newRoom = new ChatRoom({
-        name: roomName,
-        userIds: allowedUsers,
-        ownerId: currentUser._id, // Set the current user as the owner of the room
-        ownerName: currentUser.name, // Set the owner's name
-        isGroup: allowedUsers.length > 1,
-    });
-    
-
-    await newRoom.save();
-    console.log("New Room Data:", newRoom);
-
-    res.json(newRoom);
 });
+
 
 app.post('/remove-user-from-room', async (req, res) => {
     const { roomId, userName } = req.body;
@@ -424,9 +429,6 @@ app.post('/upload-profile-pic', upload.any(), async (req, res) => {
     }
 });
 
-
-
-
 app.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
     let user = await User.findOne({ email });
@@ -450,14 +452,20 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).send('Invalid email or password.');
+
+    if (!user) {
+        return res.render('loginpage', { error: 'Invalid email or password.' });
+    }
 
     const validPassword = await bcrypt.compare(password, user.hashedPassword);
-    if (!validPassword) return res.status(400).send('Invalid email or password.');
+    if (!validPassword) {
+        return res.render('loginpage', { error: 'Invalid email or password.' });
+    }
 
     const token = jwt.sign({ _id: user._id }, 'your_secret_key');
     res.cookie('jwt', token).redirect('/home');
 });
+
 
 app.post('/logout', (req, res) => {
     res.clearCookie('jwt').redirect('/'); // Clear the JWT cookie and redirect to the home or login page
