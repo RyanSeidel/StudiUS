@@ -106,8 +106,7 @@ button:hover {
 .sender-info-other-user {
     font-size: 0.8em;
     color: #000; /* Black font color */
-    margin-top: 2px; /* Small space above sender info */
-    margin-bottom: 10px; /* Space below sender info before next message */
+    margin: 2px 20px 10px 20px;
     text-align: left; /* Align left for other users */
     width: fit-content;
 }
@@ -137,9 +136,9 @@ button:hover {
 }
 
 .other-user-message {
-    background-color: #ededed;
+    background-color: #e5e6e8;
     color: black;
-    margin: 5px 5px;
+    margin: 5px 20px;
     padding: 10px 15px;
     border-radius: 15px;
     width: fit-content;
