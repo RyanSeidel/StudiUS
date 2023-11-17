@@ -180,19 +180,18 @@ button:hover {
 }
 
 .msg-top-right {
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  height: 100%; /* Ensure it has a height */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100%; /* Ensure it has a height */
+    margin-top: 15px;
 }
 
 .msg-top-right form {
-  width: 100%; /* Full width of its parent */
-  display: flex;
-  justify-content: center;
+    width: 100%; /* Full width of its parent */
+    display: flex;
+    justify-content: center;
 }
-
-
 
 .msg-top-left {
     display: flex;
@@ -202,12 +201,11 @@ button:hover {
 
 #leaveHomeBtn {
     border-radius: 10px;
-    color: grey;
-    border: 1px solid var(--blue-color-dark);
-}
-#leaveHomeBtn:hover {
     color: #fff;
     background-color: var(--blue-color-dark);
+}
+#leaveHomeBtn:hover {
+    opacity: 0.8;
 }
 
 #message-input {
@@ -382,12 +380,15 @@ video {
     font-weight: 600;
 }
 
-
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 #settingsBtn:hover i {
-  animation: spin 1s infinite linear;
+    animation: spin 1s infinite linear;
 }
