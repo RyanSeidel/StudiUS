@@ -429,6 +429,7 @@ app.post('/upload-profile-pic', upload.any(), async (req, res) => {
     }
 });
 
+// This is POST for register
 app.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
     let user = await User.findOne({ email });
@@ -449,6 +450,7 @@ app.post('/register', async (req, res) => {
     res.redirect('/');
 });
 
+// POST for LOGIN
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
@@ -466,7 +468,7 @@ app.post('/login', async (req, res) => {
     res.cookie('jwt', token).redirect('/home');
 });
 
-
+// Routes etc.
 app.post('/logout', (req, res) => {
     res.clearCookie('jwt').redirect('/'); // Clear the JWT cookie and redirect to the home or login page
 });
@@ -480,7 +482,7 @@ app.get('/home', (req, res) => {
     res.render('home', { name: req.user.name, image: req.user.image, userId: req.user._id });
 });
 
-
+// make server turn on and console log the port
 server.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running on port ${PORT}`);
 });
