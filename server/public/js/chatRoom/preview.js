@@ -1,3 +1,19 @@
+/*
+   IMAGE PREVIEW BEFORE SENDING MESSAGE
+
+   This JavaScript code is responsible for enabling users to preview images before sending them as messages in a web application's chat functionality.
+
+   Key functionalities:
+
+   - Listens for changes in the file input element for image uploads.
+   - Displays a preview of the selected image.
+   - Utilizes the FileReader API to read the selected image file.
+   - Updates the image preview element with the selected image data.
+   - Allows users to review the image before confirming its inclusion in a message.
+
+   Note: This code assumes the existence of corresponding HTML elements and CSS styles for the file input and image preview. It enhances the user experience by providing a visual preview of images before they are sent as messages.
+*/
+
 function displayPreview(input) {
   const file = input.files[0];
   if (file) {

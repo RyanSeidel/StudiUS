@@ -1,3 +1,23 @@
+/*
+   EDIT PROFILE MODAL HANDLERS JAVASCRIPT
+
+   This JavaScript code is responsible for managing the behavior of the "Edit Profile" modal on a web page. It includes functionalities for opening and closing the modal, handling profile updates, and image cropping.
+
+   Key components and functionalities:
+
+   - The code initializes variables for the "Edit Profile" modal and its associated elements.
+
+   - Event listeners are added to open the modal when a button is clicked and close it when a close button is clicked or when the user clicks outside the modal.
+
+   - A helper function, `updateProfile`, handles the asynchronous process of sending a profile update request to the server, including handling success and error responses.
+
+   - The code utilizes the Cropper library to enable image cropping when a user uploads a profile picture.
+
+   - The `submitProfileUpdate` function sends a profile update request to the server, including user name and image data if they are changed.
+
+   Note: To use this code, you should have corresponding HTML elements with matching IDs, a server endpoint for profile updates, and the Cropper library included in your project if image cropping is used. CSS styles may also be needed for the visual presentation of the "Edit Profile" modal and its elements.
+*/
+
 // Edit Profile Modal handlers
 const editProfileModal = document.getElementById("editProfileModal");
 const editProfileBtn = document.querySelector(".greeting-button");

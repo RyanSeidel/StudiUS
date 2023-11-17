@@ -1,3 +1,25 @@
+/*
+   USER SELECTION AND FILTERING JAVASCRIPT
+
+   This JavaScript code is responsible for managing user selection and filtering on a web page. It includes functionalities for fetching a list of users from a server, displaying them with buttons, allowing users to search for specific users, selecting/unselecting users, and tracking selected users in an array.
+
+   Key components and functionalities:
+
+   - An array named 'selectedUsers' is used to keep track of selected user IDs.
+   - An array named 'allUsers' is used to store all users fetched from the server for filtering.
+
+   - The code fetches users from the server using a fetch request and populates the 'allUsers' array. It then calls the 'renderUsers' function to display the users as buttons.
+
+   - The 'renderUsers' function renders user buttons with their images and names, allowing users to be selected or unselected by clicking the buttons.
+
+   - Event listeners are added to the user search input field to filter users based on the search term and to user buttons for toggling user selection.
+
+   - An event listener is also added to an "Unselect All" button, which clears the 'selectedUsers' array and unselects all user buttons.
+
+   Note: To use this code, you should have corresponding HTML elements with matching IDs and a server endpoint for fetching user data. CSS styles may also be needed for the visual presentation of user buttons.
+*/
+
+
 // Array to keep track of selected users
 let selectedUsers = [];
 let allUsers = [];  // Store all users for filtering

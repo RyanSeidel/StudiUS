@@ -1,3 +1,25 @@
+/*
+   LOGIN / REGISTER JAVASCRIPT
+   
+   This JavaScript code is responsible for managing a login and registration system on a web page. It makes use of the DOM (Document Object Model) to interact with various HTML elements and provides functionality for showing and hiding login and registration forms, as well as validating user input in the registration form.
+
+   Key components and functionalities:
+   
+   - Event listeners are set up to trigger actions when certain elements are clicked or when the DOM content is loaded.
+   
+   - The code handles two main forms: the login form and the registration form.
+   
+   - The 'showLoginForm' and 'showRegistrationForm' functions are responsible for displaying the login and registration forms when respective buttons are clicked. These functions also clear any existing error messages.
+   
+   - The 'hideForms' function hides both forms when the close buttons are clicked. It removes CSS classes responsible for showing or hiding the forms.
+   
+   - Event listeners are attached to various elements, such as buttons and links, to perform actions like showing/hiding forms and preventing default behavior.
+   
+   - Form validation is implemented for the registration form. It checks the length of the email, name, and password inputs and displays error messages if they don't meet certain criteria. If all validations pass, the form is submitted.
+
+   Note: The code mentions handling login form validation but doesn't contain the actual validation logic. You would need to add similar validation logic for the login form as needed.
+*/
+
 document.addEventListener('DOMContentLoaded', function() {
     const signInButton = document.getElementById('signInButton');
     const createAccountButton = document.getElementById('createAccountButton');

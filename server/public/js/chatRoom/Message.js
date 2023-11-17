@@ -1,3 +1,19 @@
+/*
+   DEBOUNCE FUNCTION FOR MESSAGE SENDING
+
+   This JavaScript code defines a debounce function that helps manage the sending of messages in a chat application. It ensures that the sendMessage function is called with a delay, preventing multiple rapid calls when a user presses the Enter key repeatedly.
+
+   Key functionalities:
+
+   - Implements a debounce function that delays the execution of a given function.
+   - Listens for the "Enter" key press in the message input field.
+   - Checks if an image is attached to the message input.
+   - Sends the message (with or without an image) to the chat room using the socket.io library.
+   - Handles clearing the input field and resetting the image preview after sending.
+
+   Note: This code assumes the existence of appropriate HTML elements for message input and image attachment, as well as integration with the socket.io library for real-time chat functionality.
+*/
+
 function debounce(func, delay) {
     let debounceTimer;
     return function(...args) {

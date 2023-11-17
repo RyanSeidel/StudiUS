@@ -1,3 +1,22 @@
+/*
+   VIDEO CHAT AND MESSAGING FUNCTIONALITY
+
+   This JavaScript code handles video chat and messaging functionality within a web application. It utilizes WebRTC for video streaming and socket.io for real-time communication.
+
+   Key components and functionalities:
+
+   - Establishes a connection to a WebSocket server using 'socket.io'.
+   - Retrieves the 'roomId' and 'name' from URL parameters.
+   - Sets up local video streaming and user media permissions.
+   - Manages peer connections for video streaming with 'RTCPeerConnection'.
+   - Handles the exchange of offers, answers, and ICE candidates.
+   - Displays video streams in a designated container.
+   - Manages user camera toggling.
+   - Handles real-time text messaging with 'socket.on'.
+   - Updates the participant list based on 'participants-updated' events.
+
+   Note: This code assumes the existence of corresponding HTML elements, CSS styles, and a WebSocket server configured to handle WebRTC and messaging interactions. It may require additional integration and setup to function within a specific web application.
+*/
 
 const socket = io();
     const urlParams = new URLSearchParams(window.location.search);

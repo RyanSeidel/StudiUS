@@ -1,3 +1,25 @@
+/*
+   AUDIO METERING AND MICROPHONE SETTINGS HANDLING
+
+   This JavaScript code defines functions for audio metering and microphone settings handling in a web application. It primarily focuses on monitoring audio levels and providing user controls for microphone selection and toggling.
+
+   Key functionalities:
+
+   1. `startAudioMetering(stream, meterElementId)`: Initializes audio metering using the Web Audio API to monitor audio levels from a specified audio stream. It continuously updates the audio metering display within a specified HTML element.
+
+   2. Event listener for the DOMContentLoaded event: Initializes the microphone settings modal and populates the microphone selection dropdown when the page loads.
+
+   3. Event listener for opening the microphone settings modal: Starts audio metering if an audio stream is available and displays the modal for microphone settings.
+
+   4. Event listener for changing the selected microphone: Updates the selected microphone and restarts audio metering with the new microphone.
+
+   5. Event listener for toggling the microphone on/off: Allows users to enable or mute the microphone and updates the microphone icon accordingly.
+
+   6. Function `populateMicrophones()`: Enumerates available audio input devices (microphones), populates the microphone selection dropdown, and sets the current microphone as the selected option.
+
+   Note: This code assumes the existence of corresponding HTML elements, such as modals, buttons, and dropdowns, and it integrates with the Web Audio API for audio metering and the MediaDevices API for microphone selection. Additionally, it assumes the use of the localStream variable for audio stream management.
+*/
+
 // audioMetering.js
 function startAudioMetering(stream, meterElementId) {
     const audioContext = new (window.AudioContext || window.webkitAudioContext)();

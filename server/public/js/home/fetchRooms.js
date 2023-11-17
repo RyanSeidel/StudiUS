@@ -1,3 +1,19 @@
+/*
+   ROOM MANAGEMENT JAVASCRIPT
+
+   This JavaScript code is responsible for managing room-related functionalities on a web page. It includes functionalities for fetching, rendering, and interacting with rooms, such as displaying room information, editing rooms, leaving rooms, and creating new rooms.
+
+   Key components and functionalities:
+
+   - The 'fetchRooms' function sends a request to the server to fetch a list of rooms and displays them on the web page. It also includes the ability to edit rooms, leave rooms, and navigate to chat rooms.
+
+   - Event listeners are added to various elements, such as buttons and modals, to handle user interactions. For example, there are event listeners for clicking on room buttons, the "Unselect All" button, creating rooms, and closing modals.
+
+   - The code manages selected users for creating new rooms and includes functionality for displaying selected users, validating room names, and creating new rooms.
+
+   Note: To use this code, you should have corresponding HTML elements with matching IDs and a server endpoint for fetching and managing room data. CSS styles may also be needed for the visual presentation of rooms and user interface components.
+*/
+
 function fetchRooms() {
     fetch('/get-rooms')
         .then(response => {
