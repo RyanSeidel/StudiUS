@@ -52,9 +52,15 @@ function fetchRooms() {
                 roomMembers.textContent = `Members: ${room.userNames.length}`;
                 roomMembers.style.fontSize = '12px';
 
+                const activeParticipants = document.createElement('div');
+                activeParticipants.className = 'active-participants';
+                activeParticipants.id = `active-participants-${room._id}`; // Unique ID for each room
+                activeParticipants.textContent = `Active: ${room.activeParticipants || 0}`;
+
                 roomInfo.appendChild(roomName);
                 roomInfo.appendChild(roomOwner);
                 roomInfo.appendChild(roomMembers);
+                roomInfo.appendChild(activeParticipants); // Add this line
 
                 const buttonContainer = document.createElement('div');
                 buttonContainer.style.display = 'flex';
@@ -68,8 +74,7 @@ function fetchRooms() {
                 });
 
                 
-                if (room.ownerId === currentUserId) {
-                    console.log("Current user is the owner of the room:", room.name);
+                if (room.ownerId === currentUserId) {  
                     const editButton = document.createElement('button');
                     editButton.textContent = 'Edit';
                     editButton.className = 'edit-button'; // Add a class for styling

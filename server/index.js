@@ -89,6 +89,12 @@ io.on('connection', (socket) => {
         // Emit the updated participants list to everyone in the room
         io.to(roomId).emit('participants-updated', participantsByRoom[roomId]);
 
+        // Broadcast to all clients
+        io.emit('global-participants-updated', {
+        roomId: roomId,
+        count: participantsByRoom[roomId]?.length || 0
+        });
+
         socket.to(roomId).emit('user-connected', userId, userName);
     });
 
@@ -140,10 +146,14 @@ io.on('connection', (socket) => {
             socket.to(socket.roomId).emit('user-disconnected', socket.id);
 
             // Send the updated participants list to everyone in the room
-            io.to(socket.roomId).emit('participants-updated', participantsByRoom[socket.roomId]);
+            io.emit('global-participants-updated', {
+                roomId: socket.roomId,
+                count: participantsByRoom[socket.roomId]?.length || 0
+            });
         }
     });   
 });
+
 
 app.get('/users', async (req, res) => {
     if (!req.user) return res.status(401).send('Not authenticated.');
@@ -185,6 +195,9 @@ app.get('/get-rooms', async (req, res) => {
                 const owner = await User.findById(room.ownerId).lean();
                 room.ownerName = owner ? owner.name : 'Unknown';
             }
+
+            // Fetch the count of active participants for each room
+            room.activeParticipants = participantsByRoom[room._id]?.length || 0;
         }
 
         res.json(rooms);
