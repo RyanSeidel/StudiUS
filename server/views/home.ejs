@@ -81,38 +81,36 @@
 
 <div id="createRoomModal" class="modal">
     <div class="modal-content">
-        <span class="close" id="closeCreateRoomModal">&times;</span>
-        <h2>Create Room</h2>
-        <div id="roomNameError" class="error"></div>
-
-        <label for="newRoomName">Room Name:</label>
-        <input type="text" id="newRoomName" placeholder="Enter Room Name">
-
-        <div class="image-slideshow">
-            <button class="slide-arrow left-arrow">&#10094;</button>
-            <div class="image-container">
-              <div class="slide">
-                <img src="/images/peers.png" alt="default" class="slide-image">
-                <div class="slide-text">Peers </div>
-              </div>
-              <div class="slide">
-                <img src="/images/game.png" alt="logo" class="slide-image">
-                <div class="slide-text">Flash Card Game room</div>
-              </div>
-              <!-- Add more slides as needed -->
-            </div>
-            <button class="slide-arrow right-arrow">&#10095;</button>
+      <span class="close" id="closeCreateRoomModal">&times;</span>
+      <h2>Create Room</h2>
+      <div id="roomNameError" class="error"></div>
+  
+      <label for="newRoomName">Room Name:</label>
+      <input type="text" id="newRoomName" placeholder="Enter Room Name">
+  
+      <div class="image-slideshow">
+        <button class="slide-arrow left-arrow">&#10094;</button>
+        <div class="image-container">
+          <div class="slide">
+            <img src="/images/peers.png" alt="default" class="slide-image">
+            <div class="slide-text">Peers </div>
           </div>
-          
-
-        <h3>Selected Users</h3>
-        <div id="selectedUsersDisplay"></div>
-        <button class="button" id="confirmCreateRoom">Confirm</button>
+  
+          <div class="slide">
+            <img src="/images/game.png" alt="logo" class="slide-image">
+            <div class="slide-text">Flash Card Game room</div>
+          </div>
+          <!-- Add more slides as needed -->
+        </div>
+        <button class="slide-arrow right-arrow">&#10095;</button>
+      </div>
+  
+      <h3>Selected Users</h3>
+      <div id="selectedUsersDisplay"></div>
+      <button class="button" id="confirmCreateRoom">Confirm</button>
     </div>
-</div>
-
-
-
+  </div>
+  
 
 <div id="editRoomModal" class="modal" style="display:none;">
     <div class="modal-content">

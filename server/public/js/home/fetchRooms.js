@@ -273,6 +273,8 @@ const selectedUsersDisplay = document.getElementById('selectedUsersDisplay');
 const newRoomNameInput = document.getElementById('newRoomName');
 const roomNameError = document.getElementById('roomNameError');
 
+
+
 initCreateRoomBtn.addEventListener('click', () => {
     if (selectedUsers.length === 0) {
         alert("No users are selected.");
@@ -324,8 +326,9 @@ initCreateRoomBtn.addEventListener('click', () => {
 });
 
 closeCreateRoomModalBtn.onclick = () => {
-    createRoomModal.style.display = "none";
-    roomNameError.textContent = ""; // Clear any previous error message
+    createRoomModal.style.display = 'none';
+    roomNameError.textContent = ''; // Clear any previous error message
+    clearSelectedUsers(); // Clear the selected users when the modal is closed
 };
 
 confirmCreateRoomBtn.addEventListener('click', () => {
