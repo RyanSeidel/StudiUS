@@ -118,8 +118,11 @@ button:hover {
     margin: 5px 15px;
     padding: 10px 15px;
     border-radius: 15px;
-    width: fit-content;
-    position: relative; /* Add relative positioning */
+
+    position: relative;
+    word-wrap: break-word;
+    overflow-y: visible;
+    max-width: 300px;
 }
 
 .current-user-message::after {
@@ -141,8 +144,11 @@ button:hover {
     margin: 5px 20px;
     padding: 10px 15px;
     border-radius: 15px;
-    width: fit-content;
+    /* width: fit-content; */
     position: relative; /* Add relative positioning */
+    word-wrap: break-word;
+    overflow-y: visible;
+    max-width: 300px;
 }
 
 .other-user-message::after {
@@ -219,12 +225,13 @@ button:hover {
     background-repeat: no-repeat; /* Ensure the image doesn't repeat */
     background-position: right 10px center; /* Position the image to the right with some padding */
     padding-right: 60px; /* Provide space for the image preview so text doesn't overlap */
-    max-height: 10vh;
+    max-height: 9vh;
     min-height: 1vh;
     height: auto; /* Allow the height to adjust dynamically */
     transition: height 0.3s; /* Smooth transition for height changes */
-}
-
+    overflow-y: auto;
+    font-family: Arial, sans-serif;
+} 
 .icon-group {
     display: flex;
     justify-content: space-between;

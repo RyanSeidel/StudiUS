@@ -1,85 +1,114 @@
 <head>
-    <link rel="stylesheet" href="../css/chatRoom.css">
-    <script src="https://kit.fontawesome.com/fb5c3cd0c8.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../css/chatRoom.css" />
+    <script
+        src="https://kit.fontawesome.com/fb5c3cd0c8.js"
+        crossorigin="anonymous"
+    ></script>
     <script>
-      // You need this or else you wouldnt know what the id/name of user
-      const name = "<%= name %>"; 
-      const userId = "<%= userId %>";
+        // You need this or else you wouldnt know what the id/name of user
+        const name = "<%= name %>";
+        const userId = "<%= userId %>";
     </script>
     <script src="/socket.io/socket.io.js"></script>
 </head>
 
 <body>
-<div id="video-container"></div>
+    <div id="video-container"></div>
     <div id="audioMeter"><div></div></div>
     <div class="screen-center">
         <div class="screen-parent">
-            <div class="left-screen">
-            </div>
+            <div class="left-screen"></div>
             <div class="chat-container">
                 <div class="chat-container-content">
-                  <div class="msg-top">
+                    <div class="msg-top">
+                        <div class="msg-top-left">
+                            <button
+                                id="chatBtn"
+                                class="chat-btn"
+                                onclick="toggleView('chat')"
+                            >
+                                Chat
+                            </button>
+                            <button
+                                id="participantsBtn"
+                                class="participants-btn"
+                                onclick="toggleView('participants')"
+                            >
+                                Participants
+                            </button>
+                        </div>
 
-                    <div  class="msg-top-left">
-                      <button id="chatBtn" class="chat-btn" onclick="toggleView('chat')">Chat</button>
-                      <button id="participantsBtn" class="participants-btn" onclick="toggleView('participants')">Participants</button>
+                        <div class="msg-top-right">
+                            <form action="/home" method="get">
+                                <button type="submit" id="leaveHomeBtn">
+                                    Leave Room
+                                </button>
+                            </form>
+                        </div>
                     </div>
+                    <div id="chat-box-container"></div>
 
-                    <div class="msg-top-right">
-                      <form action="/home" method="get">
-                        <button type="submit" id="leaveHomeBtn">Leave Room</button>
-                      </form>
+                    <div id="participants-container" style="display: none">
+                        <div class="participants-title">Active Users:</div>
+                        <div id="participants-list">
+                            <!-- Participants will be listed here -->
+                        </div>
                     </div>
-                    
-                    
-                    
-                </div>
-                <div id="chat-box-container">
-                 
-                </div>
-
-                <div id="participants-container" style="display: none;">
-                  <div class="participants-title">Active Users:</div>
-                  <div id="participants-list">
-                      <!-- Participants will be listed here -->
-                  </div>
-                </div>
 
                     <div class="msg-bottom">
-                      
-                      <div class="icon-group">
-                        
-                        <div class="icon-left">
-                          <button id="settingsBtn">
-                            <i class="fa-sharp fa-solid fa-gear"></i>
-                          </button>
-                            <span class="image-input-container">
-                                <input type="file" id="image-input" name="file" style="display: none; visibility: none" onchange="displayPreview(this)" />
-                                <label for="image-input"><i class="fa-regular fa-image"></i></label>
-                            </span>
-                            <span id="toggleCamera"><i class="fa-solid fa-camera camera-active"></i></span>
-                            <span id="toggleMicrophone"><i class="fa-solid fa-microphone microphone-active"></i></span>
-                            
-                      </div>
-                      </div>
-                      <div class="input-container">
-                            <input type="text" id="message-input" placeholder="Write Something..." />
-                            <span class="clear-preview" onclick="clearPreview()">&#10005;</span> <!-- Button to clear preview -->
-                            <span onclick="sendMessage()"><i class="send-icon fa-regular fa-paper-plane"></i></span>
-                      </div>
-                                        
-                
+                        <div class="icon-group">
+                            <div class="icon-left">
+                                <button id="settingsBtn">
+                                    <i class="fa-sharp fa-solid fa-gear"></i>
+                                </button>
+                                <span class="image-input-container">
+                                    <input
+                                        type="file"
+                                        id="image-input"
+                                        name="file"
+                                        style="display: none; visibility: none"
+                                        onchange="displayPreview(this)"
+                                    />
+                                    <label for="image-input"
+                                        ><i class="fa-regular fa-image"></i
+                                    ></label>
+                                </span>
+                                <span id="toggleCamera"
+                                    ><i
+                                        class="fa-solid fa-camera camera-active"
+                                    ></i
+                                ></span>
+                                <span id="toggleMicrophone"
+                                    ><i
+                                        class="fa-solid fa-microphone microphone-active"
+                                    ></i
+                                ></span>
+                            </div>
+                        </div>
+                        <div class="input-container">
+                            <textarea
+                                id="message-input"
+                                placeholder="Write something..."
+                                oninput="adjustHeight()"
+                                onkeyup="checkEnter()"
+                            ></textarea>
+
+                            <span class="clear-preview" onclick="clearPreview()"
+                                >&#10005;</span
+                            >
+                            <!-- Button to clear preview -->
+                            <span onclick="sendMessage()"
+                                ><i
+                                    class="send-icon fa-regular fa-paper-plane"
+                                ></i
+                            ></span>
+                        </div>
                     </div>
-                  </div>
                 </div>
             </div>
         </div>
     </div>
 
-
-
-    
-    
     <div id="settingsModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -88,16 +117,49 @@
             <select id="microphoneList"></select>
             <h3>Audio Metering</h3>
             <div id="audioMeterModal" class="audio-meter"><div></div></div>
-
         </div>
     </div>
 
-  <script src="../js/chatRoom/audioMetering.js"></script>
-  <script src="../js/chatRoom/preview.js"></script>
-  <script src="../js/chatRoom/cameraToggle.js"></script>
-  <script src="../js/chatRoom/Message.js"></script>
-  <script src="../js/chatRoom/toggleView.js"></script>
-  <script src="../js/chatRoom/socket.js"></script>
+    <script>
+        function handleInput() {
+            var input = document.getElementById("message-input");
+            var maxWidth =
+                document.querySelector(".input-container").offsetWidth;
+
+            var words = input.value.split(" ");
+            var lines = [];
+            var currentLine = "";
+
+            for (var i = 0; i < words.length; i++) {
+                var testLine = currentLine + words[i] + " ";
+                var testWidth = getTextWidth(testLine, input);
+
+                if (testWidth > maxWidth) {
+                    lines.push(currentLine);
+                    currentLine = words[i] + " ";
+                } else {
+                    currentLine = testLine;
+                }
+            }
+
+            lines.push(currentLine);
+            input.value = lines.join("\n");
+        }
+
+        function getTextWidth(text, input) {
+            var canvas = document.createElement("canvas");
+            var context = canvas.getContext("2d");
+            context.font = window
+                .getComputedStyle(input, null)
+                .getPropertyValue("font");
+            var width = context.measureText(text).width;
+            return width;
+        }
+    </script>
+    <script src="../js/chatRoom/audioMetering.js"></script>
+    <script src="../js/chatRoom/preview.js"></script>
+    <script src="../js/chatRoom/cameraToggle.js"></script>
+    <script src="../js/chatRoom/Message.js"></script>
+    <script src="../js/chatRoom/toggleView.js"></script>
+    <script src="../js/chatRoom/socket.js"></script>
 </body>
-
-
