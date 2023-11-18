@@ -14,6 +14,17 @@
    Note: To use this code, you should have corresponding HTML elements with matching IDs and a server endpoint for fetching and managing room data. CSS styles may also be needed for the visual presentation of rooms and user interface components.
 */
 
+function toggleRoomType(selectedType) {
+    const gameButton = document.getElementById('selectGame');
+    const peersButton = document.getElementById('selectPeers');
+
+    gameButton.classList.toggle('selected', selectedType === 'game');
+    peersButton.classList.toggle('selected', selectedType === 'peers');
+
+    // Adding console log for debugging
+    console.log(`Room type selected: ${selectedType}`);
+}
+
 function fetchRooms() {
     fetch('/get-rooms')
         .then(response => {
@@ -139,7 +150,13 @@ function fetchRooms() {
                                     }
                                 });
                                 
-                                
+                                 // Set the initial state of room type buttons
+                                const currentRoomType = room.type; // Assuming 'type' is a property of your room object
+                                toggleRoomType(currentRoomType);
+
+                                // Add event listeners to room type buttons
+                                document.getElementById('selectGame').addEventListener('click', () => toggleRoomType('game'));
+                                document.getElementById('selectPeers').addEventListener('click', () => toggleRoomType('peers'));
                                 
                         
                                 const removeButton = document.createElement('button');
