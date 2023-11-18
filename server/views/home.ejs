@@ -83,14 +83,34 @@
     <div class="modal-content">
         <span class="close" id="closeCreateRoomModal">&times;</span>
         <h2>Create Room</h2>
-        <div id="roomNameError" class="error"></div> <!-- Add this line for room name error -->
+        <div id="roomNameError" class="error"></div>
+
         <label for="newRoomName">Room Name:</label>
         <input type="text" id="newRoomName" placeholder="Enter Room Name">
+
+        <div class="image-slideshow">
+            <button class="slide-arrow left-arrow">&#10094;</button>
+            <div class="image-container">
+              <div class="slide">
+                <img src="/images/peers.png" alt="default" class="slide-image">
+                <div class="slide-text">Peers </div>
+              </div>
+              <div class="slide">
+                <img src="/images/game.png" alt="logo" class="slide-image">
+                <div class="slide-text">Flash Card Game room</div>
+              </div>
+              <!-- Add more slides as needed -->
+            </div>
+            <button class="slide-arrow right-arrow">&#10095;</button>
+          </div>
+          
+
         <h3>Selected Users</h3>
         <div id="selectedUsersDisplay"></div>
         <button class="button" id="confirmCreateRoom">Confirm</button>
     </div>
 </div>
+
 
 
 
@@ -117,7 +137,7 @@
 <script src="../js/home/fetchRooms.js"></script>
 <script src="../js/home/editProfile.js"></script>
 <script src="../js/home/todolist.js"></script>
-
+<script src="../js/home/slideShow.js"></script>
 
 <script src="/socket.io/socket.io.js"></script>
 
@@ -138,7 +158,7 @@
         if (participantCountElement) {
             console.log(`Updating participant count for room ${roomId} to ${count}`);
             participantCountElement.textContent = `Active: ${count}`;
-            
+
             fetchRoom();
         } else {
             console.log(`Participant count element not found for room ${roomId}`);

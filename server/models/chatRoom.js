@@ -8,6 +8,10 @@ const chatRoomSchema = new mongoose.Schema({
         maxlength: 32,
     },
     isGroup: Boolean,
+    isGame: {
+        type: Boolean,
+        default: false // Set a default value if required
+    },
     createAt: { type: Date, default: Date.now },
     lastMessageAt: { type: Date, default: Date.now },
     messagesIds: [mongoose.Schema.Types.ObjectId],

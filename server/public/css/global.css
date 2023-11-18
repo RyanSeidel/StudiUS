@@ -23,6 +23,8 @@
   background-color: #0056b3; /* Darker blue background color on hover */
 }
 
+
+/* Slide show testing! */
 /* Style for the close button */
 /* Style the close button */
 .close-button {
@@ -38,3 +40,49 @@
 .close-button:hover {
   color: red; /* Change color on hover if desired */
 }
+
+.image-slideshow {
+  width: 100%;
+  max-width: 550px; /* Adjust to fit your needs */
+  margin: auto;
+  position: relative;
+}
+
+.image-container {
+  width: 100%;
+  overflow: hidden;
+  text-align: center; /* Center the image horizontally */
+}
+
+.slide-image {
+  border: 2px solid #000; /* Add a border around the image */
+  max-width: calc(100% - 40px); /* Make the image responsive to the container while considering horizontal padding */
+  max-height: 232px;
+  display: block; /* Display the image as a block element */
+  margin: 20px auto; /* Center the image horizontally and add vertical padding */
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+
+
+.slide-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 100;
+}
+
+.left-arrow {
+  left: 0;
+}
+
+.right-arrow {
+  right: 0;
+}
+
