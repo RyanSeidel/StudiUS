@@ -2,7 +2,7 @@
 
 /* To-Do List Styles */
 .container {
-    
+    width: 100%;
     max-height: 390px; /* Set a fixed height for the container */
 }
 

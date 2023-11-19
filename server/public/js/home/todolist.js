@@ -15,53 +15,58 @@
 
    Note: To use this code, you should have corresponding HTML elements with matching IDs in your web page. You may also need to include appropriate CSS styles for the visual presentation of the task list.
 */
+// Define closeModal and addTaskModal functions in the global scope
+document.addEventListener("DOMContentLoaded", function () {
+    const taskModal = document.getElementById("taskModal");
+    const openTaskModalButton = document.getElementById("openTaskModal");
+    const closeModalButton = document.querySelector(".close");
+    const taskInputModal = document.getElementById("taskInputModal");
+    const tasksContainer = document.getElementById("tasks");
 
+    function openModal() {
+        taskModal.style.display = "block";
+    }
 
-    document.addEventListener("DOMContentLoaded", function () {
-        // Selecting elements
-        const taskInput = document.getElementById("taskInput");
-        const addTaskButton = document.getElementById("addTask");
-        const tasksContainer = document.getElementById("tasks");
+    function closeModal() {
+        taskModal.style.display = "none";
+        taskInputModal.value = "";
+    }
 
-        // Function to add a new task
-        function addTask() {
-            const taskText = taskInput.value.trim();
-            if (taskText === "") {
-                alert("Please enter a task!");
-                return;
-            }
-
-            // Create task item
-            const taskItem = document.createElement("div");
-            taskItem.classList.add("task-item");
-
-            // Create task text
-            const taskTextElement = document.createElement("div");
-            taskTextElement.classList.add("task-text");
-            taskTextElement.textContent = taskText;
-
-            // Create delete button
-            const deleteButton = document.createElement("div");
-            deleteButton.classList.add("delete-task");
-            deleteButton.textContent = "Delete";
-
-            // Add click event to delete button
-            deleteButton.addEventListener("click", function () {
-                tasksContainer.removeChild(taskItem);
-            });
-
-            // Append elements to task item
-            taskItem.appendChild(taskTextElement);
-            taskItem.appendChild(deleteButton);
-
-            // Append task item to the tasks container
-            tasksContainer.appendChild(taskItem);
-
-            // Clear input field
-            taskInput.value = "";
+    function addTaskModal() {
+        const taskText = taskInputModal.value.trim();
+        
+        if (taskText === "") {
+            alert("Please enter a task!");
+            return;
         }
 
-        // Add click event to "Add" button
-        addTaskButton.addEventListener("click", addTask);
-    });
+        const taskItem = document.createElement("div");
+        taskItem.classList.add("task-item");
 
+        const taskTextElement = document.createElement("div");
+        taskTextElement.classList.add("task-text");
+        taskTextElement.textContent = taskText;
+
+        const deleteButton = document.createElement("div");
+        deleteButton.classList.add("delete-task");
+        deleteButton.textContent = "Delete";
+
+        deleteButton.addEventListener("click", function () {
+            taskItem.remove();
+        });
+
+        taskItem.appendChild(taskTextElement);
+        taskItem.appendChild(deleteButton);
+        tasksContainer.appendChild(taskItem);
+
+        closeModal();
+    }
+
+    openTaskModalButton.addEventListener("click", openModal);
+    closeModalButton.addEventListener("click", closeModal);
+    window.addEventListener("click", function (event) {
+        if (event.target === taskModal) {
+            closeModal();
+        }
+    });
+});

@@ -47,16 +47,29 @@
                 <h2>To Do List</h2>
                 
                 <div id="newtask">
-                    <input type="text" id="taskInput" placeholder="Task to be done..">
-                    <button class="addTask" id="addTask">Add</button>
+                    <button class="addTask" id="openTaskModal">Add Task</button>
                 </div>
-            
+                
                 <div class="container">
                     <div id="tasks"></div>
                 </div>
-            </div>
+                
+                <!-- todolist and date task list -->
+                <div class="modal" id="taskModal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModal()">&times;</span>
+                        <label for="taskInputModal">Task:</label>
+                        <input type="text" id="taskInputModal" placeholder="Task to be done..">
+                        <label for="dateInputModal">Date:</label>
+                        <input type="date" id="dateInputModal">
+                        <button class="addTask" onclick="addTaskModal()">Add</button>
+                    </div>
+                </div>
+            </div><!--rightcolum-->
+            
         </div>
     </div>
+
 
 
 
