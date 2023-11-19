@@ -50,3 +50,9 @@ function clearPreview() {
   
   imageInput.value = ''; // Clear the file input's value
 }
+
+function adjustHeight() {
+  const textarea = document.getElementById('message-input');
+  textarea.style.height = 'auto'; // Reset the height
+  textarea.style.height = textarea.scrollHeight + 'px'; // Adjust to content
+}

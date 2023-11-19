@@ -55,7 +55,7 @@ function sendMessage() {
           socket.emit("sendMessage", {
               roomId: roomId,
               senderName: name,
-              body: `<img src="${imageUrl}" alt="Image" width="150">`,
+              body: `<img src="${imageUrl}" alt="Image" width="300">`,
           });
           imageInput.value = ""; // Clear the image input
           input.style.backgroundImage = 'none'; // Remove the image preview
