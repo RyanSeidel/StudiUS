@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const openTaskModalButton = document.getElementById("openTaskModal");
     const closeModalButton = document.querySelector(".close");
     const taskInputModal = document.getElementById("taskInputModal");
+    const dateInputModal = document.getElementById("dateInputModal");
     const tasksContainer = document.getElementById("tasks");
 
     function openModal() {
@@ -30,11 +31,13 @@ document.addEventListener("DOMContentLoaded", function () {
     function closeModal() {
         taskModal.style.display = "none";
         taskInputModal.value = "";
+        dateInputModal.value = ""; // Reset the date input
     }
 
     function addTaskModal() {
         const taskText = taskInputModal.value.trim();
-        
+        const taskDate = dateInputModal.value;
+
         if (taskText === "") {
             alert("Please enter a task!");
             return;
@@ -47,10 +50,17 @@ document.addEventListener("DOMContentLoaded", function () {
         taskTextElement.classList.add("task-text");
         taskTextElement.textContent = taskText;
 
+        // Optionally, add the date if provided
+        if (taskDate) {
+            const taskDateElement = document.createElement("div");
+            taskDateElement.classList.add("task-date");
+            taskDateElement.textContent = `Due Date: ${taskDate}`;
+            taskItem.appendChild(taskDateElement);
+        }
+
         const deleteButton = document.createElement("div");
         deleteButton.classList.add("delete-task");
         deleteButton.textContent = "Delete";
-
         deleteButton.addEventListener("click", function () {
             taskItem.remove();
         });
@@ -64,6 +74,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     openTaskModalButton.addEventListener("click", openModal);
     closeModalButton.addEventListener("click", closeModal);
+
+    // Attach the event listener for adding a task to the button in the modal
+    const addTaskButton = document.querySelector(".modal .addTask");
+    addTaskButton.addEventListener("click", addTaskModal);
+
     window.addEventListener("click", function (event) {
         if (event.target === taskModal) {
             closeModal();

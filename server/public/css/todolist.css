@@ -26,7 +26,6 @@
     padding: 0;
     overflow-y: auto;
     overflow-x: hidden;
-    max-height: calc(100% - 40px); /* Adjust the max-height to accommodate the input and margin */
 }
 
 .task-item {
