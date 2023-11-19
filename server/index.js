@@ -313,6 +313,9 @@ app.post('/create-room', async (req, res, next) => {
         const allowedUsers = req.body.allowedUsers || [];
 
         const currentUser = req.user;
+        
+        const isGame = req.body.isGame;
+
         console.log("Current User ID:", currentUser._id);
 
         // Ensure the current user is included in the allowed users
@@ -333,6 +336,7 @@ app.post('/create-room', async (req, res, next) => {
             ownerId: currentUser._id, // Set the current user as the owner of the room
             ownerName: currentUser.name, // Set the owner's name
             isGroup: allowedUsers.length > 1,
+            isGame: isGame // Room type
         });
 
         await newRoom.save();

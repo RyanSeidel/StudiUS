@@ -13,6 +13,8 @@
 
    Note: To use this code, you should have corresponding HTML elements with matching IDs and a server endpoint for fetching and managing room data. CSS styles may also be needed for the visual presentation of rooms and user interface components.
 */
+let selectedRoomType = 'peers'; // Default value
+
 
 function toggleRoomType(selectedType) {
     const gameButton = document.getElementById('selectGame');
@@ -23,6 +25,8 @@ function toggleRoomType(selectedType) {
 
     // Adding console log for debugging
     console.log(`Room type selected: ${selectedType}`);
+
+    selectedRoomType = selectedType;
 }
 
 function fetchRooms() {
@@ -350,9 +354,10 @@ closeCreateRoomModalBtn.onclick = () => {
 
 confirmCreateRoomBtn.addEventListener('click', () => {
     console.log("Confirm button clicked"); // Debugging log
+    console.log(selectedRoomType); // Debugging log: Check if selectedRoomType has the correct value
 
     const roomName = newRoomNameInput.value;
-    
+
     // Check if the room name is too long
     if (roomName.length > 32) {
         roomNameError.textContent = 'Name is too long (maximum 32 characters).';
@@ -372,7 +377,11 @@ confirmCreateRoomBtn.addEventListener('click', () => {
     fetch('/create-room', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ roomName, allowedUsers: selectedUsers })
+        body: JSON.stringify({
+            roomName,
+            allowedUsers: selectedUsers,
+            isGame: selectedRoomType === 'game', // Set isGame to true if selectedRoomType is 'game'
+        })
     })
     .then(res => {
         if (!res.ok) {

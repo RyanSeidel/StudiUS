@@ -25,9 +25,9 @@ document.addEventListener('DOMContentLoaded', function () {
       if (slide.classList.contains('selected')) {
           currentlySelectedIndex = index; // Update the currently selected index
           if (index === 0) {
-              console.log('Peer');
+              console.log('peer');
           } else if (index === 1) {
-              console.log('Game');
+              console.log('game');
           }
       } else {
           currentlySelectedIndex = null; // Reset the currently selected index
