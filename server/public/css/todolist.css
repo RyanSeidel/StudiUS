@@ -2,9 +2,8 @@
 
 /* To-Do List Styles */
 .container {
-    margin-top: 20px;
     
-    max-height: 300px; /* Set a fixed height for the container */
+    max-height: 390px; /* Set a fixed height for the container */
 }
 
 #newtask {
@@ -54,7 +53,7 @@
 .delete-task:hover {
     text-decoration: underline;
 }
-
+/* 
 .calendar-container {
     margin-top: 20px;
 }
@@ -65,4 +64,4 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     overflow: hidden;
-}
+} */
