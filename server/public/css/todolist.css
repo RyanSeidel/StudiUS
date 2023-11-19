@@ -3,12 +3,15 @@
 /* To-Do List Styles */
 .container {
     margin-top: 20px;
+    
+    max-height: 300px; /* Set a fixed height for the container */
 }
 
 #newtask {
     display: flex;
     gap: 10px;
     margin-bottom: 15px;
+    margin-top: 20px;
 }
 
 #taskInput {
@@ -19,10 +22,12 @@
     border-radius: 5px; /* Add border-radius for rounded edges */
     outline: none; /* Remove outline on focus */
 }
-
 #tasks {
     list-style-type: none;
     padding: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: calc(100% - 40px); /* Adjust the max-height to accommodate the input and margin */
 }
 
 .task-item {
@@ -48,4 +53,16 @@
 
 .delete-task:hover {
     text-decoration: underline;
+}
+
+.calendar-container {
+    margin-top: 20px;
+}
+
+#calendar {
+    width: 100%;
+    height: 300px; 
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden;
 }

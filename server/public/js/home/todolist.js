@@ -16,6 +16,7 @@
    Note: To use this code, you should have corresponding HTML elements with matching IDs in your web page. You may also need to include appropriate CSS styles for the visual presentation of the task list.
 */
 
+
     document.addEventListener("DOMContentLoaded", function () {
         // Selecting elements
         const taskInput = document.getElementById("taskInput");
