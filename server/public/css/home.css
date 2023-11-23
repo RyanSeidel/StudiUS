@@ -1,13 +1,13 @@
-body {
+body 
+{
   font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   /* height: 100vh; */
-  background-color: #f2f2f2;
-  margin: 0;
-  padding: 0;
+  /*this is for home background*/
+
 }
 
 h2 {
@@ -223,7 +223,17 @@ h2 {
 #rooms-list div.room:hover {
   background-color: #ddd;
 }
-
+/* Modal Styles */
+/* Add this to your CSS */
+#editRoomModal .modal-content {
+  text-align: center; /* Center-align text in the modal content */
+}
+#editRoomModal h2 {
+  font-family: 'Fjalla One', sans-serif; /* Apply custom font to the modal title */
+  color: #004b9b; /* Set the title color */
+  font-size: 24px; /* Adjust the font size */
+  margin-bottom: 20px; /* Add space below the title */
+}
 .modal {
   display: none;
   position: fixed;
@@ -240,14 +250,31 @@ h2 {
 
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  max-width: 600px;
-  position: relative; /* Add this line to position the close button relative to the modal content */
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+    border-radius: 10px; /* Add border-radius for rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add box shadow for a subtle 3D effect */
 }
 
+.room-type-button {
+  background-color: white;
+  font-size: 16px;
+  padding: 8px 10px;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 5px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+.room-type-button:hover {
+  background-color: #ddd;
+}
 .close {
   color: #aaa;
   font-size: 28px;
@@ -264,7 +291,20 @@ h2 {
   text-decoration: none;
   cursor: pointer;
 }
-
+#editRoomModal label {
+  font-weight: bold; /* Make labels bold */
+}
+#editRoomModal input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  max-width: 200px;
+  max-width: 200px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  margin-bottom: 15px;
+}
 .profile-pic-container {
 display: flex;
 flex-direction: column;
@@ -357,8 +397,15 @@ color: white;
 
 .delete-room-button {
   background-color: red;
-  color: white;
-  margin-top: 10px;
+  font-size: 16px;
+  padding: 8px 10px;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 5px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   /* Additional styling as needed */
 }
 

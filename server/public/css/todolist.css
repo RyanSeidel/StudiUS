@@ -3,7 +3,9 @@
 /* To-Do List Styles */
 .container {
     width: 100%;
-    max-height: 390px; /* Set a fixed height for the container */
+    max-width: 300px;
+    max-height: 390px;
+    overflow: auto;
 }
 
 #newtask {
@@ -17,50 +19,149 @@
     flex-grow: 1;
     padding: 8px;
     font-size: 16px;
-    border: 1px solid #ddd; /* Add border styling */
-    border-radius: 5px; /* Add border-radius for rounded edges */
-    outline: none; /* Remove outline on focus */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
 }
+
+.task-date {
+    color: #f11f1f;
+    border: 1px solid #f11f1f; /* Add a border for the due date */
+    padding: 5px; /* Add padding to separate the border from text */
+    border-radius: 5px; /* Add border-radius for rounded edges */
+    margin-top: 5px; /* Adjust margin for spacing */
+}
+
 #tasks {
     list-style-type: none;
     padding: 0;
     overflow-y: auto;
     overflow-x: hidden;
+    font-size: 12px;
 }
 
 .task-item {
+    max-width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border: 1px solid #ddd;
-    border-radius: 5px; /* Add border-radius for rounded edges */
+    border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
-    background-color: #f9f9f9;
+    background-color: #ddd;
+    flex-direction: column;
+    flex-grow: 1;
+    transition: background-color 0.3s ease-in-out; /* Add a smooth transition for background color */
+}
+
+.task-item:hover {
+    background-color: #cfcfcf; /* Change background color on hover */
 }
 
 .task-text {
     flex-grow: 1;
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
 .delete-task {
-    color: black; /* Fix typo: #black to black */
-    cursor: pointer;
-    font-weight: bold;
+    margin-top: 20px;
+    background-color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    font-size: 16px;
+    padding: 8px 10px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .delete-task:hover {
-    text-decoration: underline;
+    background-color: #ddd;
 }
-/* 
+
+/* Uncomment the following styles if you want to include a calendar container with a calendar */
+
+/*
 .calendar-container {
     margin-top: 20px;
 }
 
 #calendar {
     width: 100%;
-    height: 300px; 
+    height: 300px;
     border: 1px solid #ddd;
     border-radius: 5px;
     overflow: hidden;
-} */
+}
+*/
+/* Modal Styles */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+    border-radius: 10px; /* Add border-radius for rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add box shadow for a subtle 3D effect */
+}
+
+.close {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="date"] {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+    margin-bottom: 15px;
+}
+
+.addTask {
+    background-color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    font-size: 16px;
+    padding: 8px 10px;
+    box-sizing: border-box;
+    border: none; /* Removed border style */
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.addTask:hover {
+    background-color: #ddd;
+}
