@@ -1,255 +1,262 @@
-body 
-{
-  font-family: Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  /* height: 100vh; */
-  /*this is for home background*/
-
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* height: 100vh; */
+    /*this is for home background*/
 }
 
 h2 {
-  color: black;
-  font-weight: 700;
-  padding: 0;
-  margin: 0;
-  font-family: 'Fjalla One', sans-serif
+    color: black;
+    font-weight: 700;
+    padding: 0;
+    margin: 0;
+    font-family: "Fjalla One", sans-serif;
 }
 
-
-
-
-
+.button {
+    font-size: 16px;
+}
 
 .center-box {
-  width: 87%;
-  background: linear-gradient(45deg, #0071d7, #339965); /* Added this line for the gradient */
-  padding: 25px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+    width: 87%;
+    background: linear-gradient(
+        45deg,
+        #0071d7,
+        #339965
+    ); /* Added this line for the gradient */
+    padding: 25px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
 .greet-wrapper {
-  display: flex;
-  align-items: center;
-  padding: 17px;
-  justify-content: space-between; /* Distributes space between items */
-  width: 80%; /* Ensures the wrapper takes full width of the parent container */
+    display: flex;
+    align-items: center;
+    padding: 17px;
+    justify-content: space-between; /* Distributes space between items */
+    width: 80%; /* Ensures the wrapper takes full width of the parent container */
 }
 
-
-
-.column-wrapper{
-  display:flex;
-  height: 80vh;
+.column-wrapper {
+    display: flex;
+    height: 80vh;
 }
 
-
-.left-column, .right-column {
-  flex: 1; /* Takes up 1 fraction of the space */
-  padding: 20px;
-  border-right: 1px solid #ccc;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.left-column,
+.right-column {
+    flex: 1; /* Takes up 1 fraction of the space */
+    padding: 20px;
+    border-right: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .left-column {
-  border-top-left-radius: 25px;
-  border-bottom-left-radius: 25px;
-  background-color: #f2f2f2;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    background-color: #f2f2f2;
 }
-
 
 .right-column {
-  border-right: none; /* Removing the right border as it's not needed here */
-  border-top-right-radius: 25px;
-  border-bottom-right-radius: 25px;
-  background-color: rgba(242, 242, 242, 0.4);
+    border-right: none; /* Removing the right border as it's not needed here */
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    background-color: rgba(242, 242, 242, 0.4);
 }
 #userSearch {
-  flex-grow: 1;
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ddd; /* Add border styling */
-  border-radius: 5px; /* Add border-radius for rounded edges */
-  outline: none; /* Remove outline on focus */
+    flex-grow: 1;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ddd; /* Add border styling */
+    border-radius: 5px; /* Add border-radius for rounded edges */
+    outline: none; /* Remove outline on focus */
+    margin: 0;
 }
 
 #users-list {
-  width: 100%;          
-  border-radius: 10px;
-  overflow-y: auto;
-  overflow-x: hidden;
+    width: 100%;
+    border-radius: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #users-for-room {
-  width: 100%;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  padding: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    padding: 10px;
 }
 
 #users-for-room button {
-  display: flex;
-  align-items: center; /* Vertically center the content */
-  margin-bottom: 5px;
-  padding: 10px 10px;
-  width: calc(100% - 32px);
-  text-align: left;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+    display: flex;
+    align-items: center; /* Vertically center the content */
+    margin-bottom: 5px;
+    padding: 10px 10px;
+    width: calc(100% - 32px);
+    text-align: left;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 #users-for-room button img {
-  margin-right: 10px; /* Space between the image and the text */
+    margin-right: 10px; /* Space between the image and the text */
 }
 
-
 #users-for-room button:hover {
-  background-color: #f2f2f2;
+    background-color: #f2f2f2;
 }
 
 .middle-column {
-  flex: 2; /* Takes up 2 fractions of the space, making it larger */
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: rgba(242, 242, 242, 0.7);
+    flex: 2; /* Takes up 2 fractions of the space, making it larger */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(242, 242, 242, 0.7);
 }
 
 #create-group-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 8px 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 20px;
+    background-color: #4caf50;
+    color: white;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
 }
 
 #roomName {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
-  width: 70%; /* Adjust to make the input wider, use a percentage so it's responsive */
-  margin-right: 10px; /* Add some space between the input and the button */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    width: 70%; /* Adjust to make the input wider, use a percentage so it's responsive */
+    margin-right: 10px; /* Add some space between the input and the button */
 }
 
-.create-button{
-  background-color: #0071d7;
-  color: rgb(255, 255, 255);
-  padding: 8px 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.create-button {
+    background-color: #0071d7;
+    color: rgb(255, 255, 255);
+    padding: 8px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-.unselect-btn,  .addTask {
-  background-color: white;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
-  font-size: 16px; /* adjust as needed */
-  padding: 8px 10px;
-  box-sizing: border-box;
-  border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s, color 0.3s;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
+.unselect-btn,
+.addTask {
+    background-color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    font-size: 16px; /* adjust as needed */
+    padding: 8px 10px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
 }
-.create-room{
-  margin-top:20px;
-  background-color: white;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
-  font-size: 16px; /* adjust as needed */
-  padding: 8px 10px;
-  box-sizing: border-box;
-  border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s, color 0.3s;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
+.unselect-btn {
+    background-color: #0171d7;
+    margin: 0;
+    color: #fff;
+    transition: all 0.3s ease;
+}
+.create-room {
+    margin-top: 20px;
+    background-color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    font-size: 16px; /* adjust as needed */
+    padding: 8px 10px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
+}
+.create-room:hover,
+.addTask:hover {
+    background-color: #ddd;
+}
+.unselect-btn:hover {
+    transform: scale(1.1);
 }
 
-.unselect-btn:hover, .create-room:hover, .addTask:hover{
-  background-color: #ddd;
-}
-
-.create-button:hover{
-  background-color: #0056b3
+.create-button:hover {
+    background-color: #0056b3;
 }
 
 #users-for-room button.selected {
-  background-color: lightgreen;
-}        
+    background-color: lightgreen;
+}
 
 #rooms-list {
-  width: 100%;
-  margin-top: 20px;
-  border-radius: 10px;
-  padding: 10px;
-  overflow: auto;
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 10px;
+    padding: 10px;
+    overflow: auto;
 }
 
 #rooms-list h3 {
-  color: #004b9b;
-  background-color: #f2f2f2;
-  padding: 5px 10px;
-  border-radius: 5px;
+    color: #004b9b;
+    background-color: #f2f2f2;
+    padding: 5px 10px;
+    border-radius: 5px;
 }
 
 #rooms-list div.room {
-  background-color: #f2f2f2;
-  color: black;
-  padding: 15px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-top: 20px;
-  font-size: 12px;
+    background-color: #f2f2f2;
+    color: black;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 12px;
 }
 
 #rooms-list div.room:hover {
-  background-color: #ddd;
+    background-color: #ddd;
 }
 /* Modal Styles */
 /* Add this to your CSS */
 #editRoomModal .modal-content {
-  text-align: center; /* Center-align text in the modal content */
+    text-align: center; /* Center-align text in the modal content */
 }
 #editRoomModal h2 {
-  font-family: 'Fjalla One', sans-serif; /* Apply custom font to the modal title */
-  color: #004b9b; /* Set the title color */
-  font-size: 24px; /* Adjust the font size */
-  margin-bottom: 20px; /* Add space below the title */
+    font-family: "Fjalla One", sans-serif; /* Apply custom font to the modal title */
+    color: #004b9b; /* Set the title color */
+    font-size: 24px; /* Adjust the font size */
+    margin-bottom: 20px; /* Add space below the title */
 }
 .modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.4);
-  
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
-  background-color: #fefefe;
+    background-color: #fefefe;
     margin: 15% auto;
     padding: 20px;
     border: 1px solid #888;
@@ -261,182 +268,201 @@ h2 {
 }
 
 .room-type-button {
-  background-color: white;
-  font-size: 16px;
-  padding: 8px 10px;
-  box-sizing: border-box;
-  border: none;
-  border-radius: 5px;
-  margin-right: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    font-size: 16px;
+    padding: 8px 10px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 .room-type-button:hover {
-  background-color: #ddd;
+    background-color: #ddd;
 }
 .close {
-  color: #aaa;
-  font-size: 28px;
-  font-weight: bold;
-  position: absolute;
-  top: 5px;
-  right: 10px;
-  cursor: pointer;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
 }
 
 .close:hover,
 .close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
 #editRoomModal label {
-  font-weight: bold; /* Make labels bold */
+    font-weight: bold; /* Make labels bold */
+    margin-bottom: 0;
 }
 #editRoomModal input[type="text"] {
-  width: 100%;
-  padding: 8px;
-  max-width: 200px;
-  max-width: 200px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  outline: none;
-  margin-bottom: 15px;
+    width: 100%;
+    padding: 8px;
+    max-width: 200px;
+    max-width: 200px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+    margin-bottom: 15px;
 }
 .profile-pic-container {
-display: flex;
-flex-direction: column;
-align-items: center;
-margin: 10px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0;
 }
 #profilePic {
-width: 100px;
-height: 100px;
-border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
 }
 
-.room-name-flex{
-display: flex;
-align-items: center;
-width: 100%; /* Use the full width available */
+.room-name-flex {
+    display: flex;
+    align-items: center;
+    width: 100%; /* Use the full width available */
 }
 
-.greeting-button, .create-button {
-display: inline-flex;
-align-items: center;
-justify-content: center;
-white-space: nowrap;
-font-size: 16px; /* adjust as needed */
-padding: 8px 10px;
-box-sizing: border-box;
-border: none;
-border-radius: 5px;
-transition: background-color 0.3s, color 0.3s;
-box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
+.greeting-button,
+.create-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    font-size: 16px; /* adjust as needed */
+    padding: 8px 10px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
 }
 
 .greeting-button {
-background-color: #0071d7;
-color: white;
-cursor: pointer;
-box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
+    background-color: #0071d7;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
 }
 
 .greeting-button:hover {
-background-color: #0056b3;
-color: white;
+    background-color: #0056b3;
+    color: white;
 }
 
 .room-edit-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 .room-edit-header > div {
-  flex-grow: 1;
+    flex-grow: 1;
 }
 
-
 /* The buttons for the edit button */
+#saveRoomChanges {
+    height: 34px;
+    transition: all 0.3s ease;
+}
+#saveRoomChanges:hover {
+    transform: scale(1.1);
+}
 .promote-button {
-  background-color: white;
-  font-size: 16px; /* adjust as needed */
-  padding: 8px 10px;
-  box-sizing: border-box;
-  border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s, color 0.3s;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
+    background-color: white;
+    font-size: 16px; /* adjust as needed */
+    padding: 8px 10px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
 }
 
 .remove-button {
-  background-color: white;
-  font-size: 16px; /* adjust as needed */
-  padding: 8px 10px;
-  box-sizing: border-box;
-  border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s, color 0.3s;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
-  margin-left: 10px;
-  margin-bottom: 10px;
+    background-color: white;
+    font-size: 16px; /* adjust as needed */
+    padding: 8px 10px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
+    margin-left: 10px;
+    margin-bottom: 10px;
 }
 
 .promote-button:hover,
 .remove-button:hover {
-  background-color: rgb(1, 185, 1);
+    background-color: rgb(1, 185, 1);
 }
 
 .remove-button:hover {
-  background-color: red;
+    background-color: red;
 }
 
 .delete-room-button {
-  background-color: red;
-  font-size: 16px;
-  padding: 8px 10px;
-  box-sizing: border-box;
-  border: none;
-  border-radius: 5px;
-  margin-right: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  /* Additional styling as needed */
+    background-color: #e21f1f;
+    color: #fff;
+    font-size: 16px;
+    padding: 8px 10px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+    /* Additional styling as needed */
+}
+.delete-room-button:hover {
+    transform: scale(1.1);
+}
+.edit-button,
+.leave-button {
+    background-color: #007f3e;
+    color: #fff;
+    font-size: 16px; /* adjust as needed */
+    padding: 8px 10px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
+    margin-right: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
 }
 
-.edit-button, .leave-button{
-  background-color: white;
-  font-size: 16px; /* adjust as needed */
-  padding: 8px 10px;
-  box-sizing: border-box;
-  border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s, color 0.3s;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
-  margin-top: 15px;
-  margin-bottom: 15px;
+.go-button {
+    background-color: #0071d7;
+    color: #fff;
+    font-size: 16px; /* adjust as needed */
+    padding: 8px 10px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
+    margin-right: 5px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
 }
 
-.go-button{
-  background-color: white;
-  font-size: 16px; /* adjust as needed */
-  padding: 8px 10px;
-  box-sizing: border-box;
-  border: none;
-  border-radius: 5px;
-  transition: background-color 0.3s, color 0.3s;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
-  margin-right: 5px;
-  margin-top: 15px;
-  margin-bottom: 15px;
+.edit-button:hover,
+.go-button:hover,
+.leave-button:hover {
+    transform: scale(1.1);
 }
-
-.edit-button:hover, .go-button:hover, .leave-button:hover{
-  background-color: #ddd;
-}
-

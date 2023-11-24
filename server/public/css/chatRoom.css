@@ -209,9 +209,10 @@ button:hover {
     color: #fff;
     background-color: var(--blue-color-dark);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
 }
 #leaveHomeBtn:hover {
-    opacity: 0.8;
+    transform: scale(1.1)
 }
 .input-container {
     flex-grow: 1; /* Takes up the remaining space */
