@@ -118,11 +118,12 @@
         <div class="profile-pic-container">
             <img id="profilePicPreview" src="<%= image %>" alt="Profile Picture Preview" style="max-width: 100%; border-radius: 15px;"/>
             <input type="file" id="imageUpload" style="display:none;">
-            <button class="button" onclick="document.getElementById('imageUpload').click();">Change Picture</button>
+            
         </div>
         <label for="name">Name:</label>
         <input type="text" id="nameInput" value="<%= name %>">
         <div id="nameError" class="error"></div>
+        <button class="button" onclick="document.getElementById('imageUpload').click();">Change Picture</button>
         <button class="button" id="submitChangesBtn">Submit Changes</button>
 
     </div>
