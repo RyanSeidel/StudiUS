@@ -1,4 +1,15 @@
 document.getElementById('openCalendar').addEventListener('click', function () {
+    document.getElementById('calendarModal').style.display = 'block';
+    initializeCalendar();
+});
+
+function closeCalendarModal() {
+    document.getElementById('calendarModal').style.display = 'none';
+}
+
+
+
+document.getElementById('openCalendar').addEventListener('click', function () {
     initializeCalendar(); });
     
     function initializeCalendar() {
