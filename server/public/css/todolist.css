@@ -1,6 +1,6 @@
 /* Add this to your ../css/home.css or create a new CSS file for to-do list styles */
 
-/* To-Do List Styles */
+/* To-Do List Styles -------------------------------------------------*/
 .container {
     width: 100%;
     max-width: 300px;
@@ -19,7 +19,7 @@
     flex-grow: 1;
     padding: 8px;
     font-size: 16px;
-    border: 1px solid #fff;
+    border: 1px solid #fff; /* Changed border color */
     border-radius: 5px;
     outline: none;
 }
@@ -45,7 +45,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid #fff;
+    border: 1px solid #fff; /* Changed border color */
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
@@ -85,22 +85,9 @@
     background-color: #ddd;
 }
 
-/* Uncomment the following styles if you want to include a calendar container with a calendar */
 
-/*
-.calendar-container {
-    margin-top: 20px;
-}
 
-#calendar {
-    width: 100%;
-    height: 300px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    overflow: hidden;
-}
-*/
-/* Modal Styles */
+/* Modal Styles ----------------------------------------------------------------*/
 .modal-content {
     background-color: #fefefe;
     margin: 15% auto;
@@ -112,7 +99,7 @@
     border-radius: 10px; /* Add border-radius for rounded corners */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add box shadow for a subtle 3D effect */
 }
-
+/* Close Button Styles */
 .close {
     color: #aaa;
     font-size: 28px;
@@ -125,19 +112,24 @@
 
 .close:hover,
 .close:focus {
+    /* Hover and focus styles for close button */
     color: black;
     text-decoration: none;
     cursor: pointer;
 }
 
+/* Label Styles */
 label {
+    /* Styling for labels */
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
 }
 
+/* Input Field Styles (Text and Date) */
 input[type="text"],
 input[type="date"] {
+    /* Styling for text and date input fields */
     width: 100%;
     padding: 8px;
     font-size: 16px;
@@ -147,7 +139,9 @@ input[type="date"] {
     margin-bottom: 15px;
 }
 
+/* Add Task Button Styles */
 .addTask {
+    /* Styling for the "Add Task" button */
     background-color: white;
     display: inline-flex;
     align-items: center;
@@ -163,124 +157,147 @@ input[type="date"] {
 }
 
 .addTask:hover {
+    /* Hover effect for the "Add Task" button */
     background-color: #ddd;
 }
-/* //------------------------------------- */
-* {
-	margin: 0;
-	padding: 0;
-	font-family: 'Poppins', sans-serif;
-}
 
+/* Calendar Styles---------------------------------------------------------------- */
 
 .calendar-container {
-	background: #fff;
-	width: 450px;
-	border-radius: 10px;
-	box-shadow: 0 15px 40px #fff(0, 0, 0, 0.12);
+    /* Overall container styling */
+    background: #fff;
+    width: 450px;
+    border-radius: 10px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: #fff;
-    width: 450px;
-
 }
 
+/* Calendar Header Styles */
 .calendar-container header {
-	display: flex;
-	align-items: center;
-	padding: 25px 30px 10px;
-	justify-content: space-between;
+    /* Header container styling */
+    display: flex;
+    align-items: center;
+    padding: 25px 30px 10px;
+    justify-content: space-between;
 }
 
+/* Calendar Navigation Styles */
 header .calendar-navigation {
-	display: flex;
+    /* Navigation icons container styling */
+    display: flex;
 }
 
 header .calendar-navigation span {
-	height: 38px;
-	width: 38px;
-	margin: 0 1px;
-	cursor: pointer;
-	text-align: center;
-	line-height: 38px;
-	border-radius: 50%;
-	user-select: none;
-	color: #fff;
-	font-size: 1.9rem;
+    /* Navigation icon styling */
+    height: 38px;
+    width: 38px;
+    margin: 0 1px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 38px;
+    border-radius: 50%;
+    user-select: none;
+    color: #fff;
+    font-size: 1.9rem;
 }
 
 .calendar-navigation span:last-child {
-	margin-right: -10px;
+    /* Adjust margin for last navigation icon */
+    margin-right: -10px;
 }
 
 header .calendar-navigation span:hover {
-	background: #f2f2f2;
+    /* Hover effect for navigation icons */
+    background: #f2f2f2;
 }
 
+/* Calendar Current Date Styles */
 header .calendar-current-date {
-	font-weight: 500;
-	font-size: 1.45rem;
+    /* Styling for the displayed current date */
+    font-weight: 500;
+    font-size: 1.45rem;
 }
 
+/* Calendar Body Styles */
 .calendar-body {
-	padding: 20px;
+    /* Body container styling */
+    padding: 20px;
 }
 
 .calendar-body ul {
-	list-style: none;
-	flex-wrap: wrap;
-	display: flex;
-	text-align: center;
+    /* List styling within the body */
+    list-style: none;
+    flex-wrap: wrap;
+    display: flex;
+    text-align: center;
 }
 
+/* Calendar Dates Styles */
 .calendar-body .calendar-dates {
-	margin-bottom: 20px;
+    /* Styling for the container of calendar dates */
+    margin-bottom: 20px;
 }
 
 .calendar-body li {
-	width: calc(100% / 7);
-	font-size: 1.07rem;
-	color: #414141;
+    /* Styling for individual calendar date */
+    width: calc(100% / 7);
+    font-size: 1.07rem;
+    color: #414141;
 }
 
+/* Calendar Weekdays Styles */
 .calendar-body .calendar-weekdays li {
-	cursor: default;
-	font-weight: 500;
+    /* Styling for weekdays within the calendar */
+    cursor: default;
+    font-weight: 500;
 }
 
+/* Individual Calendar Date Styles */
 .calendar-body .calendar-dates li {
-	margin-top: 30px;
-	position: relative;
-	z-index: 1;
-	cursor: pointer;
+    /* Styling for individual calendar date */
+    margin-top: 30px;
+    position: relative;
+    z-index: 1;
+    cursor: pointer;
 }
 
+/* Inactive Calendar Date Styles */
 .calendar-dates li.inactive {
-	color: #fff;
+    /* Styling for inactive dates (not in the current month) */
+    color: #fff;
 }
 
+/* Active Calendar Date Styles */
 .calendar-dates li.active {
-	color: #fff;
+    /* Styling for active date (today) */
+    color: #fff;
 }
 
+/* Calendar Date Hover Effect Styles */
 .calendar-dates li::before {
-	position: absolute;
-	content: "";
-	z-index: -1;
-	top: 50%;
-	left: 50%;
-	width: 40px;
-	height: 40px;
-	border-radius: 50%;
-	transform: translate(-50%, -50%);
+    /* Styling for the hover effect (before pseudo-element) */
+    position: absolute;
+    content: "";
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
 }
 
+/* Active Calendar Date Hover Effect Styles */
 .calendar-dates li.active::before {
-	background: #6332c5;
+    /* Styling for hover effect on active date */
+    background: #6332c5;
 }
 
+/* Inactive Calendar Date Hover Effect Styles */
 .calendar-dates li:not(.active):hover::before {
-	background: #e4e1e1;
+    /* Styling for hover effect on inactive date */
+    background: #e4e1e1;
 }
