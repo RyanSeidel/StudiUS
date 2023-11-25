@@ -154,7 +154,7 @@ io.on('connection', (socket) => {
     });   
 });
 
-
+// Finds the Users
 app.get('/users', async (req, res) => {
     if (!req.user) return res.status(401).send('Not authenticated.');
 
@@ -162,6 +162,7 @@ app.get('/users', async (req, res) => {
     res.json(users);
 });
 
+// Not being Used
 app.get('/conversation', async (req, res) => {
     if (!req.user) return res.status(401).send('Not authenticated.');
 
@@ -180,6 +181,7 @@ app.get('/conversation', async (req, res) => {
     res.json(conversation);
 });
 
+// Good for finding Rooms and displaying them
 app.get('/get-rooms', async (req, res) => {
     try {
         const currentUser = req.user;
@@ -207,7 +209,7 @@ app.get('/get-rooms', async (req, res) => {
     }
 });
 
-// Route to handle room deletion
+// For Room Deletion
 app.post('/delete-room', async (req, res) => {
     try {
         const { roomId } = req.body;
@@ -230,6 +232,7 @@ app.post('/delete-room', async (req, res) => {
     }
 });
 
+// To Give user Ownership
 app.post('/promote-user', async (req, res) => {
     try {
         const { roomId, username } = req.body;
@@ -260,6 +263,7 @@ app.post('/promote-user', async (req, res) => {
     }
 });
 
+// If User wants to leave Room
 app.post('/leave-room', async (req, res) => {
     try {
         const { roomId } = req.body;
@@ -280,6 +284,7 @@ app.post('/leave-room', async (req, res) => {
     }
 });
 
+// To remove a user from the Room
 app.post('/remove-user-from-room', async (req, res) => {
     try {
         const { roomId, username } = req.body;
@@ -300,13 +305,13 @@ app.post('/remove-user-from-room', async (req, res) => {
     }
 });
 
-
-
+// Take User to Chatroom
 app.get('/chatroom', (req, res) => {
     if (!req.user) return res.status(401).send('Not authenticated.');
     res.render('chat', { name: req.user.name, userId: req.user._id });
 });
 
+// To Create the Room
 app.post('/create-room', async (req, res, next) => {
     try {
         const roomName = req.body.roomName;
@@ -350,7 +355,7 @@ app.post('/create-room', async (req, res, next) => {
     }
 });
 
-
+//
 app.post('/remove-user-from-room', async (req, res) => {
     const { roomId, userName } = req.body;
 
@@ -375,7 +380,7 @@ app.post('/remove-user-from-room', async (req, res) => {
     }
 });
 
-
+// Get the username base on user id
 app.post('/get-user-names', async (req, res) => {
     try {
         const userIds = req.body.userIds;
@@ -387,12 +392,13 @@ app.post('/get-user-names', async (req, res) => {
     }
 });
 
-
+// For uploading Images
 const upload = multer({ 
     storage: storage,
     limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
 });
 
+// Upload a single image
 app.post('/upload', upload.single('image'), async (req, res) => {
     try {
         const imageUrl = req.file.path; // This is the Cloudinary URL
@@ -403,6 +409,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
     }
 });
 
+// Updates Profile Name
 app.post('/update-profile', upload.none(), async (req, res) => {
     try {
         console.log("Received name:", req.body.name); // Log the name to check
@@ -421,7 +428,7 @@ app.post('/update-profile', upload.none(), async (req, res) => {
     }
 });
 
-
+// For updating profile picture
 app.post('/upload-profile-pic', upload.any(), async (req, res) => {
     try {
         const user = await User.findById(req.user.id);
@@ -490,10 +497,8 @@ app.post('/logout', (req, res) => {
     res.clearCookie('jwt').redirect('/'); // Clear the JWT cookie and redirect to the home or login page
 });
 
-app.get('/', (req, res) => {
-    res.render('loginpage');
-});
 
+// Go to home page
 app.get('/home', (req, res) => {
     if (!req.user) return res.status(401).send('Not authenticated.');
     res.render('home', { name: req.user.name, image: req.user.image, userId: req.user._id });
