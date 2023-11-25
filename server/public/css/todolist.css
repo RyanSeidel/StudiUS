@@ -19,7 +19,7 @@
     flex-grow: 1;
     padding: 8px;
     font-size: 16px;
-    border: 1px solid #ddd;
+    border: 1px solid #fff;
     border-radius: 5px;
     outline: none;
 }
@@ -45,11 +45,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid #ddd;
+    border: 1px solid #fff;
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
-    background-color: #ddd;
+    background-color: #fff;
     flex-direction: column;
     flex-grow: 1;
     transition: background-color 0.3s ease-in-out; /* Add a smooth transition for background color */
@@ -177,7 +177,7 @@ input[type="date"] {
 	background: #fff;
 	width: 450px;
 	border-radius: 10px;
-	box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+	box-shadow: 0 15px 40px #fff(0, 0, 0, 0.12);
     position: fixed;
     top: 50%;
     left: 50%;
@@ -207,7 +207,7 @@ header .calendar-navigation span {
 	line-height: 38px;
 	border-radius: 50%;
 	user-select: none;
-	color: #aeabab;
+	color: #fff;
 	font-size: 1.9rem;
 }
 
@@ -258,7 +258,7 @@ header .calendar-current-date {
 }
 
 .calendar-dates li.inactive {
-	color: #aaa;
+	color: #fff;
 }
 
 .calendar-dates li.active {
