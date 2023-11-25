@@ -18,22 +18,21 @@
    Note: To use this code, you should have corresponding HTML elements with matching IDs, a server endpoint for profile updates, and the Cropper library included in your project if image cropping is used. CSS styles may also be needed for the visual presentation of the "Edit Profile" modal and its elements.
 */
 
-// Edit Profile Modal handlers
+// Modal Handlers
 const editProfileModal = document.getElementById("editProfileModal");
 const editProfileBtn = document.querySelector(".greeting-button");
-const closeBtn = document.getElementsByClassName("close")[0];
+const editProfileCloseBtn = document.getElementById("editProfileCloseBtn");
 
-// Open the modal
-editProfileBtn.onclick = () => editProfileModal.style.display = "block";
-
-// Close the modal
-closeBtn.onclick = () => editProfileModal.style.display = "none";
-
-window.onclick = event => {
-    if (event.target === editProfileModal) {
-        editProfileModal.style.display = "none";
-    }
+// Open Modal
+editProfileBtn.onclick = () => {
+    editProfileModal.style.display = "block";
 };
+
+// Close Modal with Close Button
+editProfileCloseBtn.onclick = () => {
+    editProfileModal.style.display = "none";
+};
+
 
 // Helper function to handle profile updates
 const updateProfile = async (formData) => {
