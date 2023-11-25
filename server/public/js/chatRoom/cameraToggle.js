@@ -19,16 +19,26 @@ document.getElementById("toggleCamera").addEventListener("click", function () {
         let videoTrack = localStream.getVideoTracks()[0];
         videoTrack.enabled = !videoTrack.enabled;
 
+        const cameraIcon = document.querySelector("#toggleCamera i.fa-camera");
+
         if (videoTrack.enabled) {
             console.log("Camera turned on");
-            if (localVideoElement) localVideoElement.classList.remove('inactive-video');
+            if (localVideoElement) {
+                localVideoElement.classList.remove('inactive-video');
+                cameraIcon.classList.add('camera-active'); // Add 'camera-active' to the camera icon when the camera is on
+            }
         } else {
             console.log("Camera turned off");
-            if (localVideoElement) localVideoElement.classList.add('inactive-video');
+            if (localVideoElement) {
+                cameraIcon.classList.remove('camera-active'); // Remove 'camera-active' from the camera icon when the camera is off
+                localVideoElement.classList.add('inactive-video');
+            }
         }
 
         // Emit an event to notify other users
         socket.emit('camera-toggled', localSocketId, videoTrack.enabled);
     }
 });
+
+
 

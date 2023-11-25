@@ -276,7 +276,7 @@ button:hover {
 
 .camera-active,
 .microphone-active {
-    color: red;
+    color: #339965;
 }
 
 #video-container {
