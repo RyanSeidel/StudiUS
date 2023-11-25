@@ -466,3 +466,40 @@ h2 {
 .leave-button:hover {
     transform: scale(1.1);
 }
+
+/* For Rooms */
+.room {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+.room-left-side, .room-right-side {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 50%; /* Ensures equal width for both sides */
+}
+
+.room-owner, .room-members {
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.active-participants {
+    display: flex;
+    align-items: center;
+}
+
+.active-icon {
+    color: green;
+    margin-right: 5px;
+    margin-top: 5px;
+    font-size: 20px; /* Or any other size */
+}
+
+.room-name{
+    color: black;
+    font-weight: 600;
+    font-size: 14px;
+}

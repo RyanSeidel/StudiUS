@@ -45,37 +45,53 @@ function fetchRooms() {
                 
                 const roomDiv = document.createElement('div');
                 roomDiv.className = 'room';
-                roomDiv.style.cursor = 'pointer';
-                roomDiv.style.margin = '10px 0';
-                roomDiv.style.display = 'flex';
-                roomDiv.style.justifyContent = 'space-between';
+
+                const leftSide = document.createElement('div');
+                leftSide.className = 'room-left-side';
+
+                const rightSide = document.createElement('div');
+                rightSide.className = 'room-right-side';
 
                 const roomInfo = document.createElement('div');
                 roomInfo.style.display = 'flex';
                 roomInfo.style.flexDirection = 'column';
 
                 const roomName = document.createElement('div');
+                roomName.className = 'room-name';
                 roomName.textContent = `Group Name: ${room.name}`;
                 roomName.style.marginBottom = '5px';
+                leftSide.appendChild(roomName)
 
+                // Left side content - Owner's name
                 const roomOwner = document.createElement('div');
                 roomOwner.textContent = `Owner: ${room.ownerName}`;
-                roomOwner.style.fontSize = '12px';
-                roomOwner.style.marginBottom = '5px';
+                roomOwner.className = 'room-owner';
+                leftSide.appendChild(roomOwner);
 
+                // Right side content - Members count and active participants
                 const roomMembers = document.createElement('div');
                 roomMembers.textContent = `Members: ${room.userNames.length}`;
-                roomMembers.style.fontSize = '12px';
+                roomMembers.className = 'room-members';
+                leftSide.appendChild(roomMembers);
 
                 const activeParticipants = document.createElement('div');
                 activeParticipants.className = 'active-participants';
                 activeParticipants.id = `active-participants-${room._id}`; // Unique ID for each room
-                activeParticipants.textContent = `Active: ${room.activeParticipants || 0}`;
 
-                roomInfo.appendChild(roomName);
-                roomInfo.appendChild(roomOwner);
-                roomInfo.appendChild(roomMembers);
-                roomInfo.appendChild(activeParticipants); // Add this line
+                // Create the icon element for Font Awesome
+                const activeIcon = document.createElement('i');
+                activeIcon.className = 'fa-solid fa-user active-icon';
+                activeIcon.style.color = 'green'; // Set the color to green
+
+                // Append the icon to the activeParticipants div
+                activeParticipants.appendChild(activeIcon);
+                
+                const activeText = document.createTextNode(` Active: ${room.activeParticipants || 0}`);
+                activeParticipants.appendChild(activeText);
+                rightSide.appendChild(activeParticipants);
+
+                roomDiv.appendChild(leftSide);
+                roomDiv.appendChild(rightSide);
 
                 const buttonContainer = document.createElement('div');
                 buttonContainer.style.display = 'flex';

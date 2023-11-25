@@ -13,7 +13,7 @@
         href=
 "https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
 </head>
- 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
     <title>Welcome to the Island</title>
     
@@ -206,13 +206,18 @@
         const participantCountElement = document.getElementById(`active-participants-${roomId}`);
         if (participantCountElement) {
             console.log(`Updating participant count for room ${roomId} to ${count}`);
-            participantCountElement.textContent = `Active: ${count}`;
 
-            fetchRoom();
+            // Assuming the text node is the last child of participantCountElement
+            // and the icon is the first child
+            const textNodeIndex = participantCountElement.childNodes.length - 1;
+            if (participantCountElement.childNodes[textNodeIndex]) {
+                participantCountElement.childNodes[textNodeIndex].nodeValue = ` Active: ${count}`;
+            }
+
         } else {
             console.log(`Participant count element not found for room ${roomId}`);
         }
-    });
+            });
 
 
 </script>
