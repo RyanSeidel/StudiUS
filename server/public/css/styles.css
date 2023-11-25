@@ -61,6 +61,9 @@ body {
 .show-form {
   display: block !important; /* override the inline style */
   animation: fadeIn 0.3s forwards; /* apply the animation */
+  margin-top:-99px;
+  margin-left:-20px;
+
 }
 
 @keyframes fadeOut {
