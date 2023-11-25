@@ -355,6 +355,24 @@ app.post('/create-room', async (req, res, next) => {
     }
 });
 
+// Used for Edit Button to change Game/Peers or Group Name
+app.post('/update-room', async (req, res) => {
+    try {
+        const { roomId, newName, isGame } = req.body;
+        const updatedRoom = await ChatRoom.findByIdAndUpdate(
+            roomId, 
+            { name: newName, isGame: isGame }, 
+            { new: true }
+        );
+        res.json(updatedRoom);
+    } catch (error) {
+        console.error("Error updating room:", error);
+        res.status(500).send(error.message);
+    }
+});
+
+
+
 //
 app.post('/remove-user-from-room', async (req, res) => {
     const { roomId, userName } = req.body;

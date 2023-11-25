@@ -81,7 +81,7 @@ function fetchRooms() {
                 // Create the icon element for Font Awesome
                 const activeIcon = document.createElement('i');
                 activeIcon.className = 'fa-solid fa-user active-icon';
-                activeIcon.style.color = 'green'; // Set the color to green
+                activeIcon.style.color = '#007f3e'; // Set the color to green
 
                 // Append the icon to the activeParticipants div
                 activeParticipants.appendChild(activeIcon);
@@ -111,10 +111,70 @@ function fetchRooms() {
                     editButton.className = 'edit-button'; // Add a class for styling
                     editButton.style.marginRight = '5px';
                     editButton.addEventListener('click', () => {
+
                         const editRoomModal = document.getElementById('editRoomModal');
                         editRoomModal.style.display = 'block';
 
                         document.getElementById('editRoomName').value = room.name;
+
+                        // Get the buttons
+                        const selectGameButton = document.getElementById('selectGame');
+                        const selectPeersButton = document.getElementById('selectPeers');
+
+                        // Set the initial button styles based on isGame property
+                        if (room.isGame) {
+                            selectGameButton.style.backgroundColor = '#007f3e';
+                            selectPeersButton.style.backgroundColor = '';
+                        } else {
+                            selectGameButton.style.backgroundColor = '';
+                            selectPeersButton.style.backgroundColor = '#007f3e';
+                        }
+
+                        // Event listeners for buttons to toggle room type and button styles
+                        selectGameButton.onclick = () => {
+                            room.isGame = true;
+                            selectGameButton.style.backgroundColor = '#007f3e';
+                            selectPeersButton.style.backgroundColor = '';
+                        };
+
+                        selectPeersButton.onclick = () => {
+                            room.isGame = false;
+                            selectGameButton.style.backgroundColor = '';
+                            selectPeersButton.style.backgroundColor = '#007f3e';
+                        };
+
+                        document.getElementById('saveRoomChanges').addEventListener('click', () => {
+                            const updatedRoomName = document.getElementById('editRoomName').value;
+                            const updatedIsGame = room.isGame; // This is updated when the 'Game' or 'Peers' button is clicked
+                        
+                            fetch('/update-room', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    roomId: room._id, // ID of the room being edited
+                                    newName: updatedRoomName,
+                                    isGame: updatedIsGame
+                                })
+                            })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(updatedRoom => {
+                                console.log('Room updated successfully:', updatedRoom);
+                                // Close the edit room modal
+                                document.getElementById('editRoomModal').style.display = 'none';
+                                // Refresh the room list
+                                fetchRooms();
+                            })
+                            .catch(error => {
+                                console.error("Error updating room:", error);
+                            });
+                        });
+                        
+
                         const roomMembersList = document.getElementById('roomMembersList');
                         roomMembersList.innerHTML = '';
 
