@@ -535,6 +535,9 @@ app.post('/logout', (req, res) => {
     res.clearCookie('jwt').redirect('/'); // Clear the JWT cookie and redirect to the home or login page
 });
 
+app.get('/', (req, res) => {
+    res.render('loginpage');
+});
 
 // Go to home page
 app.get('/home', (req, res) => {
