@@ -24,7 +24,7 @@ function toggleRoomType(selectedType) {
     peersButton.classList.toggle('selected', selectedType === 'peers');
 
     // Adding console log for debugging
-    console.log(`Room type selected: ${selectedType}`);
+    // console.log(`Room type selected: ${selectedType}`);
 
     selectedRoomType = selectedType;
 }

@@ -355,42 +355,28 @@ app.post('/create-room', async (req, res, next) => {
     }
 });
 
-// Used for Edit Button to change Game/Peers or Group Name
+// server.js - Update Room Endpoint
 app.post('/update-room', async (req, res) => {
     try {
         const { roomId, newName, isGame } = req.body;
 
-        // Optionally, you can validate the inputs before proceeding
-        if (!roomId || newName === undefined || isGame === undefined) {
-            return res.status(400).json({ error: 'roomId, newName, and isGame are required fields' });
+        // Find the room by its ID and update it
+        const updatedRoom = await ChatRoom.findByIdAndUpdate(
+            roomId,
+            { name: newName, isGame: isGame },
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedRoom) {
+            return res.status(404).send('Room not found.');
         }
-
-        // Find the specific room by its ID
-        const room = await ChatRoom.findById(roomId);
-        if (!room) {
-            return res.status(404).json({ error: 'Room not found' });
-        }
-
-        // Optionally, check if the current user is the owner of the room
-        if (req.user._id.toString() !== room.ownerId.toString()) {
-            return res.status(403).json({ error: 'You are not authorized to update this room' });
-        }
-
-        // Update the room's properties
-        room.name = newName;
-        room.isGame = isGame;
-
-        // Save the updated room
-        const updatedRoom = await room.save();
 
         res.json(updatedRoom);
     } catch (error) {
         console.error("Error updating room:", error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).send("Error updating room");
     }
 });
-
-
 
 
 //
