@@ -160,24 +160,31 @@ function handleNewICECandidateMsg(candidate, from) {
 }
 
 function addVideoStream(stream, userId) {
-    let video = videoContainer.querySelector(`[data-peer-id="${userId}"]`);
-    if (!video) {
-        video = document.createElement('video');
-        video.dataset.peerId = userId;
-        videoContainer.appendChild(video);
-    }
-    video.srcObject = stream;
-    video.autoplay = true;
-    video.playsInline = true;
-    video.controls = true;
+  let video = videoContainer.querySelector(`[data-peer-id="${userId}"]`);
+  if (!video) {
+      video = document.createElement('video');
+      video.dataset.peerId = userId;
+      video.srcObject = stream;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.controls = true;
 
-    if (userId === localSocketId) {
-        video.muted = true;
-        localVideoElement = video; // Store the local video element
-    } else {
-        video.muted = false;
-    }
+      if (userId === "screen-sharing") {
+          video.classList.add("screen-sharing-video"); // Add a specific class for screen sharing
+      }
+
+      videoContainer.appendChild(video);
+
+      if (userId === localSocketId) {
+          video.muted = true;
+      } else {
+          video.muted = false;
+      }
+  } else {
+      video.srcObject = stream;
+  }
 }
+
 
 
 
@@ -205,36 +212,6 @@ socket.on('camera-toggled', (userId, isCameraOn) => {
 
 
 
-  socket.on("receiveMessage", (message) => {
-    const chatBoxContainer = document.getElementById("chat-box-container");
-    const messageDiv = document.createElement("div");
-    const senderInfoDiv = document.createElement("div");
-
-    if (message.senderName === name) {
-        messageDiv.classList.add("current-user-message");
-        senderInfoDiv.classList.add("sender-info-current-user");
-    } else {
-        messageDiv.classList.add("other-user-message");
-        senderInfoDiv.classList.add("sender-info-other-user");
-    }
-
-    if (message.body.startsWith("<img")) {
-        messageDiv.innerHTML = message.body;
-    } else {
-        messageDiv.textContent = message.body;
-    }
-
-    const currentTime = new Date().toLocaleTimeString();
-    senderInfoDiv.textContent = `${message.senderName} - ${currentTime}`;
-
-    // Append message and sender info directly to chatBoxContainer
-    chatBoxContainer.insertBefore(messageDiv, chatBoxContainer.firstChild);
-    chatBoxContainer.insertBefore(senderInfoDiv, chatBoxContainer.firstChild);
-
-
-    chatBoxContainer.scrollTop = chatBoxContainer.scrollHeight;
-
-});
 
   // Handle the 'participants-updated' event
   socket.on('participants-updated', (participants) => {
@@ -246,4 +223,127 @@ socket.on('camera-toggled', (userId, isCameraOn) => {
         participantDiv.textContent = participant.userName;
         participantsList.appendChild(participantDiv);
     });
+});
+
+let isScreenSharing = false; // State to track screen sharing
+
+function toggleScreenSharing() {
+  if (isScreenSharing) {
+      stopScreenSharing();
+  } else {
+      startScreenSharing();
+  }
+}
+
+function startScreenSharing() {
+  navigator.mediaDevices.getDisplayMedia({ video: true }).then(stream => {
+      localStream = stream;
+      const screenSharingId = "screen-sharing";
+
+      addVideoStream(stream, screenSharingId);
+      moveVideoToLeftScreen(screenSharingId);
+
+      socket.emit('screen-sharing-started', localSocketId, roomId);
+
+      isScreenSharing = true;
+      updateShareButton();
+  }).catch(e => {
+      console.error('Failed to get screen stream:', e);
+  });
+}
+
+
+function stopScreenSharing() {
+  if (localStream && localStream.getTracks) {
+      localStream.getTracks().forEach(track => track.stop());
+  }
+
+  // Replace screen sharing with the original video stream
+  navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
+      localStream = stream;
+      updateVideoStream(stream, localSocketId);
+
+      removeScreenSharingFromLeftScreen();
+
+      isScreenSharing = false;
+      updateShareButton();
+  }).catch(e => {
+      console.error('Failed to revert to camera stream:', e);
+  });
+}
+
+function removeScreenSharingFromLeftScreen() {
+  const leftScreen = document.querySelector('.left-screen');
+  const screenSharingElement = leftScreen.querySelector(`[data-peer-id="screen-sharing"]`);
+  if (screenSharingElement) {
+      leftScreen.removeChild(screenSharingElement);
+  }
+}
+
+function updateShareButton() {
+  const shareScreenButton = document.getElementById("shareScreenButton");
+  shareScreenButton.textContent = isScreenSharing ? "Stop Sharing Screen" : "Share Screen";
+}
+
+document.getElementById("shareScreenButton").addEventListener("click", toggleScreenSharing);
+
+function updateVideoStream(stream, userId) {
+    const videoElement = videoContainer.querySelector(`[data-peer-id="${userId}"]`);
+    if (videoElement) {
+        videoElement.srcObject = stream;
+    }
+
+    if (myPeerConnections[userId]) {
+        const peerConnection = myPeerConnections[userId];
+        const sender = peerConnection.getSenders().find(s => s.track.kind === 'video');
+        if (sender) {
+            sender.replaceTrack(stream.getVideoTracks()[0]);
+        }
+    }
+}
+
+function moveVideoToLeftScreen(userId) {
+  const videoElement = videoContainer.querySelector(`[data-peer-id="${userId}"]`);
+  if (videoElement) {
+      const leftScreen = document.querySelector('.left-screen');
+      if (!leftScreen) {
+          console.error("Left screen element not found!");
+          return;
+      }
+      leftScreen.appendChild(videoElement);
+      console.log("Moved video to left screen:", videoElement);
+  } else {
+      console.error("Video element not found for user:", userId);
+  }
+}
+
+socket.on("receiveMessage", (message) => {
+  const chatBoxContainer = document.getElementById("chat-box-container");
+  const messageDiv = document.createElement("div");
+  const senderInfoDiv = document.createElement("div");
+
+  if (message.senderName === name) {
+      messageDiv.classList.add("current-user-message");
+      senderInfoDiv.classList.add("sender-info-current-user");
+  } else {
+      messageDiv.classList.add("other-user-message");
+      senderInfoDiv.classList.add("sender-info-other-user");
+  }
+
+  if (message.body.startsWith("<img")) {
+      messageDiv.innerHTML = message.body;
+  } else {
+      messageDiv.textContent = message.body;
+  }
+
+  const currentTime = new Date().toLocaleTimeString();
+  senderInfoDiv.textContent = `${message.senderName} - ${currentTime}`;
+
+  // Append message and sender info directly to chatBoxContainer
+  chatBoxContainer.insertBefore(messageDiv, chatBoxContainer.firstChild);
+  chatBoxContainer.insertBefore(senderInfoDiv, chatBoxContainer.firstChild);
+
+
+  chatBoxContainer.scrollTop = chatBoxContainer.scrollHeight;
+
 });

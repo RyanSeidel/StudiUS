@@ -126,6 +126,10 @@ io.on('connection', (socket) => {
         });
     });
 
+    socket.on('screen-sharing-started', (userId, roomId) => {
+        socket.to(roomId).emit('screen-sharing-started', userId);
+    });
+
     socket.on('offer', (offer, to) => {
         socket.to(to).emit('offer', offer, socket.id);
       });

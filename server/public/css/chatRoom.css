@@ -317,6 +317,16 @@ video {
     flex: 1.75;
 }
 
+.screen-sharing-video {
+    width: 100%;
+    height: 100%;
+    max-width: none;     /* Override the max-width */
+    margin: 0;           /* Override margin if needed */
+    border-radius: 0;    /* Override border-radius if needed */
+    object-fit: cover;   /* Adjust as needed */
+}
+
+
 #audioMeterModal {
     margin-top: 10px;
     height: 10px;
