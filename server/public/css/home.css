@@ -152,19 +152,17 @@ h2 {
 
 .unselect-btn,
 .addTask {
-    background-color: white;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     white-space: nowrap;
-    font-size: 16px; /* adjust as needed */
+    font-size: 16px;
     padding: 8px 10px;
     box-sizing: border-box;
     border: none;
     border-radius: 5px;
     transition: background-color 0.3s, color 0.3s;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
-}
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);}
 .unselect-btn {
     background-color: #0171d7;
     margin: 0;
@@ -173,7 +171,9 @@ h2 {
 }
 .create-room {
     margin-top: 20px;
-    background-color: white;
+    background-color: #0071d7;
+    color: #fff; 
+    transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -184,11 +184,11 @@ h2 {
     border: none;
     border-radius: 5px;
     transition: background-color 0.3s, color 0.3s;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px #0071d7(0, 0, 0, 0.3); /* Add a box shadow for a 3D effect */
 }
-.create-room:hover,
-.addTask:hover {
-    background-color: #ddd;
+.create-room:hover {
+    transform: scale(1.1);
 }
 .unselect-btn:hover {
     transform: scale(1.1);
