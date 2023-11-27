@@ -48,3 +48,20 @@ This navigates to the `server` folder.
 **You should get this page**
 
 <img src="images/mainpage.png" alt="Instruction Image 1" style="border: 2px solid black;">
+
+
+**Features**
+
+- REAL TIME Video Chatting/Audio
+
+- Create and Edit Room
+
+- Add a Tasks
+
+- Select Users
+
+- Messaging
+
+- Edit Profile Pictures 
+
+
