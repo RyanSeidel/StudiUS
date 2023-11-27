@@ -21,7 +21,7 @@ This project uses Node.js with Express Framework, and other dependencies listed 
 ### 🚨 ALERT: LOOK HERE FOR INSTRUCTIONS 🚨
 
 1. **Open Visual Studio Code**.
-2. Click on `View` and then select `Terminal`.![Alt text](image.png)
+2. Click on `View` and then select `Terminal`.!
    <img src="images/instruction1.png" alt="Instruction Image 1" style="border: 2px solid black;">
 
 
@@ -36,7 +36,7 @@ This navigates to the `server` folder.
 <img src="images/instruction3.png" alt="Instruction Image 1" style="border: 2px solid black;">
 
 
-5. After installation, run: `npm run dev` to run the development mode
+5. After installation, run: `npm start` to run the development mode
 
 <img src="images/instruction4.png" alt="Instruction Image 1" style="border: 2px solid black;">
 
