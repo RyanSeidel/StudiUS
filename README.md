@@ -2,6 +2,9 @@
 
 _created by Ryan, Liz, Tarek, Mindy, and Cody_
 
+Summary:
+StudiUS, a project designed for Internet Programming, was developed by our team as a web application. Aimed at university students, it allows for the creation of virtual study and game rooms where users can connect and interact. The purpose of the application was to facilitate a fun and interactive environment for students to engage with each other.
+
 This project uses Node.js with Express Framework, and other dependencies listed below:
 
 ## Dependencies
