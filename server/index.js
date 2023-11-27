@@ -9,7 +9,7 @@ const socketIo = require('socket.io');
 const User = require('./models/user');
 const Message = require('./models/message');
 const Conversation = require('./models/conversation');
-const ChatRoom = require('./models/ChatRoom');
+const ChatRoom = require('./models/chatRoom');
 
 
 const cloudinary = require('cloudinary').v2;
