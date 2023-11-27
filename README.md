@@ -21,15 +21,14 @@ This project uses Node.js with Express Framework, and other dependencies listed 
 ### 🚨 ALERT: LOOK HERE FOR INSTRUCTIONS 🚨
 
 1. **Open Visual Studio Code**.
-2. Click on `View` and then select `Terminal`.
-   
+2. Click on `View` and then select `Terminal`.![Alt text](image.png)
    <img src="images/instruction1.png" alt="Instruction Image 1" style="border: 2px solid black;">
 
 
 3. In the terminal, type: `cd server`
 This navigates to the `server` folder.
 
-<img src="images/instruction2.png" alt="Instruction Image 1" style="border: 2px solid black;">
+<img src="/images/instruction2.png" alt="Instruction Image 1" style="border: 2px solid black;">
  
 
 4. 🚨 MAKE SURE TO DO `npm install` 🚨 This installs all necessary packages.
