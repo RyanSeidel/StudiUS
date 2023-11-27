@@ -14,5 +14,13 @@
   },
   "scripts": {
     "start": "node index.js"
+  },
+
+  "pkg": {
+    "assets": [
+      "views/**/*", 
+      "public/**/*"
+    ]
   }
+  
 }
